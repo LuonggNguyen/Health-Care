@@ -5,14 +5,20 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
 import { Button } from "@rneui/themed"
 import Icon from "react-native-vector-icons/Ionicons"
+import auth from "@react-native-firebase/auth"
 
 export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = observer(
   function LoginScreen() {
-    // Pull in one of our MST stores
-    // const { someStore, anotherStore } = useStores()
-
-    // Pull in navigation via hook
-    // const navigation = useNavigation()
+    const checkLogin = () => {
+      auth()
+        .signInWithEmailAndPassword("luong@poly.com", "123456")
+        .then(() => {
+          console.log("Thanh Cong")
+        })
+        .catch((e) => {
+          console.log("Err", e)
+        })
+    }
     return (
       <View style={styles.container}>
         <Button
@@ -22,6 +28,7 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
           style={{ height: 50, width: 100 }}
           titleStyle={{ color: "#000" }}
           icon={<Icon name="home" size={24} color="#000" />}
+          onPress={checkLogin}
         />
       </View>
     )
