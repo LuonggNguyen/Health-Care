@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "652443298206",
+    "project_id": "poly-datn",
+    "storage_bucket": "poly-datn.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:652443298206:android:e771efa338936d88254e8f",
+        "android_client_info": {
+          "package_name": "com.polyhealthy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfJTAym0e3KKh4seDwZQLaqZi6zF_S0a4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "652443298206-h4q3ssaio7b6oevvgc1ctaod0u3j6bhc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.PolyHealthy",
+                "app_store_id": "123456789"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
