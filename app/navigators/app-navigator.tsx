@@ -9,11 +9,12 @@ import { useColorScheme } from "react-native"
 import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { navigationRef, useBackButtonHandler } from "./navigation-utilities"
-import { LoginScreen } from "../screens"
+import { LoginScreen, RegisterScreen } from "../screens"
 
 export type NavigatorParamList = {
   // 🔥 Your screens go here
   login: undefined
+  register: undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
@@ -28,6 +29,7 @@ const AppStack = () => {
       initialRouteName="login"
     >
       <Stack.Screen name="login" component={LoginScreen} />
+      <Stack.Screen name="register" component={RegisterScreen} />
       {/** 🔥 Your screens go here */}
     </Stack.Navigator>
   )
