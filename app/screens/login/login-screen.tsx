@@ -17,8 +17,7 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
     async function onGoogleButtonPress() {
       try {
         await GoogleSignin.configure({
-          webClientId: "652443298206-ondnmrosp492f8ng4jcld3eelhnv9qp9.apps.googleusercontent.com",
-          offlineAccess: true,
+          webClientId: "716587017495-gtaa8ofao9l15fofvf68mb0csgplieae.apps.googleusercontent.com",
         })
         const { idToken } = await GoogleSignin.signIn()
         const googleCredential = await auth.GoogleAuthProvider.credential(idToken)
