@@ -15,7 +15,7 @@
 		2215ACBC1E62C44583DB69A9 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AFED2E09CC2E86D1338C0F /* ExpoModulesProvider.swift */; };
 		400EB2C1E1807E6CBC68B7AB /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951E59D51E504BC9C5F46169 /* ExpoModulesProvider.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		A085EDD128E0AA5B009CFE18 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A085EDD028E0AA5B009CFE18 /* GoogleService-Info.plist */; };
+		A0E70FA228E1FA79000DE948 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A0E70FA128E1FA79000DE948 /* GoogleService-Info.plist */; };
 		D05625DFCC39CAF694386E40 /* Pods_PolyHealthy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE36C196B0CC17E4A9692952 /* Pods_PolyHealthy.framework */; };
 /* End PBXBuildFile section */
 
@@ -45,7 +45,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = PolyHealthy/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-PolyHealthy-PolyHealthyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PolyHealthy-PolyHealthyTests.release.xcconfig"; path = "Target Support Files/Pods-PolyHealthy-PolyHealthyTests/Pods-PolyHealthy-PolyHealthyTests.release.xcconfig"; sourceTree = "<group>"; };
 		951E59D51E504BC9C5F46169 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-PolyHealthy/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		A085EDD028E0AA5B009CFE18 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A0E70FA128E1FA79000DE948 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CE36C196B0CC17E4A9692952 /* Pods_PolyHealthy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PolyHealthy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5AFED2E09CC2E86D1338C0F /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-PolyHealthy-PolyHealthyTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -139,7 +139,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				A085EDD028E0AA5B009CFE18 /* GoogleService-Info.plist */,
+				A0E70FA128E1FA79000DE948 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* PolyHealthy */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* PolyHealthyTests */,
@@ -276,7 +276,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				A085EDD128E0AA5B009CFE18 /* GoogleService-Info.plist in Resources */,
+				A0E70FA228E1FA79000DE948 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
