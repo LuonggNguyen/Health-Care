@@ -10,6 +10,8 @@ import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { navigationRef, useBackButtonHandler } from "./navigation-utilities"
 import { LoginScreen, RegisterScreen } from "../screens"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+// import auth from "@react-native-firebase/auth"
 
 export type NavigatorParamList = {
   // 🔥 Your screens go here
@@ -21,6 +23,12 @@ export type NavigatorParamList = {
 const Stack = createNativeStackNavigator<NavigatorParamList>()
 
 const AppStack = () => {
+  // const user = auth().currentUser
+  const Tab = createBottomTabNavigator()
+
+  // function UserTabs() {
+  //   return <Tab.Navigator></Tab.Navigator>
+  // }
   return (
     <Stack.Navigator
       screenOptions={{

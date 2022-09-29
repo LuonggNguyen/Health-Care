@@ -30,7 +30,7 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
             //   index: 0,
             //   routes: [{ name: "index" }],
             // })
-            console.log("Login Successful !! \n Hello " + user.email)
+            console.log("Login Successful !! \n Hello " + user.displayName)
           })
           .catch((err) => {
             console.log("Login Fail !!\n" + err)

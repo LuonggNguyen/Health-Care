@@ -1,6 +1,15 @@
 import React, { FC, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
 import { Button, Header, Input } from "@rneui/themed"
@@ -17,15 +26,18 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
     const [pass, setPass] = useState("")
     const [rePass, setRePass] = useState("")
     const [avt, setAvt] = useState("")
+    const resetForm = () => {
+      setEmail("")
+      setPass("")
+      setRePass("")
+      setName("")
+      setAvt("")
+    }
 
     const handleRegister = async (email, pass, rePass, name, avt) => {
       if (!email || !pass || !rePass || !name || !avt) {
         Alert.alert("Can't be empty")
-        setEmail("")
-        setPass("")
-        setRePass("")
-        setName("")
-        setAvt("")
+        resetForm()
       } else if (pass != rePass) {
         Alert.alert("Incorrect re-password")
         setPass("")
@@ -47,21 +59,13 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
               Alert.alert("That email address is invalid!")
             }
             console.error(error)
-            setEmail("")
-            setPass("")
-            setRePass("")
-            setName("")
-            setAvt("")
+            resetForm()
           })
         await auth()
           .currentUser.updateProfile(update)
           .then(() => {
             Alert.alert("User account created & signed in!")
-            setEmail("")
-            setPass("")
-            setRePass("")
-            setName("")
-            setAvt("")
+            resetForm()
           })
           .catch((e) => console.log(e))
       }
@@ -70,6 +74,8 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
     const goToLogin = () => {
       navigation.navigate("login")
     }
+
+    const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : -250
     return (
       <View style={styles.container}>
         <Header
@@ -78,78 +84,91 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
           }
           backgroundColor="#fff"
         />
-        <View style={styles.cardRegister}>
-          <Input
-            placeholder="Name"
-            leftIcon={<MaterialCommunityIcons name="account" size={26} color="gray" />}
-            value={name}
-            onChangeText={(e) => setName(e)}
-          />
-          <Input
-            placeholder="Email"
-            leftIcon={<Ionicons name="mail" size={24} color="gray" />}
-            value={email}
-            onChangeText={(e) => setEmail(e)}
-          />
-          <Input
-            secureTextEntry={showPass}
-            placeholder="Password"
-            leftIcon={<Ionicons name="lock-closed" size={24} color="gray" />}
-            value={pass}
-            onChangeText={(p) => setPass(p)}
-            rightIcon={
-              !pass ? (
-                <View />
-              ) : (
-                <Ionicons
-                  name={showPass ? "eye" : "eye-off"}
-                  size={24}
-                  color="gray"
-                  onPress={() => {
-                    setShowPass(!showPass)
-                  }}
-                />
-              )
-            }
-          />
-          <Input
-            secureTextEntry={showRePass}
-            placeholder="Re-Password"
-            leftIcon={<Ionicons name="lock-closed" size={24} color="gray" />}
-            value={rePass}
-            onChangeText={(p) => setRePass(p)}
-            rightIcon={
-              !rePass ? (
-                <View />
-              ) : (
-                <Ionicons
-                  name={showRePass ? "eye" : "eye-off"}
-                  size={24}
-                  color="gray"
-                  onPress={() => {
-                    setShowRePass(!showRePass)
-                  }}
-                />
-              )
-            }
-          />
-          <Input
-            placeholder="URL Photo Make Avatar"
-            leftIcon={<Ionicons name="image" size={26} color="gray" />}
-            value={avt}
-            onChangeText={(e) => setAvt(e)}
-          />
-          <Button
-            onPress={() => {
-              handleRegister(email, pass, rePass, name, avt)
-            }}
-            title="Register"
-            titleStyle={{ color: "#000", fontSize: 20, fontWeight: "bold" }}
-            color="#fff"
-            type="solid"
-            buttonStyle={{ borderColor: "#555", borderWidth: 1, borderRadius: 8, marginTop: 70 }}
-          />
-        </View>
+        <KeyboardAvoidingView
+          style={styles.cardRegister}
+          behavior="position"
+          keyboardVerticalOffset={keyboardVerticalOffset}
+        >
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={{}}>
+              <Input
+                placeholder="Name"
+                leftIcon={<MaterialCommunityIcons name="account" size={26} color="gray" />}
+                value={name}
+                onChangeText={(e) => setName(e)}
+              />
+              <Input
+                placeholder="Email"
+                leftIcon={<Ionicons name="mail" size={24} color="gray" />}
+                value={email}
+                onChangeText={(e) => setEmail(e)}
+              />
+              <Input
+                secureTextEntry={showPass}
+                placeholder="Password"
+                leftIcon={<Ionicons name="lock-closed" size={24} color="gray" />}
+                value={pass}
+                onChangeText={(p) => setPass(p)}
+                rightIcon={
+                  !pass ? (
+                    <View />
+                  ) : (
+                    <Ionicons
+                      name={showPass ? "eye" : "eye-off"}
+                      size={24}
+                      color="gray"
+                      onPress={() => {
+                        setShowPass(!showPass)
+                      }}
+                    />
+                  )
+                }
+              />
+              <Input
+                secureTextEntry={showRePass}
+                placeholder="Re-Password"
+                leftIcon={<Ionicons name="lock-closed" size={24} color="gray" />}
+                value={rePass}
+                onChangeText={(p) => setRePass(p)}
+                rightIcon={
+                  !rePass ? (
+                    <View />
+                  ) : (
+                    <Ionicons
+                      name={showRePass ? "eye" : "eye-off"}
+                      size={24}
+                      color="gray"
+                      onPress={() => {
+                        setShowRePass(!showRePass)
+                      }}
+                    />
+                  )
+                }
+              />
+              <Input
+                placeholder="URL Photo Make Avatar"
+                leftIcon={<Ionicons name="image" size={26} color="gray" />}
+                value={avt}
+                onChangeText={(e) => setAvt(e)}
+              />
+              <Button
+                onPress={() => {
+                  handleRegister(email, pass, rePass, name, avt)
+                }}
+                title="Register"
+                titleStyle={{ color: "#000", fontSize: 20, fontWeight: "bold" }}
+                color="#fff"
+                type="solid"
+                buttonStyle={{
+                  borderColor: "#555",
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  marginTop: 50,
+                }}
+              />
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
         <View style={styles.footer}>
           <Text style={{ color: "#000", fontSize: 16 }}>Do you already have an account ? </Text>
           <TouchableOpacity onPress={goToLogin}>
