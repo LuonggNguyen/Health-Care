@@ -3,21 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>652443298206-h4q3ssaio7b6oevvgc1ctaod0u3j6bhc.apps.googleusercontent.com</string>
+	<string>716587017495-dr7bdbsp7j5u7jf1n5j0j0nor5pcb9om.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.652443298206-h4q3ssaio7b6oevvgc1ctaod0u3j6bhc</string>
+	<string>com.googleusercontent.apps.716587017495-dr7bdbsp7j5u7jf1n5j0j0nor5pcb9om</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>716587017495-i9vlgdcijktt2bteftkjco88t7ct6mdr.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyA3yABsotngzUUEvaBnLSivuAPfCWQU-r0</string>
+	<string>AIzaSyDuqQ87iC2B2XSPQpdMAyKaeqAOd1YNTLk</string>
 	<key>GCM_SENDER_ID</key>
-	<string>652443298206</string>
+	<string>716587017495</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>org.reactjs.native.example.PolyHealthy</string>
 	<key>PROJECT_ID</key>
-	<string>poly-datn</string>
+	<string>healthcare-856bd</string>
 	<key>STORAGE_BUCKET</key>
-	<string>poly-datn.appspot.com</string>
+	<string>healthcare-856bd.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:652443298206:ios:ae5040f658851d8b254e8f</string>
+	<string>1:716587017495:ios:635c7ed790c4c8b94b4352</string>
 </dict>
 </plist>
