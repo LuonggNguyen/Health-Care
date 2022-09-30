@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { StyleSheet, Text, View } from "react-native"
+import { Dimensions, ImageBackground, StyleSheet, Text, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { Button, Header } from "@rneui/themed"
@@ -10,6 +10,9 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 
 import { color } from "../theme"
 
+const windowWidth = Dimensions.get("window").width
+const windowHeight = Dimensions.get("window").height
+
 export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userProfile">> = observer(
   function UserProfileScreen({ navigation }) {
     useEffect(() => {
@@ -18,6 +21,7 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
       })
       return () => {}
     }, [])
+
     const logout = () => {
       auth().currentUser.providerData[0].providerId == "google.com"
         ? GoogleSignin.signOut().then(() => {
@@ -54,5 +58,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#000",
+  },
+  BoxImgBg: {
+    flex: 1,
+  },
+  ImgBackground: {
+    height: 100,
+    width: windowWidth,
   },
 })
