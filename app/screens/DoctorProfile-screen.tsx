@@ -8,6 +8,8 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import auth from "@react-native-firebase/auth"
 import { color } from "../theme"
 
+//bug cmnr
+
 export const DoctorProfileScreen: FC<StackScreenProps<NavigatorParamList, "doctorProfile">> =
   observer(function DoctorProfileScreen({ navigation }) {
     return (
