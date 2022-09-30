@@ -17,7 +17,11 @@ import { UserHealthScreen } from "../screens/UserHealth-screen"
 import { DoctorProfileScreen } from "../screens/DoctorProfile-screen"
 import { DoctorBookingScreen } from "../screens/DoctorBooking-screen"
 import { DoctorHealthScreen } from "../screens/DoctorHealth-screen"
+import Ionicons from "react-native-vector-icons/Ionicons"
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import auth from "@react-native-firebase/auth"
+import { UserUpdateProfileScreen } from "../screens/UserUpdateProfile-screen"
+import { DoctorUpdateProfileScreen } from "../screens/DoctorUpdateProfile-screen"
 
 export type NavigatorParamList = {
   // 🔥 Your screens go here
@@ -55,20 +59,76 @@ const AppStack = () => {
 
   function UserTabs() {
     return (
-      <Tab.Navigator initialRouteName="userHealth">
-        <Tab.Screen name="userHealth" component={UserHealthScreen} />
-        <Tab.Screen name="userBooking" component={UserBookingScreen} />
-        <Tab.Screen name="userProfile" component={UserProfileScreen} />
+      <Tab.Navigator
+        initialRouteName="Health"
+        screenOptions={({ route }) => ({
+          headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName
+
+            if (route.name === "Health") {
+              iconName = focused ? "heart-circle" : "heart-circle-outline"
+            } else if (route.name === "Booking") {
+              iconName = focused ? "list-circle" : "list-circle-outline"
+            } else if (route.name === "Profile") {
+              iconName = focused ? "account-circle" : "account-circle-outline"
+              return <MaterialCommunityIcons name={iconName} size={size} color={color} />
+            }
+            return <Ionicons name={iconName} size={size} color={color} />
+
+            // You can return any component that you like here!
+          },
+          tabBarLabelStyle: { fontWeight: "bold" },
+          tabBarActiveTintColor: "black",
+          tabBarInactiveTintColor: "black",
+          tabBarStyle: {
+            borderTopLeftRadius: 12,
+            borderTopRightRadius: 12,
+            backgroundColor: "#f1f1f1",
+          },
+        })}
+      >
+        <Tab.Screen name="Health" component={UserHealthScreen} />
+        <Tab.Screen name="Booking" component={UserBookingScreen} />
+        <Tab.Screen name="Profile" component={UserProfileScreen} />
       </Tab.Navigator>
     )
   }
 
   function DoctorTabs() {
     return (
-      <Tab.Navigator initialRouteName="doctorHealth">
-        <Tab.Screen name="doctorHealth" component={DoctorHealthScreen} />
-        <Tab.Screen name="doctorBooking" component={DoctorBookingScreen} />
-        <Tab.Screen name="doctorProfile" component={DoctorProfileScreen} />
+      <Tab.Navigator
+        initialRouteName="Health"
+        screenOptions={({ route }) => ({
+          headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName
+
+            if (route.name === "Health") {
+              iconName = focused ? "heart-circle" : "heart-circle-outline"
+            } else if (route.name === "Booking") {
+              iconName = focused ? "list-circle" : "list-circle-outline"
+            } else if (route.name === "Profile") {
+              iconName = focused ? "account-circle" : "account-circle-outline"
+              return <MaterialCommunityIcons name={iconName} size={size} color={color} />
+            }
+            return <Ionicons name={iconName} size={size} color={color} />
+
+            // You can return any component that you like here!
+          },
+          tabBarLabelStyle: { fontWeight: "bold" },
+          tabBarActiveTintColor: "black",
+          tabBarInactiveTintColor: "black",
+          tabBarStyle: {
+            borderTopLeftRadius: 12,
+            borderTopRightRadius: 12,
+            backgroundColor: "#f1f1f1",
+          },
+        })}
+      >
+        <Tab.Screen name="Health" component={DoctorHealthScreen} />
+        <Tab.Screen name="Booking" component={DoctorBookingScreen} />
+        <Tab.Screen name="Profile" component={DoctorProfileScreen} />
       </Tab.Navigator>
     )
   }
@@ -94,6 +154,9 @@ const AppStack = () => {
       <Stack.Screen name="register" component={RegisterScreen} />
       <Stack.Screen name="user" component={UserTabs} />
       <Stack.Screen name="doctor" component={DoctorTabs} />
+      <Stack.Screen name="userUpdateProfile" component={UserUpdateProfileScreen} />
+      <Stack.Screen name="doctorUpdateProfile" component={DoctorUpdateProfileScreen} />
+
       {/** 🔥 Your screens go here */}
     </Stack.Navigator>
   )

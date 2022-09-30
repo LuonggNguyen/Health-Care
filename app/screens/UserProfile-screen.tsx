@@ -3,9 +3,12 @@ import { observer } from "mobx-react-lite"
 import { StyleSheet, Text, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-import { Button } from "@rneui/themed"
+import { Button, Header } from "@rneui/themed"
 import auth from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import MaterialIcons from "react-native-vector-icons/MaterialIcons"
+
+import { color } from "../theme"
 
 export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userProfile">> = observer(
   function UserProfileScreen({ navigation }) {
@@ -30,8 +33,13 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
 
     return (
       <View style={styles.container}>
+        <Header
+          backgroundColor={color.colorHeader}
+          centerComponent={<Text style={styles.titleHeader}>User</Text>}
+          rightComponent={<MaterialIcons name="logout" size={28} color="#000" onPress={logout} />}
+        />
         <Text>User</Text>
-        <Button title={"logout"} onPress={logout} />
+        <Button title={"Update Proflie"} onPress={() => navigation.navigate("userUpdateProfile")} />
       </View>
     )
   },
@@ -41,6 +49,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+  },
+  titleHeader: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#000",
   },
 })
