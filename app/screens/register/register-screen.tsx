@@ -38,6 +38,8 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
       if (!email || !pass || !rePass || !name || !avt) {
         Alert.alert("Can't be empty")
         resetForm()
+      } else if (email.search("@doctor") != -1) {
+        Alert.alert("Email @doctor only for Doctor !!")
       } else if (pass != rePass) {
         Alert.alert("Incorrect re-password")
         setPass("")
