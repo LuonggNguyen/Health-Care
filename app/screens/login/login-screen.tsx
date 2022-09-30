@@ -25,12 +25,12 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
           .signInWithCredential(googleCredential)
           .then((userCredentials) => {
             const user = userCredentials.user
-            // navigation.navigate("index")
-            // navigation.reset({
-            //   index: 0,
-            //   routes: [{ name: "index" }],
-            // })
-            console.log("Login Successful !! \n Hello " + user.email)
+            navigation.navigate("user")
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "user" }],
+            })
+            console.log("Login Successful !! \n Hello " + user.displayName)
           })
           .catch((err) => {
             console.log("Login Fail !!\n" + err)
@@ -48,15 +48,25 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
       } else {
         auth()
           .signInWithEmailAndPassword(username, password)
-          .then(() => {
+          .then((infoAccount) => {
             // navigation.navigate("infoUser")
             setEmail("")
             setPass("")
+            const checkRole = infoAccount.user.email.search("@doctor")
+            if (checkRole == -1) {
+              navigation.navigate("user")
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "user" }],
+              })
+            } else {
+              navigation.navigate("doctor")
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "doctor" }],
+              })
+            }
             Alert.alert("Login Successful !!")
-            // navigation.reset({
-            //   index: 0,
-            //   routes: [{ name: "infoUser" }],
-            // })
           })
           .catch((error) => {
             if (error.code === "auth/invalid-email") {
