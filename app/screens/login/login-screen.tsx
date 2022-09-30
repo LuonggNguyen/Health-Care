@@ -20,6 +20,8 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
           webClientId: "716587017495-gtaa8ofao9l15fofvf68mb0csgplieae.apps.googleusercontent.com",
         })
         const { idToken } = await GoogleSignin.signIn()
+        console.log(GoogleSignin.signIn())
+
         const googleCredential = await auth.GoogleAuthProvider.credential(idToken)
         return auth()
           .signInWithCredential(googleCredential)
@@ -30,7 +32,7 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
               index: 0,
               routes: [{ name: "user" }],
             })
-            console.log("Login Successful !! \n Hello " + user.displayName)
+            // console.log("Login Successful !! \n Hello " + user.displayName)
           })
           .catch((err) => {
             console.log("Login Fail !!\n" + err)

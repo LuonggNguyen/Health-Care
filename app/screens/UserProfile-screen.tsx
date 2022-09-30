@@ -1,11 +1,14 @@
 import React, { FC, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { StyleSheet, Text, View } from "react-native"
+import { Dimensions, ImageBackground, StyleSheet, Text, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { Button } from "@rneui/themed"
 import auth from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+
+const windowWidth = Dimensions.get("window").width
+const windowHeight = Dimensions.get("window").height
 
 export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userProfile">> = observer(
   function UserProfileScreen({ navigation }) {
@@ -15,6 +18,7 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
       })
       return () => {}
     }, [])
+
     const logout = () => {
       auth().currentUser.providerData[0].providerId == "google.com"
         ? GoogleSignin.signOut().then(() => {
@@ -30,8 +34,14 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
 
     return (
       <View style={styles.container}>
-        <Text>User</Text>
-        <Button title={"logout"} onPress={logout} />
+        <View style={styles.BoxImgBg}>
+          <ImageBackground
+            style={styles.ImgBackground}
+            source={{
+              uri: "https://image.shutterstock.com/image-photo/light-bulbs-on-dark-wooden-260nw-354086042.jpg",
+            }}
+          ></ImageBackground>
+        </View>
       </View>
     )
   },
@@ -42,5 +52,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  BoxImgBg: {
+    flex: 1,
+  },
+  ImgBackground: {
+    height: 100,
+    width: windowWidth,
   },
 })
