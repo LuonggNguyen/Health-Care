@@ -66,8 +66,8 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
     return (
       <View style={styles.container}>
         <Header
-          style={{ height: 100 }}
-          backgroundColor="#fff"
+          // style={{ height: 100 }}
+          backgroundColor={color.colorHeader}
           centerComponent={<Text style={styles.titleHeader}>User</Text>}
           rightComponent={<MaterialIcons name="logout" size={28} color="#000" onPress={logout} />}
         />
