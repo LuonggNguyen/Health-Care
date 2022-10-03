@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { Dimensions, ImageBackground, StyleSheet, Text, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
@@ -7,20 +7,44 @@ import { Button, Header, Image } from "@rneui/themed"
 import auth from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
-
+import { firebase } from "@react-native-firebase/database"
 import { color } from "../theme"
 import { scale, verticleScale } from "../utils/Scale/Scaling"
 
+interface InfoUser {
+  age: number
+  birthday: string
+  bloodPressure: string
+  email: string
+  gender: boolean
+  heartbeat: number
+  height: number
+  name: string
+  phoneNumber: string
+  weight: number
+  photoUrl: string
+}
 const windowWidth = Dimensions.get("window").width
 const windowHeight = Dimensions.get("window").height
 
 export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userProfile">> = observer(
   function UserProfileScreen({ navigation }) {
+    const [infoUser, setInfoUser] = useState<InfoUser>()
     useEffect(() => {
       GoogleSignin.configure({
         webClientId: "716587017495-gtaa8ofao9l15fofvf68mb0csgplieae.apps.googleusercontent.com",
       })
-      return () => {}
+      firebase
+        .app()
+        .database("https://healthcare-856bd-default-rtdb.asia-southeast1.firebasedatabase.app")
+        .ref("/users/" + firebase.auth().currentUser.uid)
+        .once("value")
+        .then((snapshot) => {
+          setInfoUser(snapshot.val())
+        })
+      return () => {
+        setInfoUser(null)
+      }
     }, [])
 
     const user = auth().currentUser
@@ -38,6 +62,7 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
               navigation.navigate("login")
             })
     }
+    console.log("infoUser ", infoUser?.photoUrl)
 
     return (
       <View style={styles.container}>

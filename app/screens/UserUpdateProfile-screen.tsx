@@ -20,6 +20,7 @@ export const UserUpdateProfileScreen: FC<
       .set({
         name: user.displayName,
         email: user.email,
+        photoUrl: user.photoURL,
         phoneNumber: "0368440510",
         birthday: "05/10/2002",
         age: 48,
