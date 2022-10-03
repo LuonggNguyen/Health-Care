@@ -40,6 +40,7 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
         .once("value")
         .then((snapshot) => {
           setInfoUser(snapshot.val())
+          console.log("Ha " + infoUser.name)
         })
       return () => {
         setInfoUser(null)
@@ -47,7 +48,7 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
     }, [])
 
     const user = auth().currentUser
-    console.log(user)
+    // console.log(user)
 
     const logout = () => {
       auth().currentUser.providerData[0].providerId == "google.com"
@@ -61,25 +62,32 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
               navigation.navigate("login")
             })
     }
-    console.log("infoUser ", infoUser?.photoUrl)
+    // console.log("infoUser ", infoUser?.photoUrl)
 
     return (
       <View style={styles.container}>
         <Header
-          style={{ height: 0 }}
-          backgroundColor="#fff"
+          backgroundColor={color.colorHeader}
           centerComponent={<Text style={styles.titleHeader}>User</Text>}
           rightComponent={<MaterialIcons name="logout" size={28} color="#000" onPress={logout} />}
         />
         <View style={styles.content}>
+          <View style={styles.boxBackground}>
+            <ImageBackground
+              style={styles.bgImg}
+              source={{
+                uri: "https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?w=2000",
+              }}
+            ></ImageBackground>
+          </View>
           <View style={styles.boxAvt}>
             <Image
               style={styles.avt}
               source={{
-                uri: user.photoURL,
+                uri: infoUser?.photoUrl,
               }}
             ></Image>
-            <Text>{user.displayName}</Text>
+            <Text>{infoUser?.name}</Text>
           </View>
         </View>
         <Button title={"Update Proflie"} onPress={() => navigation.navigate("userUpdateProfile")} />
@@ -102,6 +110,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 80,
+    marginTop: verticleScale(100),
   },
 
   content: {
@@ -110,5 +119,13 @@ const styles = StyleSheet.create({
   boxAvt: {
     flexDirection: "column",
     alignItems: "center",
+  },
+  boxBackground: {},
+  bgImg: {
+    borderRadius: 100,
+    width: windowWidth,
+    height: verticleScale(150),
+
+    position: "absolute",
   },
 })
