@@ -33,7 +33,7 @@ export const UserUpdateProfileScreen: FC<
   }
   return (
     <View style={styles.container}>
-      <MyHeader title="User Profile" onPress={() => navigation.goBack()} />
+      <MyHeader title="User Profile" onPress={() => navigation.goBack()} bgColor="#fff" />
       <Button title={"Save Info User"} onPress={updateInfoUser} />
     </View>
   )

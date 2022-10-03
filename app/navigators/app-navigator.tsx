@@ -134,14 +134,11 @@ const AppStack = () => {
   }
   const checkRole = () => {
     if (user.email.search("@doctor") == -1) {
-      console.log("nav role user")
       return "user"
     } else {
-      console.log("nav role doctor")
       return "doctor"
     }
   }
-  console.log("user: ", user)
 
   return (
     <Stack.Navigator
