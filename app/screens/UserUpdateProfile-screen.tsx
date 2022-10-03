@@ -6,6 +6,7 @@ import { NavigatorParamList } from "../navigators"
 import { MyHeader } from "../components/MyHeader"
 import { Button } from "@rneui/themed"
 import { firebase } from "@react-native-firebase/database"
+import { color } from "../theme"
 
 export const UserUpdateProfileScreen: FC<
   StackScreenProps<NavigatorParamList, "userUpdateProfile">
@@ -34,7 +35,11 @@ export const UserUpdateProfileScreen: FC<
   }
   return (
     <View style={styles.container}>
-      <MyHeader title="User Profile" onPress={() => navigation.goBack()} bgColor="#fff" />
+      <MyHeader
+        title="User Profile"
+        onPress={() => navigation.goBack()}
+        bgColor={color.colorHeader}
+      />
       <Button title={"Save Info User"} onPress={updateInfoUser} />
     </View>
   )

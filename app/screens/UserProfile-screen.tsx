@@ -8,7 +8,7 @@ import auth from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import { firebase } from "@react-native-firebase/database"
-import { database } from "../../firebase"
+import { database } from "../../configs/firebase"
 import { color } from "../theme"
 import { scale, verticleScale } from "../utils/Scale/Scaling"
 
@@ -66,7 +66,7 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
     return (
       <View style={styles.container}>
         <Header
-          style={{ height: 100 }}
+          style={{ height: 0 }}
           backgroundColor="#fff"
           centerComponent={<Text style={styles.titleHeader}>User</Text>}
           rightComponent={<MaterialIcons name="logout" size={28} color="#000" onPress={logout} />}
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   titleHeader: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#fff",
+    color: "#000",
   },
 
   avt: {

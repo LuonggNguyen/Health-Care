@@ -10,7 +10,7 @@ import { palette } from "./palette"
  * put that in the <Spinner /> component.
  */
 export const color = {
-  colorHeader : "#00c090",
+  colorHeader : "#66aff0",
   /**
    * The palette is available to use, but prefer using the name.
    */
