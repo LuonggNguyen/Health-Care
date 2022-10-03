@@ -8,6 +8,7 @@ import auth from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import { firebase } from "@react-native-firebase/database"
+import { database } from "../../firebase"
 import { color } from "../theme"
 import { scale, verticleScale } from "../utils/Scale/Scaling"
 
@@ -34,9 +35,7 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
       GoogleSignin.configure({
         webClientId: "716587017495-gtaa8ofao9l15fofvf68mb0csgplieae.apps.googleusercontent.com",
       })
-      firebase
-        .app()
-        .database("https://healthcare-856bd-default-rtdb.asia-southeast1.firebasedatabase.app")
+      database
         .ref("/users/" + firebase.auth().currentUser.uid)
         .once("value")
         .then((snapshot) => {
