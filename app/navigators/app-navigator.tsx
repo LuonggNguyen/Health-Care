@@ -132,7 +132,13 @@ const AppStack = () => {
       </Tab.Navigator>
     )
   }
-  const checkRole = () => (user.email.search("@doctor") == -1 ? "user" : "doctor")
+  const checkRole = () => {
+    if (user.email.search("@doctor") == -1) {
+      return "user"
+    } else {
+      return "doctor"
+    }
+  }
 
   return (
     <Stack.Navigator

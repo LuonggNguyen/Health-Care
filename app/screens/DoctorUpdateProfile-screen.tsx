@@ -31,7 +31,7 @@ export const DoctorUpdateProfileScreen: FC<
 
   return (
     <View style={styles.container}>
-      <MyHeader title="Doctor Profile" onPress={() => navigation.goBack()} />
+      <MyHeader title="Doctor Profile" onPress={() => navigation.goBack()} bgColor />
       <Button title={"Save Info Doctor"} onPress={updateInfoDoctor} />
     </View>
   )

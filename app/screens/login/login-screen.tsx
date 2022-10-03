@@ -12,7 +12,7 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
   function LoginScreen({ navigation }) {
     const [showPass, setShowPass] = useState(true)
     const [email, setEmail] = useState("")
-    const [pass, setPass] = useState("")
+    const [pass, setPass] = useState("123456")
 
     async function onGoogleButtonPress() {
       try {
@@ -20,7 +20,7 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
           webClientId: "716587017495-gtaa8ofao9l15fofvf68mb0csgplieae.apps.googleusercontent.com",
         })
         const { idToken } = await GoogleSignin.signIn()
-        console.log(GoogleSignin.signIn())
+        // console.log(GoogleSignin.signIn())
 
         const googleCredential = await auth.GoogleAuthProvider.credential(idToken)
         return auth()
@@ -45,8 +45,8 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
     const handleLogin = (username, password) => {
       if (!username || !password) {
         Alert.alert("Can't be empty")
-        setEmail("")
-        setPass("")
+        // setEmail("")
+        // setPass("")
       } else {
         auth()
           .signInWithEmailAndPassword(username, password)
@@ -68,7 +68,7 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
                 routes: [{ name: "doctor" }],
               })
             }
-            Alert.alert("Login Successful !!")
+            // Alert.alert("Login Successful !!")
           })
           .catch((error) => {
             if (error.code === "auth/invalid-email") {

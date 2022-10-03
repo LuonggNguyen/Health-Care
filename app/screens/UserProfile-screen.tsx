@@ -3,12 +3,13 @@ import { observer } from "mobx-react-lite"
 import { Dimensions, ImageBackground, StyleSheet, Text, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-import { Button, Header } from "@rneui/themed"
+import { Button, Header, Image } from "@rneui/themed"
 import auth from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import { firebase } from "@react-native-firebase/database"
 import { color } from "../theme"
+import { scale, verticleScale } from "../utils/Scale/Scaling"
 
 interface InfoUser {
   age: number
@@ -46,6 +47,9 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
       }
     }, [])
 
+    const user = auth().currentUser
+    console.log(user)
+
     const logout = () => {
       auth().currentUser.providerData[0].providerId == "google.com"
         ? GoogleSignin.signOut().then(() => {
@@ -63,11 +67,22 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
     return (
       <View style={styles.container}>
         <Header
-          backgroundColor={color.colorHeader}
+          style={{ height: 100 }}
+          backgroundColor="#fff"
           centerComponent={<Text style={styles.titleHeader}>User</Text>}
           rightComponent={<MaterialIcons name="logout" size={28} color="#000" onPress={logout} />}
         />
-        <Text>User</Text>
+        <View style={styles.content}>
+          <View style={styles.boxAvt}>
+            <Image
+              style={styles.avt}
+              source={{
+                uri: user.photoURL,
+              }}
+            ></Image>
+            <Text>{user.displayName}</Text>
+          </View>
+        </View>
         <Button title={"Update Proflie"} onPress={() => navigation.navigate("userUpdateProfile")} />
       </View>
     )
@@ -77,18 +92,24 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
   },
   titleHeader: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#000",
+    color: "#fff",
   },
-  BoxImgBg: {
+
+  avt: {
+    width: 100,
+    height: 100,
+    borderRadius: 80,
+  },
+
+  content: {
     flex: 1,
   },
-  ImgBackground: {
-    height: 100,
-    width: windowWidth,
+  boxAvt: {
+    flexDirection: "column",
+    alignItems: "center",
   },
 })
