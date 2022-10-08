@@ -19,6 +19,7 @@ export const UserUpdateProfileScreen: FC<
       .database("https://healthcare-856bd-default-rtdb.asia-southeast1.firebasedatabase.app")
       .ref("/users/" + user.uid)
       .set({
+        uid: user.uid,
         name: user.displayName,
         email: user.email,
         photoUrl: user.photoURL,

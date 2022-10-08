@@ -18,6 +18,7 @@ export const DoctorUpdateProfileScreen: FC<
       .database("https://healthcare-856bd-default-rtdb.asia-southeast1.firebasedatabase.app")
       .ref("/doctors/" + user.uid)
       .set({
+        uid: user.uid,
         name: user.displayName,
         email: user.email,
         phoneNumber: "0383334687",

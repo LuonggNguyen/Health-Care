@@ -1,25 +1,57 @@
-import React, { FC } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { View } from "react-native"
+import { FlatList, StyleSheet, Text, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
+import { database } from "../../configs/firebase"
 
-// STOP! READ ME FIRST!
-// To fix the TS error below, you'll need to add the following things in your navigation config:
-// - Add `userBooking: undefined` to NavigatorParamList
-// - Import your screen, and add it to the stack:
-//     `<Stack.Screen name="userBooking" component={UserBookingScreen} />`
-// Hint: Look for the 🔥!
-
-// REMOVE ME! ⬇️ This TS ignore will not be necessary after you've added the correct navigator param type
-// @ts-ignore
 export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBooking">> = observer(
   function UserBookingScreen() {
-    // Pull in one of our MST stores
-    // const { someStore, anotherStore } = useStores()
+    const array = []
+    const [list, setList] = useState([])
 
-    // Pull in navigation via hook
-    // const navigation = useNavigation()
-    return <View></View>
+    useEffect(() => {
+      database
+        .ref("/doctors")
+        .once("value")
+        .then((snapshot) => {
+          Object.keys(snapshot.val()).forEach((key) => {
+            array.push({ [key]: snapshot.val()[key] })
+          })
+          setList(array)
+        })
+      return () => {
+        setList([])
+      }
+    }, [])
+
+    let result = list.map(({ foo }) => foo)
+    console.log(result)
+
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>List</Text>
+        <FlatList
+          style={{ backgroundColor: "#ccc" }}
+          data={list}
+          renderItem={({ index }) => {
+            console.log("render", list[index]?.name)
+            return <Text style={styles.title}>{list[index]?.age}</Text>
+          }}
+        />
+      </View>
+    )
   },
 )
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  title: {
+    fontSize: 32,
+    padding: 8,
+    color: "red",
+    fontWeight: "bold",
+  },
+})

@@ -40,7 +40,6 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
         .once("value")
         .then((snapshot) => {
           setInfoUser(snapshot.val())
-          console.log("Ha " + infoUser.name)
         })
       return () => {
         setInfoUser(null)
