@@ -6,6 +6,7 @@ import { NavigatorParamList } from "../navigators"
 import { MyHeader } from "../components/MyHeader"
 import { firebase } from "@react-native-firebase/database"
 import { Button } from "@rneui/themed"
+import { database } from "../../configs/firebase"
 
 export const DoctorUpdateProfileScreen: FC<
   StackScreenProps<NavigatorParamList, "doctorUpdateProfile">
@@ -13,9 +14,7 @@ export const DoctorUpdateProfileScreen: FC<
   const user = firebase.auth().currentUser
 
   const updateInfoDoctor = () => {
-    firebase
-      .app()
-      .database("https://healthcare-856bd-default-rtdb.asia-southeast1.firebasedatabase.app")
+    database
       .ref("/doctors/" + user.uid)
       .set({
         uid: user.uid,
