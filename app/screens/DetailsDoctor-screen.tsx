@@ -4,10 +4,10 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { Alert, StyleSheet, View } from "react-native"
 import { MyHeader } from "../components/MyHeader"
-import { Button } from "@rneui/themed"
+import { Button, Input } from "@rneui/themed"
 import { database } from "../../configs/firebase"
 import { firebase } from "@react-native-firebase/database"
-// import moment from "moment"
+import moment from "moment"
 
 export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detailsDoctor">> =
   observer(function DetailsDoctorScreen({ route, navigation }) {
@@ -15,7 +15,9 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
     const [listBook, setListBook] = useState<Booking[]>([])
     const [checkBooking, setCheckBooking] = useState<Booking>()
     const user = firebase.auth().currentUser
-    // var date = moment().utcOffset("+05:30").format("DD/MM/yyyy")
+    var date = moment().utcOffset("+05:30").format("DD/MM/yyyy")
+    const [ca, setCa] = useState("")
+    const [ngay, setNgay] = useState(date)
 
     useEffect(() => {
       database.ref("/books").on("value", (snapshot) => {
@@ -27,11 +29,11 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
           console.log(error)
         }
       })
+      console.log(listBook)
       return () => {
         setListBook([])
       }
     }, [])
-    console.log("myList", listBook)
     const Booking = (date, workingTime) => {
       if (checkBooking?.date == "10/10/2022" && checkBooking?.workingTime == 1) {
         Alert.alert("Ca nay bac si da co lich vui long cho ca khac")
@@ -52,7 +54,9 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
       <View style={styles.container}>
         <MyHeader title="Details Doctor" onPress={() => navigation.goBack()} />
         <View style={styles.content}>
-          <Button title={"Book Doctor"} onPress={() => Booking("10/10/2022", 1)} />
+          <Input placeholder="nhap ngay" value={ngay} onChangeText={(e) => setNgay(e)} />
+          <Input placeholder="nhap ca" value={ca} onChangeText={(e) => setCa(e)} />
+          <Button title={"Book Doctor"} onPress={() => Booking(ngay, ca)} />
         </View>
       </View>
     )
@@ -65,5 +69,6 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     justifyContent: "center",
+    width: "100%",
   },
 })
