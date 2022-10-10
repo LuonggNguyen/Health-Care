@@ -8,8 +8,6 @@ import Iconicons from "react-native-vector-icons/Ionicons"
 export interface MyHeaderProps {
   title?: string
   onPress?
-  height?
-  bgColor
 }
 
 /**
@@ -19,9 +17,8 @@ export const MyHeader = React.memo(
   observer(function MyHeader(props: MyHeaderProps) {
     return (
       <Header
-        style={{ height: props.height }}
         centerComponent={<Text style={styles.titleHeader}>{props.title}</Text>}
-        backgroundColor={props.bgColor}
+        backgroundColor={color.colorHeader}
         leftComponent={
           <Iconicons name="arrow-back" color="#000" size={28} onPress={props.onPress} />
         }

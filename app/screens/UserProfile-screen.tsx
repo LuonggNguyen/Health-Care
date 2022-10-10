@@ -12,19 +12,6 @@ import { database } from "../../configs/firebase"
 import { color } from "../theme"
 import { scale, verticleScale } from "../utils/Scale/Scaling"
 
-interface InfoUser {
-  age: number
-  birthday: string
-  bloodPressure: string
-  email: string
-  gender: boolean
-  heartbeat: number
-  height: number
-  name: string
-  phoneNumber: string
-  weight: number
-  photoUrl: string
-}
 const windowWidth = Dimensions.get("window").width
 const windowHeight = Dimensions.get("window").height
 

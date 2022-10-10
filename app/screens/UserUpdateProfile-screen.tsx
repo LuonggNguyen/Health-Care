@@ -6,7 +6,7 @@ import { NavigatorParamList } from "../navigators"
 import { MyHeader } from "../components/MyHeader"
 import { Button } from "@rneui/themed"
 import { firebase } from "@react-native-firebase/database"
-import { color } from "../theme"
+import { database } from "../../configs/firebase"
 
 export const UserUpdateProfileScreen: FC<
   StackScreenProps<NavigatorParamList, "userUpdateProfile">
@@ -14,9 +14,7 @@ export const UserUpdateProfileScreen: FC<
   const user = firebase.auth().currentUser
 
   const updateInfoUser = () => {
-    firebase
-      .app()
-      .database("https://healthcare-856bd-default-rtdb.asia-southeast1.firebasedatabase.app")
+    database
       .ref("/users/" + user.uid)
       .set({
         uid: user.uid,
@@ -36,11 +34,7 @@ export const UserUpdateProfileScreen: FC<
   }
   return (
     <View style={styles.container}>
-      <MyHeader
-        title="User Profile"
-        onPress={() => navigation.goBack()}
-        bgColor={color.colorHeader}
-      />
+      <MyHeader title="User Profile" onPress={() => navigation.goBack()} />
       <Button title={"Save Info User"} onPress={updateInfoUser} />
     </View>
   )

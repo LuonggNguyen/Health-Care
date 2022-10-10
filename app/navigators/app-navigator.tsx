@@ -22,6 +22,8 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import auth from "@react-native-firebase/auth"
 import { UserUpdateProfileScreen } from "../screens/UserUpdateProfile-screen"
 import { DoctorUpdateProfileScreen } from "../screens/DoctorUpdateProfile-screen"
+import { ListDoctorsScreen } from "../screens/ListDoctors-screen"
+import { DetailsDoctorScreen } from "../screens/DetailsDoctor-screen"
 
 export type NavigatorParamList = {
   // 🔥 Your screens go here
@@ -43,6 +45,10 @@ export type NavigatorParamList = {
   //booking
   userBooking: undefined
   doctorBooking: undefined
+  listDoctors: undefined
+  detailsDoctor: {
+    idDoctor: string
+  }
 
   //health news
   userHealth: undefined
@@ -153,6 +159,8 @@ const AppStack = () => {
       <Stack.Screen name="doctor" component={DoctorTabs} />
       <Stack.Screen name="userUpdateProfile" component={UserUpdateProfileScreen} />
       <Stack.Screen name="doctorUpdateProfile" component={DoctorUpdateProfileScreen} />
+      <Stack.Screen name="listDoctors" component={ListDoctorsScreen} />
+      <Stack.Screen name="detailsDoctor" component={DetailsDoctorScreen} />
 
       {/** 🔥 Your screens go here */}
     </Stack.Navigator>
