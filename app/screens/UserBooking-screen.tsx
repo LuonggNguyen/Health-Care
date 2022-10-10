@@ -35,13 +35,16 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
       }
     }, [])
     array = Object.values(list)
-    const Item = ({ name, phoneNumber, gender, email, dayStartWork }) => (
+    console.log(array)
+
+    const Item = ({ name, phoneNumber, gender, email, dayStartWork, uid }) => (
       <View style={styles.item}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.phone}>{phoneNumber}</Text>
         <Text style={styles.phone}>{(gender = true ? "Nam" : "Nữ")}</Text>
         <Text style={styles.phone}>{email}</Text>
         <Text style={styles.phone}>{dayStartWork}</Text>
+        <Text style={styles.phone}>{uid}</Text>
       </View>
     )
     const renderItem = ({ item }) => (
@@ -51,6 +54,7 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
         gender={item.gender}
         email={item.email}
         dayStartWork={item.dayStartWork}
+        uid={item.uid}
       />
     )
 
