@@ -14,7 +14,7 @@ import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
 import { CustomText } from "../commons/CustomText"
 
 const windowWidth = Dimensions.get("window").width
-const windowHeight = Dimensions.get("window").height
+// const windowHeight = Dimensions.get("window").height
 
 export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userProfile">> = observer(
   function UserProfileScreen({ navigation }) {
@@ -26,9 +26,6 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
       database
         .ref("/users/" + firebase.auth().currentUser.uid)
         .on("value", (snapshot) => setInfoUser(snapshot.val()))
-      // .then((snapshot) => {
-      //   setInfoUser(snapshot.val())
-      // })
       return () => {
         setInfoUser(null)
       }

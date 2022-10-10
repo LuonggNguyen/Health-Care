@@ -3,7 +3,6 @@ import { observer } from "mobx-react-lite"
 import { StyleSheet, Text, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-
 import { Button, Header } from "@rneui/themed"
 import { color } from "../theme"
 export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBooking">> = observer(

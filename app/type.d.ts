@@ -22,3 +22,10 @@ declare interface InfoDoctor {
     phoneNumber:string
     uid:string
   }
+
+  declare interface Booking {
+    date:string
+    idDoctor:string
+    idUser:string
+    workingTime:number
+  }
