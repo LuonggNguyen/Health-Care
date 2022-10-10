@@ -23,6 +23,11 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
       database.ref("/books").on("value", (snapshot) => {
         try {
           const myList: Booking[] = Object.values(snapshot.val())
+          console.log("Mylist", myList)
+          console.log("data", snapshot.val())
+          console.log("checking", checkBooking)
+          console.log("listBook", listBook)
+
           setCheckBooking(myList.find((it) => it.idDoctor === idDoctor))
           setListBook(myList.filter((it) => it.idUser === user.uid))
         } catch (error) {
@@ -35,7 +40,7 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
       }
     }, [])
     const Booking = (date, workingTime) => {
-      if (checkBooking?.date == "10/10/2022" && checkBooking?.workingTime == 1) {
+      if (checkBooking?.date == date && checkBooking?.workingTime == workingTime) {
         Alert.alert("Ca nay bac si da co lich vui long cho ca khac")
       } else {
         database
