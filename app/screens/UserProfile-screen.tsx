@@ -3,14 +3,15 @@ import { observer } from "mobx-react-lite"
 import { Dimensions, ImageBackground, StyleSheet, Text, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-import { Button, Header, Image } from "@rneui/themed"
+import { Button, Header, Icon, Image } from "@rneui/themed"
 import auth from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import { firebase } from "@react-native-firebase/database"
 import { database } from "../../configs/firebase"
 import { color } from "../theme"
-import { scale, verticleScale } from "../utils/Scale/Scaling"
+import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
+import { CustomText } from "../commons/CustomText"
 
 const windowWidth = Dimensions.get("window").width
 const windowHeight = Dimensions.get("window").height
@@ -35,7 +36,6 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
 
     const user = auth().currentUser
     // console.log(user)
-
     const logout = () => {
       auth().currentUser.providerData[0].providerId == "google.com"
         ? GoogleSignin.signOut().then(() => {
@@ -49,7 +49,6 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
             })
     }
     // console.log("infoUser ", infoUser?.photoUrl)
-
     return (
       <View style={styles.container}>
         <Header
@@ -73,7 +72,13 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
                 uri: infoUser?.photoUrl,
               }}
             ></Image>
-            <Text>{infoUser?.name}</Text>
+            <CustomText title={infoUser?.name} size={moderateScale(20)} />
+          </View>
+          <View style={styles.boxInfor}>
+            <CustomText title={infoUser?.birthday} />
+            <CustomText title={infoUser?.gender == true ? "Nam" : "Nữ"} />
+            <CustomText title={infoUser?.email} />
+            <CustomText title={infoUser?.phoneNumber} />
           </View>
         </View>
         <Button title={"Update Proflie"} onPress={() => navigation.navigate("userUpdateProfile")} />
@@ -87,21 +92,28 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   titleHeader: {
-    fontSize: 24,
+    fontSize: moderateScale(20),
     fontWeight: "bold",
     color: "#000",
   },
-
+  boxInfor: {
+    flex: 1,
+    marginLeft: scale(50),
+    marginTop: verticleScale(20),
+  },
   avt: {
-    width: 100,
-    height: 100,
+    width: scale(110),
+    height: scale(110),
     borderRadius: 80,
-    marginTop: verticleScale(100),
+    marginTop: verticleScale(90),
+    borderColor: "#6AD2FD",
+    borderWidth: 2,
   },
 
   content: {
     flex: 1,
   },
+
   boxAvt: {
     flexDirection: "column",
     alignItems: "center",
@@ -111,7 +123,6 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     width: windowWidth,
     height: verticleScale(150),
-
     position: "absolute",
   },
 })

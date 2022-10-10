@@ -1,5 +1,5 @@
 import * as React from "react"
-import { StyleSheet, Text } from "react-native"
+import { StyleSheet, Text, View } from "react-native"
 import { observer } from "mobx-react-lite"
 import { Header } from "@rneui/themed"
 import { color } from "../theme"
@@ -27,6 +27,10 @@ export const MyHeader = React.memo(
   }),
 )
 const styles = StyleSheet.create({
+  Header: {
+    flex: 1,
+    alignItems: "center",
+  },
   titleHeader: {
     fontSize: 24,
     fontWeight: "bold",

@@ -35,7 +35,7 @@ export const ListDoctorsScreen: FC<StackScreenProps<NavigatorParamList, "listDoc
       }
     }, [])
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <MyHeader title="List Doctor" onPress={() => navigation.goBack()} />
         <FlatList
           style={styles.flatList}
@@ -56,7 +56,7 @@ export const ListDoctorsScreen: FC<StackScreenProps<NavigatorParamList, "listDoc
             )
           }}
         />
-      </SafeAreaView>
+      </View>
     )
   },
 )
