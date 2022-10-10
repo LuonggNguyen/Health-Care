@@ -24,10 +24,10 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
       })
       database
         .ref("/users/" + firebase.auth().currentUser.uid)
-        .once("value")
-        .then((snapshot) => {
-          setInfoUser(snapshot.val())
-        })
+        .on("value", (snapshot) => setInfoUser(snapshot.val()))
+      // .then((snapshot) => {
+      //   setInfoUser(snapshot.val())
+      // })
       return () => {
         setInfoUser(null)
       }

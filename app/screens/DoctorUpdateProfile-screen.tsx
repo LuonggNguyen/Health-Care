@@ -24,7 +24,7 @@ export const DoctorUpdateProfileScreen: FC<
         dayStartWork: "20/10/2005",
         department: "Internal medicine doctor",
         age: 48,
-        gender: true, //true is male - false is female
+        gender: false, //true is male - false is female
       })
       .then(() => console.log("Update Info Successfully !!"))
   }
