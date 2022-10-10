@@ -4,22 +4,16 @@ import { Dimensions, FlatList, SafeAreaView, StyleSheet, Text, View } from "reac
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { database } from "../../configs/firebase"
-import { firebase } from "@react-native-firebase/database"
-import { verticleScale } from "../utils/Scale/Scaling"
-import { format } from "validate.js"
 import moment from "moment"
-
+import { Button } from "@rneui/themed"
 const Width = Dimensions.get("window").width
 const Height = Dimensions.get("window").height
 export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBooking">> = observer(
-  function UserBookingScreen() {
+  function UserBookingScreen({ navigation }) {
     var date = moment().utcOffset("+05:30").format("DD/MM/yyyy")
     console.log(date)
-
     var array
     const [list, setList] = useState([])
-    var listDoctor
-
     useEffect(() => {
       database
         .ref("/doctors")
@@ -56,7 +50,7 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
 
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>List</Text>
+        <Button title={"booking"} onPress={() => navigation.navigate("listDoctors")} />
         <FlatList style={styles.flatList} data={array} renderItem={renderItem} />
       </SafeAreaView>
     )
