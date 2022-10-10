@@ -10,10 +10,10 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import { firebase } from "@react-native-firebase/database"
 import { database } from "../../configs/firebase"
 import { color } from "../theme"
-import { scale, verticleScale } from "../utils/Scale/Scaling"
+import { verticleScale } from "../utils/Scale/Scaling"
 
 const windowWidth = Dimensions.get("window").width
-const windowHeight = Dimensions.get("window").height
+// const windowHeight = Dimensions.get("window").height
 
 export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userProfile">> = observer(
   function UserProfileScreen({ navigation }) {
@@ -25,17 +25,10 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
       database
         .ref("/users/" + firebase.auth().currentUser.uid)
         .on("value", (snapshot) => setInfoUser(snapshot.val()))
-      // .then((snapshot) => {
-      //   setInfoUser(snapshot.val())
-      // })
       return () => {
         setInfoUser(null)
       }
     }, [])
-
-    const user = auth().currentUser
-    // console.log(user)
-
     const logout = () => {
       auth().currentUser.providerData[0].providerId == "google.com"
         ? GoogleSignin.signOut().then(() => {
