@@ -41,8 +41,6 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
               navigation.navigate("login")
             })
     }
-    // console.log("infoUser ", infoUser?.photoUrl)
-
     return (
       <View style={styles.container}>
         <Header

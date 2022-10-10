@@ -24,12 +24,9 @@ export const ListDoctorsScreen: FC<StackScreenProps<NavigatorParamList, "listDoc
 
     const [list, setList] = useState<InfoDoctor[]>([])
     useEffect(() => {
-      database
-        .ref("/doctors")
-        .once("value")
-        .then((snapshot) => {
-          setList(Object.values(snapshot.val()))
-        })
+      database.ref("/doctors").on("value", (snapshot) => {
+        setList(Object.values(snapshot.val()))
+      })
       return () => {
         setList([])
       }
