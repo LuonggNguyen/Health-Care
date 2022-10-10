@@ -22,25 +22,24 @@ export const ListDoctorsScreen: FC<StackScreenProps<NavigatorParamList, "listDoc
     var date = moment().utcOffset("+05:30").format("DD/MM/yyyy")
     console.log(date)
 
-    const [list, setList] = useState([])
+    const [list, setList] = useState<InfoDoctor[]>([])
     useEffect(() => {
       database
         .ref("/doctors")
         .once("value")
         .then((snapshot) => {
-          setList(snapshot.val())
+          setList(Object.values(snapshot.val()))
         })
       return () => {
         setList([])
       }
     }, [])
-    const array = Object.values(list)
     return (
       <SafeAreaView style={styles.container}>
         <MyHeader title="List Doctor" onPress={() => navigation.goBack()} />
         <FlatList
           style={styles.flatList}
-          data={array}
+          data={list}
           renderItem={({ item }) => {
             return (
               <TouchableOpacity
