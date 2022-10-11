@@ -20,16 +20,13 @@ const Height = Dimensions.get("window").height
 export const ListDoctorsScreen: FC<StackScreenProps<NavigatorParamList, "listDoctors">> = observer(
   function ListDoctorsScreen({ navigation }) {
     var date = moment().utcOffset("+05:30").format("DD/MM/yyyy")
-    console.log(date)
+    // console.log(date)
 
     const [list, setList] = useState<InfoDoctor[]>([])
     useEffect(() => {
-      database
-        .ref("/doctors")
-        .once("value")
-        .then((snapshot) => {
-          setList(Object.values(snapshot.val()))
-        })
+      database.ref("/doctors").on("value", (snapshot) => {
+        setList(Object.values(snapshot.val()))
+      })
       return () => {
         setList([])
       }
