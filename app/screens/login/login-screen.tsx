@@ -26,13 +26,11 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
         return auth()
           .signInWithCredential(googleCredential)
           .then((userCredentials) => {
-            const user = userCredentials.user
             navigation.navigate("user")
             navigation.reset({
               index: 0,
               routes: [{ name: "user" }],
             })
-            // console.log("Login Successful !! \n Hello " + user.displayName)
           })
           .catch((err) => {
             console.log("Login Fail !!\n" + err)
