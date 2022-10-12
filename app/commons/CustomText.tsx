@@ -6,6 +6,7 @@ export interface CustomText {
   title?: any
   color?: string
   size?: any
+  textAlign?: any
 }
 
 export const CustomText = React.memo(
@@ -13,6 +14,7 @@ export const CustomText = React.memo(
     return (
       <Text
         style={{
+          textAlign: props.textAlign == null ? "center" : props.textAlign,
           color: props.color == null ? "#000" : props.color,
           fontSize: props.size == null ? 16 : props.size,
         }}

@@ -72,10 +72,10 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
             <CustomText title={infoUser?.name} size={moderateScale(20)} />
           </View>
           <View style={styles.boxInfor}>
-            <CustomText title={infoUser?.birthday} />
-            <CustomText title={infoUser?.gender == true ? "Nam" : "Nữ"} />
-            <CustomText title={infoUser?.email} />
-            <CustomText title={infoUser?.phoneNumber} />
+            <CustomText textAlign={"left"} title={infoUser?.birthday} />
+            <CustomText textAlign={"left"} title={infoUser?.gender == true ? "Nam" : "Nữ"} />
+            <CustomText textAlign={"left"} title={infoUser?.email} />
+            <CustomText textAlign={"left"} title={infoUser?.phoneNumber} />
           </View>
         </View>
         <Button title={"Update Proflie"} onPress={() => navigation.navigate("userUpdateProfile")} />

@@ -4,9 +4,11 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { Alert, StyleSheet, View } from "react-native"
 import { MyHeader } from "../components/MyHeader"
-import { Button, Input } from "@rneui/themed"
+import { Button, ButtonGroup, Input } from "@rneui/themed"
 import { database } from "../../configs/firebase"
 import { firebase } from "@react-native-firebase/database"
+import Ionicons from "react-native-vector-icons/Ionicons"
+import DatePicker from "react-native-date-picker"
 import moment from "moment"
 
 export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detailsDoctor">> =
@@ -15,9 +17,10 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
     const [listBook, setListBook] = useState<Booking[]>([])
     const [checkBooking, setCheckBooking] = useState<Booking>()
     const user = firebase.auth().currentUser
-    var date = moment().utcOffset("+05:30").format("DD/MM/yyyy")
-    const [ca, setCa] = useState("")
-    const [ngay, setNgay] = useState(date)
+    const [date, setDate] = useState(new Date())
+    const [open, setOpen] = useState(false)
+    const [day, setDay] = useState(moment(date).format("DD/MM/yyyy"))
+    const [shift, setShift] = useState(0)
 
     useEffect(() => {
       database.ref("/books").on("value", (snapshot) => {
@@ -39,8 +42,16 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
         setListBook([])
       }
     }, [])
+
+    const isInTheFuture = (date) => {
+      const today = new Date()
+      today.setHours(23, 59, 59, 998)
+      return date > today
+    }
     const Booking = (date, workingTime) => {
-      if (checkBooking?.date == date && checkBooking?.workingTime == workingTime) {
+      if (!isInTheFuture(new Date(date))) {
+        Alert.alert("Vui long dat lich o tuong lai")
+      } else if (checkBooking?.date == date && checkBooking?.workingTime == workingTime) {
         Alert.alert("Ca nay bac si da co lich vui long cho ca khac")
       } else {
         database
@@ -59,9 +70,39 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
       <View style={styles.container}>
         <MyHeader title="Details Doctor" onPress={() => navigation.goBack()} />
         <View style={styles.content}>
-          <Input placeholder="nhap ngay" value={ngay} onChangeText={(e) => setNgay(e)} />
-          <Input placeholder="nhap ca" value={ca} onChangeText={(e) => setCa(e)} />
-          <Button title={"Book Doctor"} onPress={() => Booking(ngay, ca)} />
+          <Input
+            placeholder="DD/MM/YYYY  ex: 05/10/2022"
+            value={day}
+            onChangeText={(e) => setDay(e)}
+            rightIcon={
+              <Ionicons name="calendar" size={24} color="#000" onPress={() => setOpen(true)} />
+            }
+          />
+          <ButtonGroup
+            buttons={["Sang", "Trua", "Chieu", "Toi"]}
+            selectedIndex={shift}
+            onPress={(value) => {
+              console.log(value + 1)
+              setShift(value)
+            }}
+            containerStyle={{ marginBottom: 20 }}
+          />
+          <Button title={"Book Doctor"} onPress={() => Booking(day, shift + 1)} />
+          <DatePicker
+            title="Select Day"
+            mode="date"
+            modal
+            open={open}
+            date={date}
+            onConfirm={(date) => {
+              setOpen(false)
+              setDate(date)
+              setDay(moment(date).format("DD/MM/yyyy"))
+            }}
+            onCancel={() => {
+              setOpen(false)
+            }}
+          />
         </View>
       </View>
     )
