@@ -157,8 +157,9 @@ const styles = StyleSheet.create({
   },
   logo: {
     flex: 1,
-    width: "88%",
+    width: "90%",
     resizeMode: "cover",
+    marginBottom: 8,
   },
   cardLogin: {
     flex: 2,

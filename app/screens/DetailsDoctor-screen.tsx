@@ -39,12 +39,16 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
     }, [])
 
     const isInTheFuture = (date) => {
+      const [day, month, year] = date.split("/")
+      const time = new Date(+year, +month - 1, +day + 1)
       const today = new Date()
       today.setHours(23, 59, 59, 998)
-      return date > today
+      today.setDate(today.getDate() + 1)
+      return time > today
     }
     const Booking = (date, workingTime) => {
-      if (!isInTheFuture(new Date(date))) {
+      console.log(isInTheFuture(date))
+      if (!isInTheFuture(date)) {
         Alert.alert("Vui long dat lich o tuong lai")
       } else if (checkBooking?.date == date && checkBooking?.workingTime == workingTime) {
         Alert.alert("Ca nay bac si da co lich vui long cho ca khac")

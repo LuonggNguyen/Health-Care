@@ -16,6 +16,7 @@ import { Button, Header, Input } from "@rneui/themed"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import auth from "@react-native-firebase/auth"
+import { database } from "../../../configs/firebase"
 
 export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">> = observer(
   function RegisterScreen({ navigation }) {
@@ -66,8 +67,19 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
         await auth()
           .currentUser.updateProfile(update)
           .then(() => {
-            Alert.alert("User account created & signed in!")
-            resetForm()
+            database
+              .ref("/users/" + auth().currentUser.uid)
+              .set({
+                uid: auth().currentUser.uid,
+                name: auth().currentUser.displayName,
+                email: auth().currentUser.email,
+                photoUrl: auth().currentUser.photoURL,
+                phoneNumber: auth().currentUser.phoneNumber,
+              })
+              .then(() => {
+                Alert.alert("User account created & signed in!")
+                resetForm()
+              })
           })
           .catch((e) => console.log(e))
       }

@@ -1,5 +1,4 @@
 declare interface InfoUser {
-    age: number
     birthday: string
     bloodPressure: string
     email: string
