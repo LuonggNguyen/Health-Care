@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { ScrollView, Slider, StyleSheet, TextInput, TouchableOpacity, View } from "react-native"
+import { ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { MyHeader } from "../components/MyHeader"
@@ -8,13 +8,14 @@ import { Button, Text } from "@rneui/themed"
 import { firebase } from "@react-native-firebase/database"
 import { database } from "../../configs/firebase"
 import { color } from "../theme"
-import { CustomText } from "../commons/CustomText"
+import { CustomText } from "../components/CustomText"
 import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
 import DatePicker from "react-native-date-picker"
 import moment from "moment"
 import { format } from "date-fns"
 import RadioForm from "react-native-simple-radio-button"
 import { CustomButton } from "../components/CustomButton"
+import Slider from "@react-native-community/slider"
 
 export const UserUpdateProfileScreen: FC<
   StackScreenProps<NavigatorParamList, "userUpdateProfile">
@@ -32,8 +33,8 @@ export const UserUpdateProfileScreen: FC<
     { label: "Nữ", value: false },
   ]
 
-  var [birtday, setBirtday] = useState(new Date())
-  var formattedDate = format(birtday, "dd/MM/yyyy")
+  const [birtday, setBirtday] = useState(new Date())
+  const formattedDate = format(birtday, "dd/MM/yyyy")
 
   const [open, setOpen] = useState(false)
 

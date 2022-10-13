@@ -1,5 +1,5 @@
-import { Text, StyleSheet, View } from "react-native"
-import React, { Component } from "react"
+import { Text } from "react-native"
+import React from "react"
 import { observer } from "mobx-react-lite"
 import { moderateScale } from "../utils/Scale/Scaling"
 
@@ -25,4 +25,3 @@ export const CustomText = React.memo(
     )
   }),
 )
-const styles = StyleSheet.create({})

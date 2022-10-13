@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite"
 import { Dimensions, ImageBackground, StyleSheet, Text, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-import { Button, Header, Icon, Image } from "@rneui/themed"
+import { Button, Header, Image } from "@rneui/themed"
 import auth from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
@@ -11,7 +11,7 @@ import { firebase } from "@react-native-firebase/database"
 import { database } from "../../configs/firebase"
 import { color } from "../theme"
 import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
-import { CustomText } from "../commons/CustomText"
+import { CustomText } from "../components/CustomText"
 
 const windowWidth = Dimensions.get("window").width
 // const windowHeight = Dimensions.get("window").height
@@ -31,7 +31,7 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
       }
     }, [])
 
-    const user = auth().currentUser
+    // const user = auth().currentUser
     // console.log(user)
     const logout = () => {
       auth().currentUser.providerData[0].providerId == "google.com"

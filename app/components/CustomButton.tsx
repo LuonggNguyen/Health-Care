@@ -1,10 +1,7 @@
-import { Text, StyleSheet, View, TouchableOpacity } from "react-native"
-import React, { Component } from "react"
+import { Text, StyleSheet, TouchableOpacity } from "react-native"
+import React from "react"
 import { observer } from "mobx-react-lite"
-import { Button } from "@rneui/base"
-import { CustomText } from "../commons/CustomText"
 import { moderateScale, scale } from "../utils/Scale/Scaling"
-import { color } from "../theme"
 
 export interface CustomButton {
   title?: any
