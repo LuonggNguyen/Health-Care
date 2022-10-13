@@ -26,6 +26,11 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
       database.ref("/books").on("value", (snapshot) => {
         try {
           const myList: Booking[] = Object.values(snapshot.val())
+          console.log("Mylist", myList)
+          console.log("data", snapshot.val())
+          console.log("checking", checkBooking)
+          console.log("listBook", listBook)
+
           setCheckBooking(myList.find((it) => it.idDoctor === idDoctor))
           setListBook(myList.filter((it) => it.idUser === user.uid))
         } catch (error) {
