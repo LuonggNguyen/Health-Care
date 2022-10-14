@@ -1,10 +1,10 @@
-import React, { FC, useEffect, useState } from "react"
+import React, { FC, useLayoutEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { StyleSheet, View } from "react-native"
+import { Alert, StyleSheet, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { MyHeader } from "../components/MyHeader"
-import { Input, Text } from "@rneui/themed"
+import { Dialog, Input, Text } from "@rneui/themed"
 import { firebase } from "@react-native-firebase/database"
 import { database } from "../../configs/firebase"
 import { color } from "../theme"
@@ -17,7 +17,6 @@ import Ionicons from "react-native-vector-icons/Ionicons"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 import DatePicker from "react-native-date-picker"
 import moment from "moment"
-
 export const UserUpdateProfileScreen: FC<
   StackScreenProps<NavigatorParamList, "userUpdateProfile">
 > = observer(function UserUpdateProfileScreen({ navigation }) {
@@ -25,31 +24,35 @@ export const UserUpdateProfileScreen: FC<
   const [minBP, setMinBP] = useState("")
   const [maxBP, setMaxBP] = useState("")
   const [email, setEmail] = useState("")
-  const [weight, setWeight] = useState(0)
-  const [height, setHeight] = useState(0)
+  const [weight, setWeight] = useState(20)
+  const [height, setHeight] = useState(100)
   const [heartbeat, setHeartbeat] = useState("")
   const [phone, setPhone] = useState("")
-  const [gender, setGender] = useState()
+  const [gender, setGender] = useState(undefined)
   const [birthday, setBirthDay] = useState(new Date())
   const [open, setOpen] = useState(false)
   const [date, setDate] = useState("")
   const options = [
-    { label: "Nam", value: true },
-    { label: "Nữ", value: false },
+    { label: "Male", value: true },
+    { label: "Female", value: false },
   ]
-  useEffect(() => {
+  useLayoutEffect(() => {
     database.ref("/users/" + firebase.auth().currentUser.uid).on("value", (snapshot) => {
-      const [min, max] = snapshot.val().bloodPressure.split("/")
       setInfoUser(snapshot.val())
-      setGender(snapshot.val().gender)
-      setMinBP(min)
-      setMaxBP(max)
       setEmail(snapshot.val().email)
-      setHeartbeat(snapshot.val().heartbeat)
-      setHeight(snapshot.val().height)
-      setWeight(snapshot.val().weight)
-      setPhone(snapshot.val().phoneNumber)
-      setDate(snapshot.val().birthday)
+      try {
+        const [min, max] = snapshot.val()?.bloodPressure?.split("/")
+        setGender(snapshot.val().gender)
+        setMinBP(min)
+        setMaxBP(max)
+        setHeartbeat(snapshot.val().heartbeat.toString())
+        setHeight(snapshot.val().height)
+        setWeight(snapshot.val().weight)
+        setPhone(snapshot.val().phoneNumber)
+        setDate(snapshot.val().birthday)
+      } catch (error) {
+        Alert.alert("Welcome", "Please update information !!")
+      }
     })
     return () => {
       setInfoUser(null)
@@ -64,7 +67,6 @@ export const UserUpdateProfileScreen: FC<
       setDate(undefined)
     }
   }, [])
-
   const updateInfoUser = (email, phone, date, gender, height, weight, heartbeat, minBP, maxBP) => {
     database
       .ref("/users/" + firebase.auth().currentUser.uid)
@@ -85,6 +87,16 @@ export const UserUpdateProfileScreen: FC<
         console.log("Update Info Successfully !!")
         navigation.goBack()
       })
+  }
+  if (!infoUser) {
+    return (
+      <View style={styles.container}>
+        <MyHeader title="User Profile" onPress={() => navigation.goBack()} />
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <Dialog.Loading />
+        </View>
+      </View>
+    )
   }
   return (
     <View style={styles.container}>
@@ -143,7 +155,7 @@ export const UserUpdateProfileScreen: FC<
             minimumTrackTintColor="#cccc"
             maximumTrackTintColor="#cccc"
             step={1}
-            value={infoUser?.height}
+            value={infoUser.height}
             onValueChange={(height) => setHeight(height)}
           />
         </View>
@@ -156,7 +168,7 @@ export const UserUpdateProfileScreen: FC<
             minimumTrackTintColor="#cccc"
             maximumTrackTintColor="#cccc"
             step={1}
-            value={infoUser?.weight}
+            value={infoUser.weight}
             onValueChange={(weight) => setWeight(weight)}
           />
         </View>
@@ -187,15 +199,13 @@ export const UserUpdateProfileScreen: FC<
             inputContainerStyle={{ borderBottomWidth: 0 }}
           />
         </View>
-
         <View style={styles.boxGender}>
           <RadioForm
             labelStyle={{ fontSize: 18, color: color.storybookTextColor, paddingRight: 30 }}
             labelHorizontal={true}
-            animation={true}
             formHorizontal={true}
             radio_props={options}
-            initial={0} //initial value of this group
+            initial={-1}
             onPress={(value) => {
               setGender(value)
             }}
@@ -238,7 +248,7 @@ const styles = StyleSheet.create({
   inputBloodPressure: {
     textAlign: "center",
     height: 50,
-    width: 120,
+    width: 100,
     marginVertical: 15,
     marginHorizontal: 4,
     borderRadius: 12,

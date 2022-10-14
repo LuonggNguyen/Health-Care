@@ -12,7 +12,7 @@ import {
 } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
-import { Button, Header, Input } from "@rneui/themed"
+import { Button, Dialog, Header, Input } from "@rneui/themed"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import auth from "@react-native-firebase/auth"
@@ -27,6 +27,7 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
     const [pass, setPass] = useState("")
     const [rePass, setRePass] = useState("")
     const [avt, setAvt] = useState("")
+    const [loading, setLoading] = useState(false)
     const resetForm = () => {
       setEmail("")
       setPass("")
@@ -46,6 +47,7 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
         setPass("")
         setRePass("")
       } else {
+        setLoading(true)
         const update = {
           displayName: name,
           photoURL: avt,
@@ -77,6 +79,7 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
                 phoneNumber: auth().currentUser.phoneNumber,
               })
               .then(() => {
+                setLoading(false)
                 Alert.alert("User account created & signed in!")
                 resetForm()
               })
@@ -90,6 +93,21 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
     }
 
     const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : -250
+    if (loading) {
+      return (
+        <View style={styles.container}>
+          <Header
+            centerComponent={
+              <Text style={{ color: "#000", fontSize: 24, fontWeight: "bold" }}>REGISTER</Text>
+            }
+            backgroundColor="#fff"
+          />
+          <View style={{ flex: 1, justifyContent: "center" }}>
+            <Dialog.Loading />
+          </View>
+        </View>
+      )
+    }
     return (
       <View style={styles.container}>
         <Header
