@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   titleHeader: {
-    fontSize: moderateScale(20),
+    fontSize: moderateScale(24),
     fontWeight: "bold",
     color: "#000",
   },
