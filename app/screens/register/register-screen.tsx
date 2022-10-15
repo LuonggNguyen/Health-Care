@@ -80,7 +80,14 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
               })
               .then(() => {
                 setLoading(false)
-                Alert.alert("User account created & signed in!")
+                Alert.alert("", "User account created & signed in!", [
+                  {
+                    text: "Cancel",
+                    onPress: () => {},
+                    style: "cancel",
+                  },
+                  { text: "OK", onPress: () => goToLogin() },
+                ])
                 resetForm()
               })
           })
