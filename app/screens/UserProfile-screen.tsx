@@ -69,12 +69,25 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
                 uri: infoUser?.photoUrl,
               }}
             ></Image>
-            <CustomText title={infoUser?.name} size={moderateScale(20)} />
+            <View>
+              <Text style={styles.name}>{infoUser?.name}</Text>
+              <Text style={styles.email}>{infoUser?.email}</Text>
+            </View>
+          </View>
+          <View style={styles.boxHealth}>
+            <View style={styles.blood}>
+              <Text style={styles.titleBlood}>Blood Pressure</Text>
+              <Text style={styles.textBlood}>{infoUser?.bloodPressure}</Text>
+            </View>
+            <View style={styles.heart}>
+              <Text style={styles.titleBlood}>Heart Beat</Text>
+              <Text style={styles.textBlood}>{infoUser?.heartbeat}</Text>
+              <Text style={{}}>Nhịp Tim Bình Thuờng</Text>
+            </View>
           </View>
           <View style={styles.boxInfor}>
             <CustomText textAlign={"left"} title={infoUser?.birthday} />
             <CustomText textAlign={"left"} title={infoUser?.gender == true ? "Nam" : "Nữ"} />
-            <CustomText textAlign={"left"} title={infoUser?.email} />
             <CustomText textAlign={"left"} title={infoUser?.phoneNumber} />
           </View>
         </View>
@@ -88,6 +101,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  content: {
+    flex: 1,
+  },
   titleHeader: {
     fontSize: moderateScale(20),
     fontWeight: "bold",
@@ -98,28 +114,69 @@ const styles = StyleSheet.create({
     marginLeft: scale(50),
     marginTop: verticleScale(20),
   },
+  boxAvt: {
+    marginTop: scale(20),
+    // backgroundColor: "#cccc",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    borderTopLeftRadius: 45,
+    borderBottomLeftRadius: 45,
+  },
   avt: {
-    width: scale(110),
-    height: scale(110),
+    width: scale(90),
+    height: scale(90),
     borderRadius: 80,
-    marginTop: verticleScale(90),
     borderColor: "#6AD2FD",
     borderWidth: 2,
   },
 
-  content: {
-    flex: 1,
+  email: {
+    fontSize: moderateScale(16),
+  },
+  name: {
+    fontSize: moderateScale(22),
   },
 
-  boxAvt: {
-    flexDirection: "column",
-    alignItems: "center",
-  },
   boxBackground: {},
   bgImg: {
     borderRadius: 100,
     width: windowWidth,
     height: verticleScale(150),
     position: "absolute",
+  },
+  boxHealth: {
+    flexDirection: "row",
+    height: 180,
+    width: windowWidth,
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  blood: {
+    width: scale(130),
+    height: scale(130),
+    backgroundColor: "#97c6f2",
+    borderRadius: 18,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  heart: {
+    width: scale(130),
+    height: scale(130),
+    backgroundColor: "#4ea9fd",
+    borderRadius: 18,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  titleBlood: {
+    fontSize: moderateScale(16),
+    color: "#ffff",
+    marginBottom: 10,
+    fontWeight: "600",
+  },
+  textBlood: {
+    fontSize: moderateScale(20),
+    color: "#ffff",
+    fontWeight: "900",
   },
 })
