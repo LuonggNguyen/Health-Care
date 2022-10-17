@@ -10,6 +10,8 @@ import { firebase } from "@react-native-firebase/database"
 export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBooking">> = observer(
   function UserBookingScreen({ navigation }) {
     const [listBook, setListBook] = useState<Booking[]>([])
+    const [listIdDoctor, setListIdDoctor] = useState([])
+
     const user = firebase.auth().currentUser
     useEffect(() => {
       database.ref("/books").on("value", (snapshot) => {
@@ -20,7 +22,11 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
           console.log(error)
         }
       })
-      console.log(listBook)
+
+      const map = listBook.map((element) => element?.idDoctor)
+      setListIdDoctor(map)
+      console.log("Snap ", listIdDoctor)
+
       return () => {
         setListBook([])
       }

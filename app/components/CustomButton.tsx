@@ -6,7 +6,6 @@ import { moderateScale, scale } from "../utils/Scale/Scaling"
 export interface CustomButton {
   title?: any
   onPress?: any
-  size?: any
 }
 
 export const CustomButton = React.memo(
@@ -14,7 +13,7 @@ export const CustomButton = React.memo(
     return (
       <TouchableOpacity style={styles.button} onPress={props.onPress}>
         {/* <CustomText title={props.title} size={moderateScale(18)}></CustomText> */}
-        <Text style={styles.titleButton}>Save</Text>
+        <Text style={styles.titleButton}>{props.title}</Text>
       </TouchableOpacity>
     )
   }),
@@ -22,7 +21,7 @@ export const CustomButton = React.memo(
 const styles = StyleSheet.create({
   button: {
     backgroundColor: "#60c0f0",
-    width: scale(150),
+    width: scale(250),
     height: scale(50),
     borderRadius: 25,
     justifyContent: "center",

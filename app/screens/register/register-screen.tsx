@@ -89,6 +89,7 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
                   { text: "OK", onPress: () => goToLogin() },
                 ])
                 resetForm()
+                goToLogin()
               })
           })
           .catch((e) => console.log(e))

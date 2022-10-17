@@ -28,3 +28,8 @@ declare interface InfoDoctor {
     idUser:string
     workingTime:number
   }
+  declare interface ListIdDoctor {
+
+    idDoctor:string
+
+  }

@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { StyleSheet, View } from "react-native"
+import { ScrollView, StyleSheet, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { MyHeader } from "../components/MyHeader"
@@ -78,124 +78,126 @@ export const UserUpdateProfileScreen: FC<
   return (
     <View style={styles.container}>
       <MyHeader title="User Profile" onPress={() => navigation.goBack()} />
-      <View style={styles.content}>
-        <Input
-          containerStyle={styles.input}
-          placeholder="Phone"
-          onChangeText={(e) => setPhone(e)}
-          value={phone}
-          inputContainerStyle={{ borderBottomWidth: 0 }}
-          leftIcon={<Ionicons name="call" size={24} color="gray" />}
-        />
-        <Input
-          containerStyle={styles.input}
-          placeholder="Email"
-          onChangeText={(e) => setEmail(e)}
-          value={email}
-          inputContainerStyle={{ borderBottomWidth: 0 }}
-          leftIcon={<Ionicons name="mail" size={24} color="gray" />}
-        />
-        <Input
-          containerStyle={styles.input}
-          inputContainerStyle={{ borderBottomWidth: 0 }}
-          placeholder="Birth Day DD/MM/YYYY"
-          value={date}
-          onChangeText={(e) => setDate(e)}
-          leftIcon={
-            <Ionicons name="calendar" size={24} color="gray" onPress={() => setOpen(true)} />
-          }
-        />
-        <DatePicker
-          title="Select Day"
-          mode="date"
-          modal
-          open={open}
-          date={birthday}
-          onConfirm={(date) => {
-            setOpen(false)
-            setBirthDay(date)
-            setDate(moment(date).format("DD/MM/yyyy"))
-          }}
-          onCancel={() => {
-            setOpen(false)
-          }}
-        />
-        <Text style={{ color: "#000", fontSize: 20, fontWeight: "bold", marginVertical: 8 }}>
-          Info Health
-        </Text>
-        <View style={styles.boxSlider}>
-          <CustomText title={"Height: " + height + " cm"}></CustomText>
-          <Slider
-            style={styles.height}
-            maximumValue={250}
-            minimumValue={100}
-            minimumTrackTintColor="#cccc"
-            maximumTrackTintColor="#cccc"
-            step={1}
-            value={height}
-            onValueChange={(height) => setHeight(height)}
-          />
-        </View>
-        <View style={styles.boxSlider}>
-          <CustomText title={"Weight: " + weight + " kg"}></CustomText>
-          <Slider
-            style={styles.height}
-            minimumValue={20}
-            maximumValue={200}
-            minimumTrackTintColor="#cccc"
-            maximumTrackTintColor="#cccc"
-            step={1}
-            value={weight}
-            onValueChange={(weight) => setWeight(weight)}
-          />
-        </View>
-        <Input
-          containerStyle={styles.input}
-          placeholder="Heartbeat"
-          onChangeText={(e) => setHeartbeat(parseInt(e))}
-          value={heartbeat?.toString()}
-          inputContainerStyle={{ borderBottomWidth: 0 }}
-          leftIcon={<FontAwesome name="heartbeat" size={24} color="gray" />}
-        />
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ color: "#000", fontSize: 16, fontWeight: "bold", margin: 8 }}>
-            Blood Pressure
-          </Text>
+      <ScrollView>
+        <View style={styles.content}>
           <Input
-            containerStyle={styles.inputBloodPressure}
-            placeholder="Min"
-            onChangeText={(e) => setMinBP(e)}
-            value={minBP}
+            containerStyle={styles.input}
+            placeholder="Phone"
+            onChangeText={(e) => setPhone(e)}
+            value={phone}
             inputContainerStyle={{ borderBottomWidth: 0 }}
+            leftIcon={<Ionicons name="call" size={24} color="gray" />}
           />
           <Input
-            containerStyle={styles.inputBloodPressure}
-            placeholder="Max"
-            onChangeText={(e) => setMaxBP(e)}
-            value={maxBP}
+            containerStyle={styles.input}
+            placeholder="Email"
+            onChangeText={(e) => setEmail(e)}
+            value={email}
             inputContainerStyle={{ borderBottomWidth: 0 }}
+            leftIcon={<Ionicons name="mail" size={24} color="gray" />}
           />
-        </View>
-        <View style={styles.boxGender}>
-          <RadioForm
-            labelStyle={{ fontSize: 18, color: color.storybookTextColor, paddingRight: 30 }}
-            labelHorizontal={true}
-            formHorizontal={true}
-            radio_props={options}
-            initial={gender ? 0 : 1}
-            onPress={(value) => {
-              setGender(value)
-            }}
-          />
-        </View>
-        <View style={styles.boxButton}>
-          <CustomButton
-            title={"Save Info User"}
-            onPress={() =>
-              updateInfoUser(email, phone, date, gender, height, weight, heartbeat, minBP, maxBP)
+          <Input
+            containerStyle={styles.input}
+            inputContainerStyle={{ borderBottomWidth: 0 }}
+            placeholder="Birth Day DD/MM/YYYY"
+            value={date}
+            onChangeText={(e) => setDate(e)}
+            leftIcon={
+              <Ionicons name="calendar" size={24} color="gray" onPress={() => setOpen(true)} />
             }
           />
+          <DatePicker
+            title="Select Day"
+            mode="date"
+            modal
+            open={open}
+            date={birthday}
+            onConfirm={(date) => {
+              setOpen(false)
+              setBirthDay(date)
+              setDate(moment(date).format("DD/MM/yyyy"))
+            }}
+            onCancel={() => {
+              setOpen(false)
+            }}
+          />
+          <Text style={{ color: "#000", fontSize: 20, fontWeight: "bold", marginVertical: 8 }}>
+            Info Health
+          </Text>
+          <View style={styles.boxSlider}>
+            <CustomText title={"Height: " + height + " cm"}></CustomText>
+            <Slider
+              style={styles.height}
+              maximumValue={250}
+              minimumValue={100}
+              minimumTrackTintColor="#cccc"
+              maximumTrackTintColor="#cccc"
+              step={1}
+              value={height}
+              onValueChange={(height) => setHeight(height)}
+            />
+          </View>
+          <View style={styles.boxSlider}>
+            <CustomText title={"Weight: " + weight + " kg"}></CustomText>
+            <Slider
+              style={styles.height}
+              minimumValue={20}
+              maximumValue={200}
+              minimumTrackTintColor="#cccc"
+              maximumTrackTintColor="#cccc"
+              step={1}
+              value={weight}
+              onValueChange={(weight) => setWeight(weight)}
+            />
+          </View>
+          <Input
+            containerStyle={styles.input}
+            placeholder="Heartbeat"
+            onChangeText={(e) => setHeartbeat(parseInt(e))}
+            value={heartbeat?.toString()}
+            inputContainerStyle={{ borderBottomWidth: 0 }}
+            leftIcon={<FontAwesome name="heartbeat" size={24} color="gray" />}
+          />
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={{ color: "#000", fontSize: 16, fontWeight: "bold", margin: 8 }}>
+              Blood Pressure
+            </Text>
+            <Input
+              containerStyle={styles.inputBloodPressure}
+              placeholder="Min"
+              onChangeText={(e) => setMinBP(e)}
+              value={minBP}
+              inputContainerStyle={{ borderBottomWidth: 0 }}
+            />
+            <Input
+              containerStyle={styles.inputBloodPressure}
+              placeholder="Max"
+              onChangeText={(e) => setMaxBP(e)}
+              value={maxBP}
+              inputContainerStyle={{ borderBottomWidth: 0 }}
+            />
+          </View>
+          <View style={styles.boxGender}>
+            <RadioForm
+              labelStyle={{ fontSize: 18, color: color.storybookTextColor, paddingRight: 30 }}
+              labelHorizontal={true}
+              formHorizontal={true}
+              radio_props={options}
+              initial={gender ? 0 : 1}
+              onPress={(value) => {
+                setGender(value)
+              }}
+            />
+          </View>
         </View>
+      </ScrollView>
+      <View style={styles.boxButton}>
+        <CustomButton
+          title={"Save Info User"}
+          onPress={() =>
+            updateInfoUser(email, phone, date, gender, height, weight, heartbeat, minBP, maxBP)
+          }
+        />
       </View>
     </View>
   )
@@ -247,6 +249,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   boxButton: {
+    alignItems: "center",
     marginBottom: verticleScale(20),
   },
   radioButton: {
