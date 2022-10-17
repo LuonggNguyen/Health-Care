@@ -39,7 +39,9 @@ export type NavigatorParamList = {
   doctorProfile: undefined
 
   //updateProfile
-  userUpdateProfile: undefined
+  userUpdateProfile: {
+    detailsUser: InfoUser
+  }
   doctorUpdateProfile: undefined
 
   //booking
