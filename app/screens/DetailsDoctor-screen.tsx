@@ -13,8 +13,7 @@ import moment from "moment"
 
 export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detailsDoctor">> =
   observer(function DetailsDoctorScreen({ route, navigation }) {
-    const { idDoctor } = route.params
-    const [listBook, setListBook] = useState<Booking[]>([])
+    const { idDoctor, nameDoctor } = route.params
     const [checkBooking, setCheckBooking] = useState<Booking>()
     const user = firebase.auth().currentUser
     const [date, setDate] = useState(new Date())
@@ -26,23 +25,19 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
       database.ref("/books").on("value", (snapshot) => {
         try {
           const myList: Booking[] = Object.values(snapshot.val())
-          console.log("Mylist", myList)
-          console.log("data", snapshot.val())
-          console.log("checking", checkBooking)
-          console.log("listBook", listBook)
-
-          setCheckBooking(myList.find((it) => it.idDoctor === idDoctor))
-          setListBook(myList.filter((it) => it.idUser === user.uid))
+          setCheckBooking(
+            myList.find(
+              (it) => it.idDoctor === idDoctor && it.date === day && it.workingTime === shift + 1,
+            ),
+          )
         } catch (error) {
           console.log(error)
         }
       })
-      console.log(listBook)
       return () => {
-        setListBook([])
+        setCheckBooking(null)
       }
-    }, [])
-
+    }, [day, shift])
     const isInTheFuture = (date) => {
       const [day, month, year] = date.split("/")
       const time = new Date(+year, +month - 1, +day + 1)
@@ -51,11 +46,10 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
       today.setDate(today.getDate() + 1)
       return time > today
     }
-    const Booking = (date, workingTime) => {
-      console.log(isInTheFuture(date))
-      if (!isInTheFuture(date)) {
+    const Booking = (d, t) => {
+      if (!isInTheFuture(d)) {
         Alert.alert("Vui long dat lich o tuong lai")
-      } else if (checkBooking?.date == date && checkBooking?.workingTime == workingTime) {
+      } else if (checkBooking) {
         Alert.alert("Ca nay bac si da co lich vui long cho ca khac")
       } else {
         database
@@ -64,10 +58,11 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
           .set({
             idUser: user.uid,
             idDoctor: idDoctor,
-            date: date,
-            workingTime: workingTime, // have 1, 2, 3, 4
+            nameDoctor: nameDoctor,
+            date: d,
+            workingTime: t, // have 1, 2, 3, 4
           })
-          .then(() => console.log("Successfully !!"))
+          .then(() => Alert.alert("Booking Successfully !!"))
       }
     }
     return (
@@ -86,7 +81,6 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
             buttons={["Sang", "Trua", "Chieu", "Toi"]}
             selectedIndex={shift}
             onPress={(value) => {
-              console.log(value + 1)
               setShift(value)
             }}
             containerStyle={{ marginBottom: 20 }}

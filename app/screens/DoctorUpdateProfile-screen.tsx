@@ -23,7 +23,9 @@ export const DoctorUpdateProfileScreen: FC<
         phoneNumber: "0383334687",
         dayStartWork: "20/10/2005",
         department: "Internal medicine doctor",
-        age: 48,
+        birthDay: "11/10/1970",
+        photoUrl:
+          "https://static.vecteezy.com/system/resources/previews/001/206/141/original/doctors-png.png",
         gender: false, //true is male - false is female
       })
       .then(() => console.log("Update Info Successfully !!"))

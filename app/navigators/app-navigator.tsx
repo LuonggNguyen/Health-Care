@@ -50,6 +50,7 @@ export type NavigatorParamList = {
   listDoctors: undefined
   detailsDoctor: {
     idDoctor: string
+    nameDoctor: string
   }
 
   //health news

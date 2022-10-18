@@ -2,16 +2,7 @@ import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-import {
-  Dimensions,
-  FlatList,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native"
-import moment from "moment"
+import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { database } from "../../configs/firebase"
 import { MyHeader } from "../components/MyHeader"
 const Width = Dimensions.get("window").width
@@ -19,8 +10,6 @@ const Height = Dimensions.get("window").height
 
 export const ListDoctorsScreen: FC<StackScreenProps<NavigatorParamList, "listDoctors">> = observer(
   function ListDoctorsScreen({ navigation }) {
-    var date = moment().utcOffset("+05:30").format("DD/MM/yyyy")
-
     const [list, setList] = useState<InfoDoctor[]>([])
     useEffect(() => {
       database.ref("/doctors").on("value", (snapshot) => {
@@ -39,7 +28,12 @@ export const ListDoctorsScreen: FC<StackScreenProps<NavigatorParamList, "listDoc
           renderItem={({ item }) => {
             return (
               <TouchableOpacity
-                onPress={() => navigation.navigate("detailsDoctor", { idDoctor: item.uid })}
+                onPress={() =>
+                  navigation.navigate("detailsDoctor", {
+                    idDoctor: item.uid,
+                    nameDoctor: item.name,
+                  })
+                }
               >
                 <View style={styles.item}>
                   <Text style={styles.name}>{item.name}</Text>

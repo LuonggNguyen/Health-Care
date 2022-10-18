@@ -10,8 +10,6 @@ import { firebase } from "@react-native-firebase/database"
 export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBooking">> = observer(
   function UserBookingScreen({ navigation }) {
     const [listBook, setListBook] = useState<Booking[]>([])
-    const [listIdDoctor, setListIdDoctor] = useState([])
-
     const user = firebase.auth().currentUser
     useEffect(() => {
       database.ref("/books").on("value", (snapshot) => {
@@ -22,15 +20,11 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
           console.log(error)
         }
       })
-
-      const map = listBook.map((element) => element?.idDoctor)
-      setListIdDoctor(map)
-      console.log("Snap ", listIdDoctor)
-
       return () => {
         setListBook([])
       }
     }, [])
+
     return (
       <View style={styles.container}>
         <Header
@@ -45,7 +39,7 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
                 <TouchableOpacity onPress={() => console.log("Phieu Kham")}>
                   <View style={styles.item}>
                     <Text style={styles.name}>{item.date}</Text>
-                    <Text style={styles.phone}>{item.idDoctor}</Text>
+                    <Text style={styles.phone}>{item.nameDoctor}</Text>
                     <Text style={styles.phone}>{item.workingTime}</Text>
                   </View>
                 </TouchableOpacity>
@@ -66,6 +60,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     justifyContent: "center",
+    width: "100%",
   },
   titleHeader: {
     fontSize: 24,
@@ -74,9 +69,9 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: "#f9c2ff",
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+    padding: 12,
+    marginVertical: 4,
+    marginHorizontal: 8,
   },
   name: {
     fontSize: 20,

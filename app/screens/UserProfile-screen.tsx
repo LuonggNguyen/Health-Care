@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite"
 import { Dimensions, ImageBackground, ScrollView, StyleSheet, Text, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-import { Button, Header, Image } from "@rneui/themed"
+import { Header, Image } from "@rneui/themed"
 import auth from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
@@ -11,7 +11,6 @@ import { firebase } from "@react-native-firebase/database"
 import { database } from "../../configs/firebase"
 import { color } from "../theme"
 import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
-import { CustomText } from "../components/CustomText"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 import { CustomButton } from "../components/CustomButton"
 
@@ -154,6 +153,7 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   boxInfor: {
+    marginBottom: 8,
     paddingBottom: 30,
     paddingTop: 20,
     flex: 1,
@@ -161,18 +161,9 @@ const styles = StyleSheet.create({
     marginLeft: moderateScale(35),
     marginRight: moderateScale(35),
     borderRadius: 12,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.36,
-    shadowRadius: 6.68,
-    elevation: 9,
   },
   boxAvt: {
     marginTop: scale(20),
-    // backgroundColor: "#cccc",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",
@@ -207,20 +198,11 @@ const styles = StyleSheet.create({
     width: windowWidth,
     alignItems: "center",
     justifyContent: "space-evenly",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.36,
-    shadowRadius: 5.68,
-
-    elevation: 11,
   },
   blood: {
     width: scale(130),
     height: scale(130),
-    backgroundColor: "#97c6f2",
+    backgroundColor: "#4ea9fd",
     borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
