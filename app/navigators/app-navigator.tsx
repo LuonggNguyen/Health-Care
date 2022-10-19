@@ -24,6 +24,7 @@ import { UserUpdateProfileScreen } from "../screens/UserUpdateProfile-screen"
 import { DoctorUpdateProfileScreen } from "../screens/DoctorUpdateProfile-screen"
 import { ListDoctorsScreen } from "../screens/ListDoctors-screen"
 import { DetailsDoctorScreen } from "../screens/DetailsDoctor-screen"
+import { DetailsBookingScreen } from "../screens/DetailsBooking-screen"
 
 export type NavigatorParamList = {
   // 🔥 Your screens go here
@@ -51,6 +52,9 @@ export type NavigatorParamList = {
   detailsDoctor: {
     idDoctor: string
     nameDoctor: string
+  }
+  detailsBooking: {
+    booking: Booking
   }
 
   //health news
@@ -164,6 +168,7 @@ const AppStack = () => {
       <Stack.Screen name="doctorUpdateProfile" component={DoctorUpdateProfileScreen} />
       <Stack.Screen name="listDoctors" component={ListDoctorsScreen} />
       <Stack.Screen name="detailsDoctor" component={DetailsDoctorScreen} />
+      <Stack.Screen name="detailsBooking" component={DetailsBookingScreen} />
 
       {/** 🔥 Your screens go here */}
     </Stack.Navigator>

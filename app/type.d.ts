@@ -20,6 +20,8 @@ declare interface InfoDoctor {
     name:string
     phoneNumber:string
     uid:string
+    photoUrl:string
+
   }
 
   declare interface Booking {
@@ -28,9 +30,4 @@ declare interface InfoDoctor {
     idUser:string
     workingTime:number
     nameDoctor:string 
-  }
-  declare interface ListIdDoctor {
-
-    idDoctor:string
-
   }

@@ -1,12 +1,14 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-import { Button, Header } from "@rneui/themed"
+import { Header } from "@rneui/themed"
 import { color } from "../theme"
 import { database } from "../../configs/firebase"
 import { firebase } from "@react-native-firebase/database"
+import MaterialIcons from "react-native-vector-icons/MaterialIcons"
+
 export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBooking">> = observer(
   function UserBookingScreen({ navigation }) {
     const [listBook, setListBook] = useState<Booking[]>([])
@@ -30,23 +32,44 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
         <Header
           backgroundColor={color.colorHeader}
           centerComponent={<Text style={styles.titleHeader}>Booking</Text>}
+          rightComponent={
+            <MaterialIcons
+              name="note-add"
+              size={28}
+              color="#000"
+              onPress={() => navigation.navigate("listDoctors")}
+            />
+          }
         />
         <View style={styles.content}>
           <FlatList
+            showsVerticalScrollIndicator={false}
             data={listBook}
             renderItem={({ item }) => {
               return (
-                <TouchableOpacity onPress={() => console.log("Phieu Kham")}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("detailsBooking", { booking: item })}
+                >
                   <View style={styles.item}>
-                    <Text style={styles.name}>{item.date}</Text>
-                    <Text style={styles.phone}>{item.nameDoctor}</Text>
-                    <Text style={styles.phone}>{item.workingTime}</Text>
+                    <Image
+                      style={{
+                        width: 100,
+                        height: 100,
+                      }}
+                      source={{
+                        uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Icons8_flat_todo_list.svg/768px-Icons8_flat_todo_list.svg.png",
+                      }}
+                    />
+                    <View style={{ marginLeft: 12 }}>
+                      <Text style={styles.name}>Doctor: {item.nameDoctor}</Text>
+                      <Text style={styles.time}>Date: {item.date}</Text>
+                      <Text style={styles.time}>Work shift: {item.workingTime}</Text>
+                    </View>
                   </View>
                 </TouchableOpacity>
               )
             }}
           />
-          <Button title={"booking"} onPress={() => navigation.navigate("listDoctors")} />
         </View>
       </View>
     )
@@ -68,17 +91,21 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   item: {
-    backgroundColor: "#f9c2ff",
-    padding: 12,
+    padding: 8,
     marginVertical: 4,
     marginHorizontal: 8,
+    borderWidth: 1,
+    borderColor: "#333",
+    borderRadius: 8,
+    flexDirection: "row",
+    alignItems: "center",
   },
   name: {
     fontSize: 20,
     color: "black",
     fontWeight: "bold",
   },
-  phone: {
+  time: {
     fontSize: 16,
     color: "black",
     fontWeight: "bold",
