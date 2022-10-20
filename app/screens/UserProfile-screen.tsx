@@ -27,9 +27,7 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
       database
         .ref("/users/" + firebase.auth().currentUser.uid)
         .on("value", (snapshot) => setInfoUser(snapshot.val()))
-      return () => {
-        setInfoUser(null)
-      }
+      return () => {}
     }, [])
 
     // const user = auth().currentUser
@@ -51,18 +49,17 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
         <Header
           backgroundColor={color.colorHeader}
           centerComponent={<Text style={styles.titleHeader}>User</Text>}
-          rightComponent={<MaterialIcons name="logout" size={28} color="#000" onPress={logout} />}
+          rightComponent={<MaterialIcons name="logout" size={24} color="#000" onPress={logout} />}
         />
         <ScrollView>
           <View style={styles.content}>
-            <View style={styles.boxBackground}>
-              <ImageBackground
-                style={styles.bgImg}
-                source={{
-                  uri: "https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?w=2000",
-                }}
-              ></ImageBackground>
-            </View>
+            <ImageBackground
+              style={styles.bgImg}
+              source={{
+                uri: "https://wallpaperaccess.com/full/624111.jpg",
+              }}
+            ></ImageBackground>
+
             <View style={styles.boxAvt}>
               <Image
                 style={styles.avt}
@@ -70,15 +67,13 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
                   uri: infoUser?.photoUrl,
                 }}
               ></Image>
-              <View>
-                <Text style={styles.name}>{infoUser?.name}</Text>
-                <Text style={styles.email}>{infoUser?.email}</Text>
-              </View>
+            </View>
+            <View style={styles.boxName}>
+              <Text style={styles.name}>{infoUser?.name}</Text>
+              <Text style={styles.email}>{infoUser?.email}</Text>
             </View>
             <View style={styles.boxHealth}>
               <View style={styles.blood}>
-                {/* <FontAwesome name="" color={"white"} size={scale(20)}></FontAwesome> */}
-
                 <Text style={styles.titleBlood}>Blood Pressure</Text>
                 <Text style={styles.textBlood}>{infoUser?.bloodPressure}</Text>
               </View>
@@ -127,14 +122,20 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
                 {infoUser?.gender ? "Male" : "Female"}
               </Text>
             </View>
+            <View
+              style={{
+                alignItems: "center",
+                marginTop: verticleScale(15),
+                marginBottom: verticleScale(15),
+              }}
+            >
+              <CustomButton
+                title={"Update Proflie"}
+                onPress={() => navigation.navigate("userUpdateProfile", { detailsUser: infoUser })}
+              />
+            </View>
           </View>
         </ScrollView>
-        <View style={{ alignItems: "center" }}>
-          <CustomButton
-            title={"Update Proflie"}
-            onPress={() => navigation.navigate("userUpdateProfile", { detailsUser: infoUser })}
-          />
-        </View>
       </View>
     )
   },
@@ -152,40 +153,32 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#000",
   },
-  boxInfor: {
-    marginBottom: 8,
-    paddingBottom: 30,
-    paddingTop: 20,
-    flex: 1,
-    backgroundColor: "#4ea9fd",
-    marginLeft: moderateScale(35),
-    marginRight: moderateScale(35),
-    borderRadius: 12,
-  },
+
   boxAvt: {
-    marginTop: scale(20),
+    marginTop: verticleScale(87),
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",
-    borderTopLeftRadius: 45,
-    borderBottomLeftRadius: 45,
   },
   avt: {
-    width: scale(90),
-    height: scale(90),
+    width: verticleScale(125),
+    height: verticleScale(125),
     borderRadius: 80,
     borderColor: "#6AD2FD",
     borderWidth: 2,
   },
-
-  email: {
-    fontSize: moderateScale(16),
+  boxName: {
+    alignItems: "center",
+    marginTop: verticleScale(15),
   },
   name: {
     fontSize: moderateScale(22),
+    fontWeight: "500",
   },
-
-  boxBackground: {},
+  email: {
+    fontSize: moderateScale(16),
+    fontStyle: "italic",
+  },
   bgImg: {
     borderRadius: 100,
     width: windowWidth,
@@ -206,6 +199,14 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.55,
+    shadowRadius: 3.84,
+    elevation: 8,
   },
   heart: {
     width: scale(130),
@@ -214,6 +215,14 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.55,
+    shadowRadius: 4.84,
+    elevation: 8,
   },
   titleBlood: {
     fontSize: moderateScale(16),
@@ -230,6 +239,25 @@ const styles = StyleSheet.create({
   rowHeartbeat: {
     flexDirection: "row",
     alignItems: "center",
+  },
+  boxInfor: {
+    marginBottom: 8,
+    paddingBottom: 30,
+    paddingTop: 20,
+    flex: 1,
+    backgroundColor: "#4ea9fd",
+    marginLeft: moderateScale(35),
+    marginRight: moderateScale(35),
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.55,
+    shadowRadius: 3.84,
+
+    elevation: 8,
   },
   titleInfor: {
     textAlign: "center",
