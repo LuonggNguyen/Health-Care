@@ -46,6 +46,24 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
               navigation.navigate("login")
             })
     }
+
+    const getAge = (dateString) => {
+      if (!dateString) {
+        return 0
+      } else {
+        var today = new Date()
+        const [day, month, year] = dateString.split("/")
+        const time = new Date(+year, +month - 1, +day)
+        var birthDate = new Date(time)
+
+        var age = today.getFullYear() - birthDate.getFullYear()
+        var m = today.getMonth() - birthDate.getMonth()
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          age--
+        }
+        return age
+      }
+    }
     return (
       <View style={styles.container}>
         <Header
@@ -121,7 +139,7 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
             <View style={styles.boxInfor}>
               <Text style={styles.textInfor}>{"Phone Number: " + infoUser?.phoneNumber} </Text>
 
-              <Text style={styles.textInfor}>{"Birt Day: " + infoUser?.birthday} </Text>
+              <Text style={styles.textInfor}>{"Age: " + getAge(infoUser?.birthday)} </Text>
               <Text style={styles.textInfor}>
                 {"Gender: "}
                 {infoUser?.gender ? "Male" : "Female"}

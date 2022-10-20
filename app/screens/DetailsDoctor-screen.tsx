@@ -2,9 +2,9 @@ import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-import { Alert, StyleSheet, View } from "react-native"
+import { Alert, StyleSheet, Text, View } from "react-native"
 import { MyHeader } from "../components/MyHeader"
-import { Button, ButtonGroup, Input } from "@rneui/themed"
+import { Button, ButtonGroup, Dialog, Image, Input } from "@rneui/themed"
 import { database } from "../../configs/firebase"
 import { firebase } from "@react-native-firebase/database"
 import Ionicons from "react-native-vector-icons/Ionicons"
@@ -15,6 +15,8 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
   observer(function DetailsDoctorScreen({ route, navigation }) {
     const { idDoctor, nameDoctor } = route.params
     const [checkBooking, setCheckBooking] = useState<Booking>()
+    const [doctor, setDoctor] = useState<InfoDoctor>()
+    const [loading, setLoading] = useState(false)
     const user = firebase.auth().currentUser
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
@@ -34,8 +36,12 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
           console.log(error)
         }
       })
+      database.ref("/doctors/" + idDoctor).on("value", (snapshot) => {
+        setDoctor(snapshot.val())
+      })
       return () => {
         setCheckBooking(null)
+        setDoctor(undefined)
       }
     }, [day, shift])
     const isInTheFuture = (date) => {
@@ -52,6 +58,7 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
       } else if (checkBooking) {
         Alert.alert("Ca nay bac si da co lich vui long cho ca khac")
       } else {
+        setLoading(true)
         database
           .ref("/books")
           .push()
@@ -62,13 +69,52 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
             date: d,
             workingTime: t, // have 1, 2, 3, 4
           })
-          .then(() => Alert.alert("Booking Successfully !!"))
+
+          .then(() => {
+            setLoading(false)
+            Alert.alert("Booking Successfully !!")
+          })
       }
+    }
+
+    const getAge = (dateString) => {
+      if (!dateString) {
+        return 0
+      } else {
+        var today = new Date()
+        const [day, month, year] = dateString.split("/")
+        const time = new Date(+year, +month - 1, +day)
+        var birthDate = new Date(time)
+        var age = today.getFullYear() - birthDate.getFullYear()
+        var m = today.getMonth() - birthDate.getMonth()
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          age--
+        }
+        return age
+      }
+    }
+    if (loading) {
+      return (
+        <View style={styles.container}>
+          <MyHeader title="Details Doctor" onPress={() => navigation.goBack()} />
+          <View style={{ flex: 1, justifyContent: "center" }}>
+            <Dialog.Loading />
+          </View>
+        </View>
+      )
     }
     return (
       <View style={styles.container}>
         <MyHeader title="Details Doctor" onPress={() => navigation.goBack()} />
         <View style={styles.content}>
+          <View style={{ flex: 1, backgroundColor: "#ccc" }}>
+            <Image style={{ width: 150, height: 150 }} source={{ uri: doctor?.photoUrl }} />
+            <Text>Name: {doctor?.name}</Text>
+            <Text>Mail: {doctor?.email}</Text>
+            <Text>Phone: {doctor?.phoneNumber}</Text>
+            <Text>Department: {doctor?.department}</Text>
+            <Text>Years of experience : {getAge(doctor?.dayStartWork)}</Text>
+          </View>
           <Input
             placeholder="DD/MM/YYYY  ex: 05/10/2022"
             value={day}
