@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { database } from "../../configs/firebase"
 import { MyHeader } from "../components/MyHeader"
 const Width = Dimensions.get("window").width
@@ -36,11 +36,23 @@ export const ListDoctorsScreen: FC<StackScreenProps<NavigatorParamList, "listDoc
                 }
               >
                 <View style={styles.item}>
-                  <Text style={styles.name}>{item.name}</Text>
-                  <Text style={styles.phone}>{item.phoneNumber}</Text>
-                  <Text style={styles.phone}>{item.gender ? "Nam" : "Nữ"}</Text>
-                  <Text style={styles.phone}>{item.email}</Text>
-                  <Text style={styles.phone}>{item.dayStartWork}</Text>
+                  <Image
+                    style={{
+                      width: 150,
+                      height: 150,
+                      borderRadius: 75,
+                      resizeMode: "cover",
+                    }}
+                    source={{
+                      uri: item.photoUrl,
+                    }}
+                  />
+                  <View style={{ marginLeft: 8 }}>
+                    <Text style={styles.name}>{item.name}</Text>
+                    <Text style={styles.info}>{item.department}</Text>
+                    <Text style={styles.info}>Gender: {item.gender ? "Male" : "Female"}</Text>
+                    <Text style={styles.info}>Year exp: {item.dayStartWork}</Text>
+                  </View>
                 </View>
               </TouchableOpacity>
             )
@@ -66,17 +78,21 @@ const styles = StyleSheet.create({
     height: Height,
   },
   item: {
-    backgroundColor: "#f9c2ff",
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+    padding: 8,
+    marginVertical: 4,
+    marginHorizontal: 8,
+    borderWidth: 1,
+    borderColor: "#333",
+    borderRadius: 8,
+    alignItems: "center",
+    flexDirection: "row",
   },
   name: {
     fontSize: 20,
     color: "black",
     fontWeight: "bold",
   },
-  phone: {
+  info: {
     fontSize: 16,
     color: "black",
     fontWeight: "bold",
