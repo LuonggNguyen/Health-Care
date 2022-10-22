@@ -17,7 +17,18 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
       database.ref("/books").on("value", (snapshot) => {
         try {
           const myList: Booking[] = Object.values(snapshot.val())
-          setListBook(myList.filter((it) => it.idUser === user.uid))
+          const newlist = myList.sort(function (a, b) {
+            return b.workingTime - a.workingTime
+          })
+          const sortList = newlist.sort(function (a, b) {
+            const [d1, m1, y1] = a.date.split("/")
+            const [d2, m2, y2] = b.date.split("/")
+            const date1 = new Date(+y1, +m1 - 1, +d1)
+            const date2 = new Date(+y2, +m2 - 1, +d2)
+            b.workingTime - a.workingTime
+            return date2.getTime() - date1.getTime()
+          })
+          setListBook(sortList.filter((it) => it.idUser === user.uid))
         } catch (error) {
           console.log(error)
         }
