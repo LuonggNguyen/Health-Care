@@ -43,7 +43,9 @@ export type NavigatorParamList = {
   userUpdateProfile: {
     detailsUser: InfoUser
   }
-  doctorUpdateProfile: undefined
+  doctorUpdateProfile: {
+    detailsDoctor
+  }
 
   //booking
   userBooking: undefined

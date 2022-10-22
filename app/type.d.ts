@@ -11,8 +11,8 @@ declare interface InfoUser {
     photoUrl: string
   }
 
+
 declare interface InfoDoctor {
-    age:number
     dayStartWork:string
     department:string
     email:string
@@ -21,7 +21,7 @@ declare interface InfoDoctor {
     phoneNumber:string
     uid:string
     photoUrl:string
-
+    birthDay: string
   }
 
   declare interface Booking {
@@ -29,5 +29,5 @@ declare interface InfoDoctor {
     idDoctor:string
     idUser:string
     workingTime:number
-    nameDoctor:string 
+    nameDoctor:string
   }

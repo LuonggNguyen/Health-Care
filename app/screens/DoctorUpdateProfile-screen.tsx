@@ -10,14 +10,17 @@ import { database } from "../../configs/firebase"
 
 export const DoctorUpdateProfileScreen: FC<
   StackScreenProps<NavigatorParamList, "doctorUpdateProfile">
-> = observer(function DoctorUpdateProfileScreen({ navigation }) {
+> = observer(function DoctorUpdateProfileScreen({ navigation, route }) {
+  const doctor = route.params.detailsDoctor
+  console.log("Doctor ", doctor.dayStartWork)
+
   const user = firebase.auth().currentUser
 
   const updateInfoDoctor = () => {
     database
       .ref("/doctors/" + user.uid)
       .set({
-        uid: user.uid,
+        uid: doctor.uid,
         name: user.displayName,
         email: user.email,
         phoneNumber: "0383334687",
@@ -34,7 +37,7 @@ export const DoctorUpdateProfileScreen: FC<
   return (
     <View style={styles.container}>
       <MyHeader title="Doctor Profile" onPress={() => navigation.goBack()} />
-      <Button title={"Save Info Doctor"} onPress={updateInfoDoctor} />
+      {/* <Button title={"Save Info Doctor"} onPress={} /> */}
     </View>
   )
 })

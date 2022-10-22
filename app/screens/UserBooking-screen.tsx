@@ -8,6 +8,7 @@ import { color } from "../theme"
 import { database } from "../../configs/firebase"
 import { firebase } from "@react-native-firebase/database"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
+import { moderateScale } from "../utils/Scale/Scaling"
 
 export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBooking">> = observer(
   function UserBookingScreen({ navigation }) {
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   name: {
-    fontSize: 20,
+    fontSize: moderateScale(18),
     color: "black",
     fontWeight: "bold",
   },
