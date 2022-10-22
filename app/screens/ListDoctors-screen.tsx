@@ -30,8 +30,7 @@ export const ListDoctorsScreen: FC<StackScreenProps<NavigatorParamList, "listDoc
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("detailsDoctor", {
-                    idDoctor: item.uid,
-                    nameDoctor: item.name,
+                    doctor: item,
                   })
                 }
               >

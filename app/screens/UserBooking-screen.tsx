@@ -17,6 +17,12 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
     useEffect(() => {
       database.ref("/books").on("value", (snapshot) => {
         try {
+          const listkey = Object.keys(snapshot.val())
+          listkey.map((item) => {
+            database.ref("/books/" + item).update({
+              idBook: item,
+            })
+          })
           const myList: Booking[] = Object.values(snapshot.val())
           const newlist = myList.sort(function (a, b) {
             return b.workingTime - a.workingTime
