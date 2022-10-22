@@ -21,6 +21,7 @@ declare interface InfoDoctor {
     phoneNumber:string
     uid:string
     photoUrl:string
+    birthDay: string
   }
 
   declare interface Booking {

@@ -24,9 +24,9 @@ export const DoctorProfileScreen: FC<StackScreenProps<NavigatorParamList, "docto
       GoogleSignin.configure({
         webClientId: "716587017495-gtaa8ofao9l15fofvf68mb0csgplieae.apps.googleusercontent.com",
       })
-      database
-        .ref("/doctors/" + firebase.auth().currentUser.uid)
-        .on("value", (snapshot) => setInfoDoctor(snapshot.val()))
+      database.ref("/doctors/" + firebase.auth().currentUser.uid).on("value", (snapshot) => {
+        setInfoDoctor(snapshot.val())
+      })
       return () => {}
     }, [])
     console.log("Data ", infoDoctor)
