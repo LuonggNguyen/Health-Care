@@ -88,7 +88,6 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
             </View>
             <View style={styles.boxName}>
               <Text style={styles.name}>{infoUser?.name}</Text>
-              <Text style={styles.email}>{infoUser?.email}</Text>
             </View>
             <View style={styles.boxHealth}>
               <View style={styles.blood}>
@@ -132,8 +131,8 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
             </View>
             <Text style={styles.titleInfor}>Information User</Text>
             <View style={styles.boxInfor}>
+              <Text style={styles.textInfor}>{infoUser?.email}</Text>
               <Text style={styles.textInfor}>{"Phone Number: " + infoUser?.phoneNumber} </Text>
-
               <Text style={styles.textInfor}>{"Age: " + getAge(infoUser?.birthday)} </Text>
               <Text style={styles.textInfor}>
                 {"Gender: "}

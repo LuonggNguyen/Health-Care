@@ -52,8 +52,7 @@ export type NavigatorParamList = {
   doctorBooking: undefined
   listDoctors: undefined
   detailsDoctor: {
-    idDoctor: string
-    nameDoctor: string
+    doctor: InfoDoctor
   }
   detailsBooking: {
     booking: Booking

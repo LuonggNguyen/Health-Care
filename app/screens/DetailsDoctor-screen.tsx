@@ -13,9 +13,8 @@ import moment from "moment"
 
 export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detailsDoctor">> =
   observer(function DetailsDoctorScreen({ route, navigation }) {
-    const { idDoctor, nameDoctor } = route.params
+    const { doctor } = route.params
     const [checkBooking, setCheckBooking] = useState<Booking>()
-    const [doctor, setDoctor] = useState<InfoDoctor>()
     const [loading, setLoading] = useState(false)
     const user = firebase.auth().currentUser
     const [date, setDate] = useState(new Date())
@@ -29,25 +28,25 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
           const myList: Booking[] = Object.values(snapshot.val())
           setCheckBooking(
             myList.find(
-              (it) => it.idDoctor === idDoctor && it.date === day && it.workingTime === shift + 1,
+              (it) =>
+                it.idDoctor === doctor.uid &&
+                it.date === day &&
+                it.workingTime === shift + 1 &&
+                it.status === 1,
             ),
           )
         } catch (error) {
           console.log(error)
         }
       })
-      database.ref("/doctors/" + idDoctor).on("value", (snapshot) => {
-        setDoctor(snapshot.val())
-      })
       return () => {
         setCheckBooking(null)
-        setDoctor(undefined)
       }
     }, [day, shift])
     const isInTheFuture = (date) => {
+      const today = new Date()
       const [day, month, year] = date.split("/")
       const time = new Date(+year, +month - 1, +day + 1)
-      const today = new Date()
       today.setHours(23, 59, 59, 998)
       today.setDate(today.getDate() + 1)
       return time > today
@@ -64,10 +63,12 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
           .push()
           .set({
             idUser: user.uid,
-            idDoctor: idDoctor,
-            nameDoctor: nameDoctor,
+            idDoctor: doctor.uid,
+            nameDoctor: doctor.name,
             date: d,
             workingTime: t, // have 1, 2, 3, 4
+            status: 1,
+            // da kham + lich kham da huy => false
           })
 
           .then(() => {
@@ -103,17 +104,18 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
         </View>
       )
     }
+
     return (
       <View style={styles.container}>
         <MyHeader title="Details Doctor" onPress={() => navigation.goBack()} />
         <View style={styles.content}>
           <View style={{ flex: 1, backgroundColor: "#ccc" }}>
             <Image style={{ width: 150, height: 150 }} source={{ uri: doctor?.photoUrl }} />
-            <Text>Name: {doctor?.name}</Text>
-            <Text>Mail: {doctor?.email}</Text>
-            <Text>Phone: {doctor?.phoneNumber}</Text>
-            <Text>Department: {doctor?.department}</Text>
-            <Text>Years of experience : {getAge(doctor?.dayStartWork)}</Text>
+            <Text>Name: {doctor.name}</Text>
+            <Text>Mail: {doctor.email}</Text>
+            <Text>Phone: {doctor.phoneNumber}</Text>
+            <Text>Department: {doctor.department}</Text>
+            <Text>Years of experience : {getAge(doctor.dayStartWork)}</Text>
           </View>
           <Input
             placeholder="DD/MM/YYYY  ex: 05/10/2022"

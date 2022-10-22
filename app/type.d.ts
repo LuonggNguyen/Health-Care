@@ -30,4 +30,6 @@ declare interface InfoDoctor {
     idUser:string
     workingTime:number
     nameDoctor:string
+    idBook:string
+    status:number
   }
