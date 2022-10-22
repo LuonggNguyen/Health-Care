@@ -35,7 +35,7 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
             b.workingTime - a.workingTime
             return date2.getTime() - date1.getTime()
           })
-          setListBook(sortList.filter((it) => it.idUser === user.uid))
+          setListBook(sortList.filter((it) => it.idUser === user.uid && it.status === 1))
         } catch (error) {
           console.log(error)
         }
