@@ -16,6 +16,7 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
     const user = firebase.auth().currentUser
     useEffect(() => {
       database.ref("/books").on("value", (snapshot) => {
+        // console.log(snapshot.val())
         try {
           const listkey = Object.keys(snapshot.val())
           listkey.map((item) => {
