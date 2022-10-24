@@ -33,3 +33,8 @@ declare interface InfoDoctor {
     idBook:string
     status:number
   }
+
+  declare interface PostArticle {
+    title : string
+    content : string
+  }

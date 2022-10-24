@@ -29,7 +29,6 @@ export const DoctorProfileScreen: FC<StackScreenProps<NavigatorParamList, "docto
       })
       return () => {}
     }, [])
-    console.log("Data ", infoDoctor)
 
     return (
       <View style={styles.container}>
@@ -109,9 +108,7 @@ export const DoctorProfileScreen: FC<StackScreenProps<NavigatorParamList, "docto
             >
               <CustomButton
                 title={"Update Proflie"}
-                onPress={() =>
-                  navigation.navigate("doctorUpdateProfile", { detailsDoctor: infoDoctor })
-                }
+                onPress={() => navigation.navigate("postArticle")}
               />
             </View>
           </ScrollView>

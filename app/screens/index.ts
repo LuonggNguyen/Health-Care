@@ -5,3 +5,5 @@
 // export other screens here
 export * from "./login/login-screen"
 export * from "./register/register-screen"
+export * from "./post-articles/post-articles-screen"
+export * from "./article/article-screen"
