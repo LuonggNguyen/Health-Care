@@ -152,6 +152,7 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
           />
           <CustomButton title={"Book Doctor"} onPress={() => Booking(day, shift + 1)} />
           <DatePicker
+            // minimumDate={}
             title="Select Day"
             mode="date"
             modal
