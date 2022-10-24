@@ -20,7 +20,7 @@ export const CustomButton = React.memo(
 )
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#60c0f0",
+    backgroundColor: "#4ea9fd",
     width: scale(250),
     height: scale(50),
     borderRadius: 25,

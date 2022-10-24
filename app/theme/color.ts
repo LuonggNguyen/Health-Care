@@ -11,7 +11,7 @@ import { palette } from "./palette"
  */
 export const color = {
   colorApp : "#4ea9fd",
-  colorHeader : "#66aff0",
+  colorHeader : "#4ea9fd",
   /**
    * The palette is available to use, but prefer using the name.
    */

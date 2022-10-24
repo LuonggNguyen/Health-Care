@@ -4,12 +4,13 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { Alert, StyleSheet, Text, View } from "react-native"
 import { MyHeader } from "../components/MyHeader"
-import { Button, ButtonGroup, Dialog, Image, Input } from "@rneui/themed"
+import { ButtonGroup, Dialog, Image, Input } from "@rneui/themed"
 import { database } from "../../configs/firebase"
 import { firebase } from "@react-native-firebase/database"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import DatePicker from "react-native-date-picker"
 import moment from "moment"
+import { CustomButton } from "../components/CustomButton"
 
 export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detailsDoctor">> =
   observer(function DetailsDoctorScreen({ route, navigation }) {
@@ -53,9 +54,9 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
     }
     const Booking = (d, t) => {
       if (!isInTheFuture(d)) {
-        Alert.alert("Vui long dat lich o tuong lai")
+        Alert.alert("Please book in the future !")
       } else if (checkBooking) {
-        Alert.alert("Ca nay bac si da co lich vui long cho ca khac")
+        Alert.alert("Doctor has a schedule, please orther booking !")
       } else {
         setLoading(true)
         database
@@ -73,6 +74,7 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
 
           .then(() => {
             setLoading(false)
+            navigation.navigate("user")
             Alert.alert("Booking Successfully !!")
           })
       }
@@ -109,14 +111,28 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
       <View style={styles.container}>
         <MyHeader title="Details Doctor" onPress={() => navigation.goBack()} />
         <View style={styles.content}>
-          <View style={{ flex: 1, backgroundColor: "#ccc" }}>
-            <Image style={{ width: 150, height: 150 }} source={{ uri: doctor?.photoUrl }} />
-            <Text>Name: {doctor.name}</Text>
-            <Text>Mail: {doctor.email}</Text>
-            <Text>Phone: {doctor.phoneNumber}</Text>
-            <Text>Department: {doctor.department}</Text>
-            <Text>Years of experience : {getAge(doctor.dayStartWork)}</Text>
+          <View style={{ alignItems: "center" }}>
+            <Image style={styles.imgDoctor} source={{ uri: doctor?.photoUrl }} />
+            <Text style={styles.textInfo}>Doctor: {doctor.name}</Text>
+            <Text style={styles.textInfo}>Mail: {doctor.email}</Text>
+            <Text style={styles.textInfo}>Phone: {doctor.phoneNumber}</Text>
+            <Text style={styles.textInfo}>Department: {doctor.department}</Text>
+            <Text style={styles.textInfo}>Years of experience : {getAge(doctor.dayStartWork)}</Text>
           </View>
+          {!isInTheFuture(day) ? (
+            <View>
+              <Text style={{ fontSize: 20, fontWeight: "bold", color: "#f1c232" }}>
+                Please book in the future
+              </Text>
+            </View>
+          ) : (
+            <View style={{ flexDirection: "row" }}>
+              <Text style={checkBooking ? styles.notBooking : styles.isBooking}>
+                {checkBooking ? "Doctor has a schedule" : "You can booking doctor"}
+              </Text>
+            </View>
+          )}
+
           <Input
             placeholder="DD/MM/YYYY  ex: 05/10/2022"
             value={day}
@@ -124,16 +140,17 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
             rightIcon={
               <Ionicons name="calendar" size={24} color="#000" onPress={() => setOpen(true)} />
             }
+            inputContainerStyle={{ borderWidth: 1, borderRadius: 16, paddingHorizontal: 8 }}
           />
           <ButtonGroup
-            buttons={["Sang", "Trua", "Chieu", "Toi"]}
+            buttons={["8h-10h", "11h-13h", "14h-16h", "17h-19h"]}
             selectedIndex={shift}
             onPress={(value) => {
               setShift(value)
             }}
             containerStyle={{ marginBottom: 20 }}
           />
-          <Button title={"Book Doctor"} onPress={() => Booking(day, shift + 1)} />
+          <CustomButton title={"Book Doctor"} onPress={() => Booking(day, shift + 1)} />
           <DatePicker
             title="Select Day"
             mode="date"
@@ -149,6 +166,7 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
               setOpen(false)
             }}
           />
+          <View />
         </View>
       </View>
     )
@@ -160,7 +178,28 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-around",
+    alignItems: "center",
     width: "100%",
+  },
+  imgDoctor: {
+    width: 200,
+    height: 200,
+    resizeMode: "contain",
+  },
+  textInfo: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#000",
+  },
+  isBooking: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "green",
+  },
+  notBooking: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "red",
   },
 })
