@@ -11,6 +11,8 @@ import { database } from "../../../configs/firebase"
 import { Input } from "@rneui/themed"
 import { moderateScale, scale, verticleScale } from "../../utils/Scale/Scaling"
 import { CustomButton } from "../../components/CustomButton"
+import { firebase } from "@react-native-firebase/auth"
+import { GoogleSignin } from "@react-native-google-signin/google-signin"
 
 // @ts-ignore
 export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postArticles">> =
@@ -19,21 +21,34 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
     // const { someStore, anotherStore } = useStores()
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
+    const [infoDoctor, setInfoDoctor] = useState<InfoDoctor>()
+    useEffect(() => {
+      GoogleSignin.configure({
+        webClientId: "716587017495-gtaa8ofao9l15fofvf68mb0csgplieae.apps.googleusercontent.com",
+      })
+      database.ref("/doctors/" + firebase.auth().currentUser.uid).on("value", (snapshot) => {
+        setInfoDoctor(snapshot.val())
+      })
+      return () => {}
+    }, [])
 
     // Pull in navigation via hook
     // const navigation = useNavigation()
     const postArticles = (title, content) => {
       database
-        .ref("/Posts")
+        .ref("/posts")
         .push()
         .set({
           title: title,
           content: content,
+          nameDoctor: infoDoctor.name,
+          avtDoctor: infoDoctor.photoUrl,
+          imagePost: "https://toigingiuvedep.vn/wp-content/uploads/2022/05/hinh-anh-vintage.jpg",
           idPost: "",
+          Like: [{ uid: "123456" }, { uid: "236222" }],
           Comment: [
             {
               idUser: 1,
-
               contentConment: "Tuyet voi",
             },
             {
