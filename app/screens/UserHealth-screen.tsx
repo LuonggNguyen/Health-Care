@@ -17,8 +17,6 @@ const windowWidth = Dimensions.get("window").width
 // const windowHeight = Dimensions.get("window").height
 export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHealth">> = observer(
   function UserHealthScreen() {
-    console.log(windowWidth)
-
     const [listPost, setListPost] = useState([])
 
     useEffect(() => {
@@ -32,6 +30,10 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
         const myList = Object.values(response.val())
         setListPost(myList)
       })
+
+      return () => {
+        setListPost(null)
+      }
     }, [])
     return (
       <View style={styles.container}>

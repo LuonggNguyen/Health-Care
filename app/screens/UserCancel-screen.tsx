@@ -1,18 +1,16 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-import { Header } from "@rneui/themed"
-import { color } from "../theme"
-import { database } from "../../configs/firebase"
-import { firebase } from "@react-native-firebase/database"
-import MaterialIcons from "react-native-vector-icons/MaterialIcons"
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import { moderateScale } from "../utils/Scale/Scaling"
+import { firebase } from "@react-native-firebase/database"
+import { database } from "../../configs/firebase"
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native"
+import { MyHeader } from "../components/MyHeader"
+import { Image, Text } from "@rneui/themed"
 
-export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBooking">> = observer(
-  function UserBookingScreen({ navigation }) {
+export const UserCancelScreen: FC<StackScreenProps<NavigatorParamList, "userCancel">> = observer(
+  function UserCancelScreen({ navigation }) {
     const [listBook, setListBook] = useState<Booking[]>([])
     const user = firebase.auth().currentUser
     useEffect(() => {
@@ -37,7 +35,7 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
             b.workingTime - a.workingTime
             return date2.getTime() - date1.getTime()
           })
-          setListBook(sortList.filter((it) => it.idUser === user.uid && it.status === 1))
+          setListBook(sortList.filter((it) => it.idUser === user.uid && it.status === 3))
         } catch (error) {
           console.log(error)
         }
@@ -49,26 +47,7 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
 
     return (
       <View style={styles.container}>
-        <Header
-          backgroundColor={color.colorHeader}
-          centerComponent={<Text style={styles.titleHeader}>Booking</Text>}
-          rightComponent={
-            <MaterialIcons
-              name="note-add"
-              size={28}
-              color="#000"
-              onPress={() => navigation.navigate("listDoctors")}
-            />
-          }
-          leftComponent={
-            <MaterialCommunityIcons
-              name="playlist-remove"
-              size={36}
-              color="#000"
-              onPress={() => navigation.navigate("userCancel")}
-            />
-          }
-        />
+        <MyHeader title="Cancel" onPress={() => navigation.goBack()} />
         <View style={styles.content}>
           <FlatList
             showsVerticalScrollIndicator={false}

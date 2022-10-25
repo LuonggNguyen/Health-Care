@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   titleButton: {
     fontSize: moderateScale(18),
-    color: "#ffff",
+    color: "#fff",
     fontWeight: "700",
     textAlign: "center",
   },

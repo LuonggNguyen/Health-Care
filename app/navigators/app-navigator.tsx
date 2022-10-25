@@ -25,6 +25,7 @@ import { DoctorUpdateProfileScreen } from "../screens/DoctorUpdateProfile-screen
 import { ListDoctorsScreen } from "../screens/ListDoctors-screen"
 import { DetailsDoctorScreen } from "../screens/DetailsDoctor-screen"
 import { DetailsBookingScreen } from "../screens/DetailsBooking-screen"
+import { UserCancelScreen } from "../screens/UserCancel-screen"
 
 export type NavigatorParamList = {
   // 🔥 Your screens go here
@@ -48,6 +49,7 @@ export type NavigatorParamList = {
   }
 
   //booking
+  userCancel: undefined
   userBooking: undefined
   doctorBooking: undefined
   listDoctors: undefined
@@ -57,6 +59,8 @@ export type NavigatorParamList = {
   detailsBooking: {
     booking: Booking
   }
+
+  //post
   postArticle: {
     post: PostArticle
   }
@@ -177,6 +181,7 @@ const AppStack = () => {
       <Stack.Screen name="detailsBooking" component={DetailsBookingScreen} />
       <Stack.Screen name="postArticle" component={PostArticlesScreen} />
       <Stack.Screen name="article" component={ArticleScreen} />
+      <Stack.Screen name="userCancel" component={UserCancelScreen} />
 
       {/** 🔥 Your screens go here */}
     </Stack.Navigator>

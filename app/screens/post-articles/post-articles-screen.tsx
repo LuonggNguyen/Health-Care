@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { Text, TouchableOpacity, View, StyleSheet, SafeAreaView, TextInput } from "react-native"
+import { Text, View, StyleSheet, TextInput } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
 // import { Screen, Text } from "../../components"
@@ -8,15 +8,15 @@ import { NavigatorParamList } from "../../navigators"
 // import { useStores } from "../../models"
 import { color } from "../../theme"
 import { database } from "../../../configs/firebase"
-import { Input } from "@rneui/themed"
 import { moderateScale, scale, verticleScale } from "../../utils/Scale/Scaling"
 import { CustomButton } from "../../components/CustomButton"
 import { firebase } from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import { MyHeader } from "../../components/MyHeader"
 
 // @ts-ignore
 export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postArticles">> =
-  observer(function PostArticlesScreen() {
+  observer(function PostArticlesScreen({ navigation }) {
     // Pull in one of our MST stores
     // const { someStore, anotherStore } = useStores()
     const [title, setTitle] = useState("")
@@ -64,6 +64,7 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
     }
     return (
       <View style={styles.container}>
+        <MyHeader title="New Post" onPress={() => navigation.goBack()} />
         <View style={styles.content}>
           <Text style={styles.txtTitle}>Title</Text>
           <View style={styles.boxTitle}>
