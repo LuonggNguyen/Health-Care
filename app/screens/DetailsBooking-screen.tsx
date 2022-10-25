@@ -22,13 +22,10 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
       })
       console.log("cancel ")
     }
-
     return (
       <View style={styles.container}>
         <MyHeader title="Details Booking" onPress={() => navigation.goBack()}></MyHeader>
         <View style={styles.content}>
-          <Text>{booking.idDoctor}</Text>
-          <Text>{booking.idUser}</Text>
           <Text>{booking.date}</Text>
           <Text>{booking.workingTime}</Text>
           <Button title={"Cancel"} onPress={() => handleCancel()} />

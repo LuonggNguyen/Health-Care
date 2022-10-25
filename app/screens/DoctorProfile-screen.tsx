@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite"
 import { Dimensions, ImageBackground, ScrollView, StyleSheet, Text, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-import { Button, Header, Image } from "@rneui/themed"
+import { Header, Image } from "@rneui/themed"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import auth from "@react-native-firebase/auth"
 import { color } from "../theme"
@@ -11,7 +11,6 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { database } from "../../configs/firebase"
 import { firebase } from "@react-native-firebase/database"
 import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
-import FontAwesome from "react-native-vector-icons/FontAwesome"
 import { CustomButton } from "../components/CustomButton"
 
 //bug cmnr
@@ -27,7 +26,9 @@ export const DoctorProfileScreen: FC<StackScreenProps<NavigatorParamList, "docto
       database.ref("/doctors/" + firebase.auth().currentUser.uid).on("value", (snapshot) => {
         setInfoDoctor(snapshot.val())
       })
-      return () => {}
+      return () => {
+        setInfoDoctor(undefined)
+      }
     }, [])
 
     return (
