@@ -8,8 +8,13 @@ import { database } from "../../../configs/firebase"
 export const ArticleScreen: FC<StackScreenProps<NavigatorParamList, "article">> = observer(
   function ArticleScreen() {
     useEffect(() => {
-      database.ref("/Post").on("value", (response) => {
-        console.log(response.val())
+      database.ref("/post").on("value", (response) => {
+        const listkey = Object.keys(response.val())
+        listkey.map((key) => {
+          database.ref("/posts/" + key).update({
+            idPost: key,
+          })
+        })
       })
     }, [])
     return <View></View>

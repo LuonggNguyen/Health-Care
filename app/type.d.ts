@@ -37,4 +37,9 @@ declare interface InfoDoctor {
   declare interface PostArticle {
     title : string
     content : string
+    nameDoctor: string
+    avtDoctor: string
+    idPost: string
+    Like: []
+    Comment: []
   }
