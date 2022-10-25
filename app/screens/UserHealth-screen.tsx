@@ -1,14 +1,16 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { View, StyleSheet, Text, Image, FlatList, Dimensions, TouchableOpacity } from "react-native"
+// import { StyleSheet, Text, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { database } from "../../configs/firebase"
 import { Header } from "@rneui/themed"
 import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
 import { color } from "../theme"
-import { CustomText } from "../components/CustomText"
-import FontAwesome from "react-native-vector-icons/FontAwesome"
+import AntDesign from "react-native-vector-icons/AntDesign"
+
+// import { CustomText } from "../components/CustomText"
 
 // @ts-ignore
 const windowWidth = Dimensions.get("window").width
@@ -35,7 +37,17 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
       <View style={styles.container}>
         <Header
           backgroundColor={color.colorHeader}
-          centerComponent={<Text style={styles.titleHeader}>News</Text>}
+          centerComponent={
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: "bold",
+                color: "#000",
+              }}
+            >
+              Articles Health
+            </Text>
+          }
         />
         <View style={styles.content}>
           <FlatList
@@ -55,7 +67,7 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                   </View>
                   <View style={styles.boxLike}>
                     <TouchableOpacity style={styles.iconLike}>
-                      <FontAwesome name="heartbeat" size={28} color="gray" />
+                      <AntDesign name="like2" size={28} color="gray" />
                     </TouchableOpacity>
                   </View>
                 </View>

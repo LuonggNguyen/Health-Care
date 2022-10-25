@@ -3,12 +3,8 @@ import { observer } from "mobx-react-lite"
 import { View, StyleSheet } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "../../models"
-import { color } from "../../theme"
 import { database } from "../../../configs/firebase"
 
-// @ts-ignore
 export const ArticleScreen: FC<StackScreenProps<NavigatorParamList, "article">> = observer(
   function ArticleScreen() {
     useEffect(() => {
@@ -21,11 +17,6 @@ export const ArticleScreen: FC<StackScreenProps<NavigatorParamList, "article">> 
         })
       })
     }, [])
-    // Pull in one of our MST stores
-    // const { someStore, anotherStore } = useStores()
-
-    // Pull in navigation via hook
-    // const navigation = useNavigation()
     return <View></View>
   },
 )

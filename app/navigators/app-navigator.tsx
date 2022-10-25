@@ -9,7 +9,7 @@ import { useColorScheme } from "react-native"
 import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { navigationRef, useBackButtonHandler } from "./navigation-utilities"
-import { LoginScreen, PostArticlesScreen, RegisterScreen } from "../screens"
+import { ArticleScreen, LoginScreen, PostArticlesScreen, RegisterScreen } from "../screens"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { UserProfileScreen } from "../screens/UserProfile-screen"
 import { UserBookingScreen } from "../screens/UserBooking-screen"
@@ -60,6 +60,7 @@ export type NavigatorParamList = {
   postArticle: {
     post: PostArticle
   }
+  article: undefined
 
   //health news
   userHealth: undefined
@@ -149,6 +150,7 @@ const AppStack = () => {
       </Tab.Navigator>
     )
   }
+
   const checkRole = () => {
     if (user.email.search("@doctor") == -1) {
       return "user"
@@ -174,6 +176,7 @@ const AppStack = () => {
       <Stack.Screen name="detailsDoctor" component={DetailsDoctorScreen} />
       <Stack.Screen name="detailsBooking" component={DetailsBookingScreen} />
       <Stack.Screen name="postArticle" component={PostArticlesScreen} />
+      <Stack.Screen name="article" component={ArticleScreen} />
 
       {/** 🔥 Your screens go here */}
     </Stack.Navigator>
