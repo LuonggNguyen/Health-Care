@@ -21,9 +21,6 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
         setInfoDoctor(undefined)
       }
     }, [])
-
-    console.log(infoDoctor)
-
     const handleCancel = () => {
       database.ref("/books/" + booking.idBook).update({
         idUser: booking.idUser,

@@ -164,7 +164,6 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    backgroundColor: "#cfe2f3",
   },
   titleHeader: {
     fontSize: moderateScale(24),
