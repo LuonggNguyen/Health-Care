@@ -9,6 +9,7 @@ import { Header } from "@rneui/themed"
 import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
 import { color } from "../theme"
 import AntDesign from "react-native-vector-icons/AntDesign"
+import { firebase } from "@react-native-firebase/database"
 
 // import { CustomText } from "../components/CustomText"
 
@@ -18,6 +19,8 @@ const windowWidth = Dimensions.get("window").width
 export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHealth">> = observer(
   function UserHealthScreen() {
     const [listPost, setListPost] = useState([])
+    const [like, setLike] = useState(false)
+    const user = firebase.auth().currentUser.uid
 
     useEffect(() => {
       database.ref("/posts").on("value", (response) => {
@@ -35,6 +38,7 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
         setListPost(null)
       }
     }, [])
+
     return (
       <View style={styles.container}>
         <Header
@@ -68,8 +72,61 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                     <Image style={styles.imagePost} source={{ uri: item.imagePost }}></Image>
                   </View>
                   <View style={styles.boxLike}>
-                    <TouchableOpacity style={styles.iconLike}>
-                      <AntDesign name="like2" size={28} color="gray" />
+                    <Text>
+                      {Object.values(item?.like).filter((item: any) => item.status == true).length}
+                    </Text>
+                    {/* {database
+                        .ref("/posts/" + item.idPost + "/like/" + user)
+                        .on("value", (response) => {
+                          // console.log(response.val().status)
+
+                          return (
+                            <View style={{ height: 100, width: 100 }}>
+                              <TouchableOpacity
+                                style={styles.iconLike}
+                                onPress={() => {
+                                  !response.val()
+                                    ? database
+                                        .ref("/posts/" + item.idPost + "/like/" + user)
+                                        .set({ status: true })
+                                        .then(() => {
+                                          console.log("ok")
+                                        })
+                                    : database
+                                        .ref("/posts/" + item.idPost + "/like/" + user)
+                                        .set({ status: !response.val().status })
+                                        .then(() => {
+                                          console.log("ok")
+                                        })
+                                }}
+                              >
+                                {response?.val()?.status ? (
+                                  <AntDesign name="like1" size={28} color={color.colorApp} />
+                                ) : (
+                                  <AntDesign name="like2" size={28} color={color.colorApp} />
+                                )}
+                              </TouchableOpacity>
+                            </View>
+                          )
+                        })} */}
+                    <TouchableOpacity
+                      style={styles.iconLike}
+                      onPress={() => {
+                        // const user= item.idUser;
+                        database
+                          .ref("/posts/" + item.idPost + "/like/" + user)
+                          .set({ status: false })
+                          .then(() => {
+                            console.log("ok")
+                          })
+                        // setLike(!item.like[0].status)
+                      }}
+                    >
+                      {item?.like?.user?.status ? (
+                        <AntDesign name="like1" size={28} color={color.colorApp} />
+                      ) : (
+                        <AntDesign name="like2" size={28} color={color.colorApp} />
+                      )}
                     </TouchableOpacity>
                   </View>
                 </View>

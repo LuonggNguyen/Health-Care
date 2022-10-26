@@ -45,8 +45,8 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
           avtDoctor: infoDoctor.photoUrl,
           imagePost: "https://toigingiuvedep.vn/wp-content/uploads/2022/05/hinh-anh-vintage.jpg",
           idPost: "",
-          Like: [{ uid: "123456" }, { uid: "236222" }],
-          Comment: [
+          like: [],
+          comment: [
             {
               idUser: 1,
               contentConment: "Tuyet voi",
