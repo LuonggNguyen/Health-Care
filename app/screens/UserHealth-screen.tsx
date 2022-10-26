@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { View, StyleSheet, Text, Image, FlatList, Dimensions, TouchableOpacity } from "react-native"
-// import { StyleSheet, Text, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { database } from "../../configs/firebase"
@@ -10,14 +9,11 @@ import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
 import { color } from "../theme"
 import AntDesign from "react-native-vector-icons/AntDesign"
 import { firebase } from "@react-native-firebase/database"
+import Fontisto from "react-native-vector-icons/Fontisto"
 
-// import { CustomText } from "../components/CustomText"
-
-// @ts-ignore
 const windowWidth = Dimensions.get("window").width
-// const windowHeight = Dimensions.get("window").height
 export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHealth">> = observer(
-  function UserHealthScreen() {
+  function UserHealthScreen({ navigation }) {
     const [listPost, setListPost] = useState([])
     const [like, setLike] = useState(false)
     const user = firebase.auth().currentUser.uid
@@ -128,6 +124,13 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                         <AntDesign name="like2" size={28} color={color.colorApp} />
                       )}
                     </TouchableOpacity>
+                    <AntDesign name="like2" size={28} color="gray" />
+                    <Fontisto
+                      name="comment"
+                      size={28}
+                      color="gray"
+                      onPress={() => navigation.navigate("detailsArticle")}
+                    />
                   </View>
                 </View>
               )
@@ -192,6 +195,7 @@ const styles = StyleSheet.create({
   boxLike: {
     alignItems: "center",
     flexDirection: "row",
+    justifyContent: "space-around",
     height: verticleScale(40),
     backgroundColor: color.line,
   },

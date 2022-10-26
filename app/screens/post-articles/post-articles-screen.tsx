@@ -49,6 +49,7 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
           comment: [
             {
               idUser: 1,
+              nameUser: "Ngan",
               contentConment: "Tuyet voi",
             },
             {
