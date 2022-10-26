@@ -44,15 +44,8 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
           nameDoctor: infoDoctor.name,
           avtDoctor: infoDoctor.photoUrl,
           imagePost: "https://toigingiuvedep.vn/wp-content/uploads/2022/05/hinh-anh-vintage.jpg",
-          idDoctor: infoDoctor.uid,
-          like: [
-            { uid: "111", status: true },
-            { uid: "222", status: true },
-            { uid: "333", status: true },
-            { uid: "444", status: true },
-            { uid: "555", status: false },
-            { uid: "666", status: true },
-          ],
+          idPost: "",
+          like: [],
           comment: [
             {
               idUser: 1,
