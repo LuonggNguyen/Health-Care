@@ -11,7 +11,7 @@ import { GoogleSignin, GoogleSigninButton } from "@react-native-google-signin/go
 export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = observer(
   function LoginScreen({ navigation }) {
     const [showPass, setShowPass] = useState(true)
-    const [email, setEmail] = useState("ngan@poly.com")
+    const [email, setEmail] = useState("ngan@doctor.com")
     const [pass, setPass] = useState("123456")
 
     async function onGoogleButtonPress() {
