@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { View, StyleSheet, Text, Image, FlatList, TouchableOpacity } from "react-native"
+import { View, StyleSheet, Text, Image, FlatList } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { database } from "../../configs/firebase"
@@ -32,6 +32,8 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
         setListPost(null)
       }
     }, [])
+    console.log("ren")
+
     return (
       <View style={styles.container}>
         <Header
@@ -53,17 +55,9 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
             showsVerticalScrollIndicator={false}
             data={listPost}
             renderItem={({ item }) => {
-              const checkLike = Object.values(item?.like).find(
-                (item: Like) => item.status === true,
-                item.idUser === user.uid,
+              const checkLike = Object?.values(item?.like).find(
+                (item: Like) => item.idUser === user?.uid,
               ) as Like
-              console.log(checkLike?.status)
-              const checkUnLike = Object.values(item?.like).find(
-                (item: Like) => item.status === false,
-                item.idUser === user.uid,
-              ) as Like
-              console.log("checkUnLike: ", checkUnLike?.status)
-
               return (
                 <View style={styles.boxItem}>
                   <View style={styles.boxAvatar}>
@@ -76,14 +70,20 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                     <Image style={styles.imagePost} source={{ uri: item.imagePost }}></Image>
                   </View>
                   <View style={styles.boxLike}>
-                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
                       <Text>
                         {
-                          Object.values(item?.like).filter((item: any) => item.status === true)
+                          Object?.values(item?.like).filter((item: any) => item.status === true)
                             .length
                         }
                       </Text>
-                      {checkLike?.status === true ? (
+                      {checkLike?.status ? (
                         <AntDesign
                           name="like1"
                           size={28}
@@ -91,7 +91,7 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                           onPress={() => {
                             database
                               .ref("/posts/" + item.idPost + "/like/" + user.uid)
-                              .set({ status: false, idUser: user.uid })
+                              .update({ status: false })
                               .then(() => {
                                 console.log("unlike")
                               })
@@ -105,7 +105,7 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                           onPress={() => {
                             database
                               .ref("/posts/" + item.idPost + "/like/" + user.uid)
-                              .set({ status: true, idUser: user.uid })
+                              .update({ status: true })
                               .then(() => {
                                 console.log("like")
                               })
