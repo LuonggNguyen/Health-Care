@@ -43,3 +43,7 @@ declare interface InfoDoctor {
     Like: []
     Comment: []
   }
+  declare interface Like {
+    idUser:string
+    status:boolean
+  }  
