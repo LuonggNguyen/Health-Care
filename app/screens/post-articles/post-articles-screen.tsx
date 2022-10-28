@@ -26,14 +26,15 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
       GoogleSignin.configure({
         webClientId: "716587017495-gtaa8ofao9l15fofvf68mb0csgplieae.apps.googleusercontent.com",
       })
-      database.ref("/doctors/" + firebase.auth().currentUser.uid).on("value", (snapshot) => {
-        setInfoDoctor(snapshot.val())
-      })
-      return () => {}
+      const getUser = database
+        .ref("/doctors/" + firebase.auth().currentUser.uid)
+        .on("value", (snapshot) => {
+          setInfoDoctor(snapshot.val())
+        })
+      return () => {
+        database.ref("/doctors/" + firebase.auth().currentUser.uid).off("child_added", getUser)
+      }
     }, [])
-
-    // Pull in navigation via hook
-    // const navigation = useNavigation()
     const postArticles = (title, content) => {
       database
         .ref("/posts")
@@ -45,17 +46,24 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
           avtDoctor: infoDoctor.photoUrl,
           imagePost: "https://toigingiuvedep.vn/wp-content/uploads/2022/05/hinh-anh-vintage.jpg",
           idPost: "",
-          like: [],
+          like: [
+            {
+              idUser: infoDoctor.uid,
+              status: false,
+            },
+          ],
           comment: [
             {
-              idUser: 1,
-              nameUser: "Ngan",
-              contentConment: "Tuyet voi",
+              idUser: infoDoctor.uid,
+              nameUser: "Nguyen Phuc Ngan",
+              img: "",
+              contentComment: "",
             },
             {
-              idUser: 1,
-              nameUser: "Ngan",
-              contentConment: "Tuyet voi",
+              idUser: "ViOuaWcn5LawyPU3t6cJipBPcqA2",
+              nameUser: "Nguyen Hoai Luong (FPL DN)",
+              img: "",
+              contentComment: "Tuyet voi",
             },
           ],
         })
