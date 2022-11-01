@@ -57,12 +57,7 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                 (item: Like) => item.status === true,
                 item.idUser === user.uid,
               ) as Like
-              console.log(checkLike?.status)
-              const checkUnLike = Object.values(item?.like).find(
-                (item: Like) => item.status === false,
-                item.idUser === user.uid,
-              ) as Like
-              console.log("checkUnLike: ", checkUnLike?.status)
+              // console.log(checkLike?.status)
 
               return (
                 <View style={styles.boxItem}>
@@ -83,21 +78,7 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                             .length
                         }
                       </Text>
-                      {checkLike?.status === true ? (
-                        <AntDesign
-                          name="like1"
-                          size={28}
-                          color={color.colorApp}
-                          onPress={() => {
-                            database
-                              .ref("/posts/" + item.idPost + "/like/" + user.uid)
-                              .set({ status: false, idUser: user.uid })
-                              .then(() => {
-                                console.log("unlike")
-                              })
-                          }}
-                        />
-                      ) : (
+                      {checkLike?.status ? (
                         <AntDesign
                           name="like2"
                           size={28}
@@ -105,7 +86,21 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                           onPress={() => {
                             database
                               .ref("/posts/" + item.idPost + "/like/" + user.uid)
-                              .set({ status: true, idUser: user.uid })
+                              .update({ status: false, idUser: user.uid })
+                              .then(() => {
+                                console.log("unlike")
+                              })
+                          }}
+                        />
+                      ) : (
+                        <AntDesign
+                          name="like1"
+                          size={28}
+                          color={color.colorApp}
+                          onPress={() => {
+                            database
+                              .ref("/posts/" + item.idPost + "/like/" + user.uid)
+                              .update({ status: true, idUser: user.uid })
                               .then(() => {
                                 console.log("like")
                               })
