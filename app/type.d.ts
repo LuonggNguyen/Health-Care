@@ -40,10 +40,16 @@ declare interface InfoDoctor {
     nameDoctor: string
     avtDoctor: string
     idPost: string
-    Like: []
-    Comment: []
+    like: []
+    comment: []
   }
   declare interface Like {
     idUser:string
     status:boolean
+  }  
+  declare interface Comment {
+    idUser:string
+    contentComment:string
+    nameUser:string,
+    img: string,
   }  
