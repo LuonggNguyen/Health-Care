@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-import { StyleSheet, Text, View } from "react-native"
+import { Dimensions, StyleSheet, Text, View } from "react-native"
 import { MyHeader } from "../components/MyHeader"
 import { database } from "../../configs/firebase"
 import { Dialog, Image } from "@rneui/themed"
@@ -78,7 +78,9 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
       <View style={styles.container}>
         <MyHeader title="Details Booking" onPress={() => navigation.goBack()}></MyHeader>
         <View style={styles.content}>
-          <View style={{ alignItems: "center" }}>
+          <View style={{ flex: 2, backgroundColor: "#000", width: "95%" }}></View>
+          <View style={{ flex: 3, backgroundColor: "#ccc", width: "95%" }}></View>
+          {/* <View style={{ alignItems: "center" }}>
             <Image style={styles.imgDoctor} source={{ uri: infoDoctor.photoUrl }} />
             <Text style={styles.textInfo}>{infoDoctor.name}</Text>
             <View style={{ flexDirection: "row" }}>
@@ -114,8 +116,9 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
               <Text style={styles.textInfoSmall}>Mail: {infoDoctor.email}</Text>
               <Text style={styles.textInfoSmall}>Phone: {infoDoctor.phoneNumber}</Text>
             </View>
-          </View>
+          </View> */}
           <CustomButton title={"Cancel"} onPress={() => handleCancel()} />
+          <View style={{ marginVertical: 8 }} />
         </View>
       </View>
     )

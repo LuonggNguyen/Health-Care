@@ -78,7 +78,14 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
           <Text style={styles.txtTitle}>Title</Text>
           <View style={styles.boxTitle}>
             <TextInput
-              style={{ height: verticleScale(100) }}
+              multiline
+              style={{
+                height: verticleScale(80),
+                textAlignVertical: "top",
+                fontSize: 20,
+                color: "#000",
+                fontWeight: "bold",
+              }}
               onChangeText={(text) => setTitle(text)}
             ></TextInput>
           </View>
@@ -86,7 +93,14 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
 
           <View style={styles.boxTitle}>
             <TextInput
-              style={{ height: verticleScale(250) }}
+              multiline
+              style={{
+                height: verticleScale(250),
+                textAlignVertical: "top",
+                fontSize: 20,
+                color: "#000",
+                fontWeight: "bold",
+              }}
               onChangeText={(text) => setContent(text)}
             ></TextInput>
           </View>
@@ -109,8 +123,9 @@ const styles = StyleSheet.create({
   txtTitle: {
     marginTop: 12,
     marginLeft: 12,
-
-    fontSize: moderateScale(20),
+    color: "#000",
+    fontWeight: "bold",
+    fontSize: moderateScale(24),
   },
   boxTitle: {
     borderColor: color.colorApp,
