@@ -132,6 +132,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
+  cardDoctor: {},
+  infoBooking: {},
   imgDoctor: {
     margin: 8,
     width: 200,
