@@ -21,7 +21,7 @@ export const UserUpdateProfileScreen: FC<
   StackScreenProps<NavigatorParamList, "userUpdateProfile">
 > = observer(function UserUpdateProfileScreen({ navigation, route }) {
   const user = route.params.detailsUser
-  const [email, setEmail] = useState(user.email)
+  const [email, setEmail] = useState(user?.email)
   const [birthday, setBirthDay] = useState(new Date())
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -107,7 +107,6 @@ export const UserUpdateProfileScreen: FC<
             }
           />
           <DatePicker
-            minimumDate={new Date()}
             title="Select Day"
             mode="date"
             modal

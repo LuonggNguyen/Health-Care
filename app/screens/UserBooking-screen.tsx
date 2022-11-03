@@ -43,7 +43,7 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
         }
       })
       return () => {
-        setListBook([])
+        setListBook(undefined)
       }
     }, [])
 

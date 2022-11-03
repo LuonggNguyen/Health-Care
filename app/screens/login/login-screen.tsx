@@ -36,7 +36,7 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
             console.log("Login Fail !!\n" + err)
           })
       } catch (e) {
-        console.error(e)
+        console.log(e)
       }
     }
 

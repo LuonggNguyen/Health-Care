@@ -20,6 +20,7 @@ const windowWidth = Dimensions.get("window").width
 export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userProfile">> = observer(
   function UserProfileScreen({ navigation }) {
     const [infoUser, setInfoUser] = useState<InfoUser>()
+    const user = firebase.auth().currentUser
     useEffect(() => {
       GoogleSignin.configure({
         webClientId: "716587017495-gtaa8ofao9l15fofvf68mb0csgplieae.apps.googleusercontent.com",
@@ -27,7 +28,9 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
       database
         .ref("/users/" + firebase.auth().currentUser.uid)
         .on("value", (snapshot) => setInfoUser(snapshot.val()))
-      return () => {}
+      return () => {
+        setInfoUser(undefined)
+      }
     }, [])
 
     // const user = auth().currentUser
@@ -62,6 +65,15 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
         return age
       }
     }
+    if (infoUser) {
+      database.ref("/users/" + firebase.auth().currentUser.uid).update({
+        uid: user.uid,
+        name: user.displayName,
+        email: user.email,
+        photoUrl: "https://i.pinimg.com/originals/12/61/dd/1261dda75d943cbd543cb86c15f31baa.jpg",
+      })
+    }
+
     return (
       <View style={styles.container}>
         <Header
@@ -87,7 +99,7 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
               ></Image>
             </View>
             <View style={styles.boxName}>
-              <Text style={styles.name}>{infoUser?.name}</Text>
+              <Text style={styles.name}>{user.displayName || infoUser.name}</Text>
             </View>
             <View style={styles.boxHealth}>
               <View style={styles.blood}>
