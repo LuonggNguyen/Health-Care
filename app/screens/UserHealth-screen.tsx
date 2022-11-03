@@ -1,4 +1,5 @@
-import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import * as React from "react"
 import { observer } from "mobx-react-lite"
 import { View, StyleSheet, Text, Image, FlatList, Button } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
@@ -12,7 +13,6 @@ import Entypo from "react-native-vector-icons/Entypo"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import { firebase } from "@react-native-firebase/database"
 import Fontisto from "react-native-vector-icons/Fontisto"
-import { BottomSheetModal, BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 
 export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHealth">> = observer(
   function UserHealthScreen({ navigation }) {
@@ -36,7 +36,6 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
         setListPost(null)
       }
     }, [])
-
     return (
       <View style={styles.container}>
         <Header
