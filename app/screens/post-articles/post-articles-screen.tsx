@@ -44,7 +44,7 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
           content: content,
           nameDoctor: infoDoctor.name,
           avtDoctor: infoDoctor.photoUrl,
-          imagePost: "https://toigingiuvedep.vn/wp-content/uploads/2022/05/hinh-anh-vintage.jpg",
+          imagePost: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Gull_portrait_ca_usa.jpg",
           idPost: "",
           like: [
             {

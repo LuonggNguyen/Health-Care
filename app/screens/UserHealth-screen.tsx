@@ -1,6 +1,6 @@
-import React, { FC, useCallback, useEffect, useState } from "react"
+import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { View, StyleSheet, Text, Image, FlatList } from "react-native"
+import { View, StyleSheet, Text, Image, FlatList, Button } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { database } from "../../configs/firebase"
@@ -12,22 +12,12 @@ import Entypo from "react-native-vector-icons/Entypo"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import { firebase } from "@react-native-firebase/database"
 import Fontisto from "react-native-vector-icons/Fontisto"
+import { BottomSheetModal, BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 
 export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHealth">> = observer(
   function UserHealthScreen({ navigation }) {
     const [listPost, setListPost] = useState([])
     const user = firebase.auth().currentUser
-    const [textShown, setTextShown] = useState(false) //To show ur remaining Text
-    const [lengthMore, setLengthMore] = useState(false) //to show the "Read more & Less Line"
-    const toggleNumberOfLines = () => {
-      //To toggle the show text or hide it
-      setTextShown(!textShown)
-    }
-    const onTextLayout = useCallback((e) => {
-      setLengthMore(e.nativeEvent.lines.length >= 2) //to check the text is more than 4 lines or not
-      console.log(e.nativeEvent.lines.length)
-    }, [])
-
     useEffect(() => {
       database.ref("/posts").on("value", (response) => {
         try {
@@ -46,7 +36,6 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
         setListPost(null)
       }
     }, [])
-    console.log("render")
 
     return (
       <View style={styles.container}>
@@ -83,22 +72,13 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                     </View>
                     <View style={styles.boxContent}>
                       {/* <Text style={styles.title}>{item.title}</Text> */}
-                      <Text
-                        onTextLayout={onTextLayout}
-                        numberOfLines={textShown ? undefined : 2}
-                        style={styles.contentPost}
-                      >
-                        {item.content}
-                      </Text>
-                      {/* {lengthMore ? (
-                        <Text
-                          onPress={toggleNumberOfLines}
-                          style={{ lineHeight: 21, marginTop: 10 }}
-                        >
-                          {textShown ? "Read less..." : "Read more..."}
-                        </Text>
-                      ) : null} */}
-                      <Image style={styles.imagePost} source={{ uri: item.imagePost }}></Image>
+                      <Text style={styles.contentPost}>{item.content}</Text>
+
+                      <Image
+                        resizeMode="contain"
+                        style={styles.imagePost}
+                        source={{ uri: item.imagePost }}
+                      ></Image>
                     </View>
                     <View style={styles.boxLike}>
                       <View
@@ -226,8 +206,8 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   imagePost: {
-    width: scale(100),
-    height: verticleScale(150),
+    width: scale(500),
+    height: scale(200),
     alignSelf: "center",
     marginBottom: scale(10),
     borderRadius: 8,
