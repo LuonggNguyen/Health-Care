@@ -32,7 +32,7 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
         workingTime: booking.workingTime, // have 1, 2, 3, 4
         status: 3,
       })
-      console.log("cancel ")
+      navigation.goBack()
     }
 
     const getAge = (dateString) => {
@@ -183,7 +183,7 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
               onPress={() => navigation.navigate("listDoctors")}
             />
           ) : getStatus(booking.status, booking.date) === "Unfinished" ? (
-            <CustomButton title={"Cancel"} onPress={() => handleCancel} />
+            <CustomButton title={"Cancel"} onPress={() => handleCancel()} />
           ) : (
             <View />
           )}

@@ -30,7 +30,6 @@ export const DoctorProfileScreen: FC<StackScreenProps<NavigatorParamList, "docto
         setInfoDoctor(undefined)
       }
     }, [])
-
     return (
       <View style={styles.container}>
         <Header
