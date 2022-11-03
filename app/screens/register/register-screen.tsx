@@ -52,47 +52,52 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
           displayName: name,
           photoURL: avt,
         }
-        await auth()
-          .createUserWithEmailAndPassword(email, pass)
-          .then(() => {})
-          .catch((error) => {
-            if (error.code === "auth/email-already-in-use") {
-              Alert.alert("That email address is already in use!")
-            }
 
-            if (error.code === "auth/invalid-email") {
-              Alert.alert("That email address is invalid!")
-            }
-            console.error(error)
-            resetForm()
-          })
-        await auth()
-          .currentUser.updateProfile(update)
-          .then(() => {
-            database
-              .ref("/users/" + auth().currentUser.uid)
-              .set({
-                uid: auth().currentUser.uid,
-                name: auth().currentUser.displayName,
-                email: auth().currentUser.email,
-                photoUrl: auth().currentUser.photoURL,
-                phoneNumber: auth().currentUser.phoneNumber,
-              })
-              .then(() => {
-                setLoading(false)
-                Alert.alert("", "User account created & signed in!", [
-                  {
-                    text: "Cancel",
-                    onPress: () => {},
-                    style: "cancel",
-                  },
-                  { text: "OK", onPress: () => goToLogin() },
-                ])
-                resetForm()
-                goToLogin()
-              })
-          })
-          .catch((e) => console.log(e))
+        try {
+          await auth()
+            .createUserWithEmailAndPassword(email, pass)
+            .then(() => {})
+            .catch((error) => {
+              if (error.code === "auth/email-already-in-use") {
+                Alert.alert("That email address is already in use!")
+              }
+
+              if (error.code === "auth/invalid-email") {
+                Alert.alert("That email address is invalid!")
+              }
+              resetForm()
+              console.log(error)
+            })
+          await auth()
+            .currentUser.updateProfile(update)
+            .then(() => {
+              database
+                .ref("/users/" + auth().currentUser.uid)
+                .set({
+                  uid: auth().currentUser.uid,
+                  name: auth().currentUser.displayName,
+                  email: auth().currentUser.email,
+                  photoUrl: auth().currentUser.photoURL,
+                  phoneNumber: auth().currentUser.phoneNumber,
+                })
+                .then(() => {
+                  setLoading(false)
+                  Alert.alert("", "User account created & signed in!", [
+                    {
+                      text: "Cancel",
+                      onPress: () => {},
+                      style: "cancel",
+                    },
+                    { text: "OK", onPress: () => goToLogin() },
+                  ])
+                  resetForm()
+                  goToLogin()
+                })
+            })
+            .catch((e) => console.log(e))
+        } catch (error) {
+          setLoading(false)
+        }
       }
     }
 

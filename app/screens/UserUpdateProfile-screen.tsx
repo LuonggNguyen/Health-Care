@@ -107,7 +107,6 @@ export const UserUpdateProfileScreen: FC<
             }
           />
           <DatePicker
-            minimumDate={new Date()}
             title="Select Day"
             mode="date"
             modal
