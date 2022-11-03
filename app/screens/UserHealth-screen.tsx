@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react"
+import React, { FC, useCallback, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { View, StyleSheet, Text, Image, FlatList } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
@@ -8,6 +8,7 @@ import { Header } from "@rneui/themed"
 import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
 import { color } from "../theme"
 import AntDesign from "react-native-vector-icons/AntDesign"
+import Entypo from "react-native-vector-icons/Entypo"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import { firebase } from "@react-native-firebase/database"
 import Fontisto from "react-native-vector-icons/Fontisto"
@@ -16,6 +17,16 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
   function UserHealthScreen({ navigation }) {
     const [listPost, setListPost] = useState([])
     const user = firebase.auth().currentUser
+    const [textShown, setTextShown] = useState(false) //To show ur remaining Text
+    const [lengthMore, setLengthMore] = useState(false) //to show the "Read more & Less Line"
+    const toggleNumberOfLines = () => {
+      //To toggle the show text or hide it
+      setTextShown(!textShown)
+    }
+    const onTextLayout = useCallback((e) => {
+      setLengthMore(e.nativeEvent.lines.length >= 2) //to check the text is more than 4 lines or not
+      console.log(e.nativeEvent.lines.length)
+    }, [])
 
     useEffect(() => {
       database.ref("/posts").on("value", (response) => {
@@ -35,6 +46,8 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
         setListPost(null)
       }
     }, [])
+    console.log("render")
+
     return (
       <View style={styles.container}>
         <Header
@@ -64,75 +77,83 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                 ) as Like
                 return (
                   <View style={styles.boxItem}>
-                    <MaterialIcons
-                      name="read-more"
-                      size={36}
-                      color="#333"
-                      onPress={() => {
-                        navigation.navigate("detailsArticle", { post: item })
-                      }}
-                      style={{ position: "absolute", top: 16, right: 16 }}
-                    />
                     <View style={styles.boxAvatar}>
                       <Image style={styles.avatar} source={{ uri: item.avtDoctor }}></Image>
                       <Text style={styles.name}>{item.nameDoctor}</Text>
                     </View>
                     <View style={styles.boxContent}>
-                      <Text style={styles.title}>{item.title}</Text>
-                      <Text style={styles.contentPost}>{item.content}</Text>
+                      {/* <Text style={styles.title}>{item.title}</Text> */}
+                      <Text
+                        onTextLayout={onTextLayout}
+                        numberOfLines={textShown ? undefined : 2}
+                        style={styles.contentPost}
+                      >
+                        {item.content}
+                      </Text>
+                      {/* {lengthMore ? (
+                        <Text
+                          onPress={toggleNumberOfLines}
+                          style={{ lineHeight: 21, marginTop: 10 }}
+                        >
+                          {textShown ? "Read less..." : "Read more..."}
+                        </Text>
+                      ) : null} */}
                       <Image style={styles.imagePost} source={{ uri: item.imagePost }}></Image>
                     </View>
                     <View style={styles.boxLike}>
                       <View
                         style={{
+                          marginLeft: scale(60),
                           flexDirection: "row",
                           alignItems: "center",
-                          justifyContent: "center",
                         }}
                       >
+                        {checkLike?.status ? (
+                          <AntDesign
+                            name="like1"
+                            size={scale(24)}
+                            color={color.colorApp}
+                            onPress={() => {
+                              database
+                                .ref("/posts/" + item.idPost + "/like/" + user.uid)
+                                .update({ status: false, idUser: user.uid })
+                                .then(() => {})
+                            }}
+                          />
+                        ) : (
+                          <AntDesign
+                            name="like2"
+                            size={scale(24)}
+                            color={color.colorApp}
+                            onPress={() => {
+                              database
+                                .ref("/posts/" + item.idPost + "/like/" + user.uid)
+                                .update({ status: true, idUser: user.uid })
+                                .then(() => {})
+                            }}
+                          />
+                        )}
                         <Text style={styles.count}>
                           {
                             Object?.values(item?.like).filter((item: Like) => item.status === true)
                               .length
                           }
                         </Text>
-                        {checkLike?.status ? (
-                          <AntDesign
-                            name="like1"
-                            size={30}
-                            color={color.colorApp}
-                            onPress={() => {
-                              database
-                                .ref("/posts/" + item.idPost + "/like/" + user.uid)
-                                .update({ status: false, idUser: user.uid })
-                                .then(() => {
-                                  console.log("unlike")
-                                })
-                            }}
-                          />
-                        ) : (
-                          <AntDesign
-                            name="like2"
-                            size={30}
-                            color={color.colorApp}
-                            onPress={() => {
-                              database
-                                .ref("/posts/" + item.idPost + "/like/" + user.uid)
-                                .update({ status: true, idUser: user.uid })
-                                .then(() => {
-                                  console.log("like")
-                                })
-                            }}
-                          />
-                        )}
                       </View>
+                      <View style={{ flex: 1 }} />
                       <View
                         style={{
+                          marginRight: scale(60),
                           flexDirection: "row",
                           alignItems: "center",
-                          justifyContent: "center",
                         }}
                       >
+                        <Fontisto
+                          name="comment"
+                          size={scale(22)}
+                          color="gray"
+                          onPress={() => navigation.navigate("detailsArticle", { post: item })}
+                        />
                         <Text style={styles.count}>
                           {!Object?.values(item?.comment)
                             ? 0
@@ -140,12 +161,6 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                                 (item: Comment) => item.contentComment.length > 0,
                               ).length}
                         </Text>
-                        <Fontisto
-                          name="comment"
-                          size={30}
-                          color="gray"
-                          onPress={() => navigation.navigate("detailsArticle", { post: item })}
-                        />
                       </View>
                     </View>
                   </View>
@@ -160,6 +175,7 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
 )
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#dfdfdf",
     flex: 1,
   },
   content: {
@@ -171,18 +187,18 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   boxItem: {
-    borderRadius: 10,
-    backgroundColor: color.colorApp,
+    borderRadius: 18,
     margin: scale(8),
+    backgroundColor: "#ffff",
   },
   boxAvatar: {
     alignItems: "center",
     flexDirection: "row",
   },
   avatar: {
-    width: verticleScale(60),
-    height: verticleScale(60),
-    borderRadius: 90,
+    width: verticleScale(50),
+    height: verticleScale(50),
+    borderRadius: 70,
     marginLeft: 12,
     marginTop: 12,
   },
@@ -203,29 +219,31 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   contentPost: {
-    marginTop: 12,
-    marginLeft: 12,
+    marginTop: scale(12),
+    marginLeft: scale(12),
+    marginBottom: scale(12),
     color: "#000",
     marginRight: 6,
   },
   imagePost: {
     width: scale(100),
     height: verticleScale(150),
+    alignSelf: "center",
+    marginBottom: scale(10),
+    borderRadius: 8,
   },
   boxLike: {
     alignItems: "center",
     flexDirection: "row",
-    justifyContent: "space-around",
     height: verticleScale(50),
-    backgroundColor: color.line,
-  },
-  iconLike: {
-    marginLeft: 16,
+    // backgroundColor: color.line,
+    borderTopWidth: 1,
+    borderColor: "gray",
   },
   count: {
     color: "#000",
-    fontSize: 28,
+    fontSize: scale(18),
     padding: 8,
-    fontWeight: "bold",
+    // fontWeight: "bold",
   },
 })

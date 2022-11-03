@@ -1,6 +1,14 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { Dimensions, ImageBackground, ScrollView, StyleSheet, Text, View } from "react-native"
+import {
+  Button,
+  Dimensions,
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { Header, Image } from "@rneui/themed"
@@ -13,7 +21,6 @@ import { firebase } from "@react-native-firebase/database"
 import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
 import { CustomButton } from "../components/CustomButton"
 
-//bug cmnr
 const windowWidth = Dimensions.get("window").width
 // const windowHeight = Dimensions.get("window").height
 export const DoctorProfileScreen: FC<StackScreenProps<NavigatorParamList, "doctorProfile">> =
@@ -100,7 +107,7 @@ export const DoctorProfileScreen: FC<StackScreenProps<NavigatorParamList, "docto
                 {infoDoctor?.gender ? "Male" : "Female"}
               </Text>
             </View>
-            <View
+            {/* <View
               style={{
                 alignItems: "center",
                 marginTop: verticleScale(15),
@@ -111,7 +118,7 @@ export const DoctorProfileScreen: FC<StackScreenProps<NavigatorParamList, "docto
                 title={"Update Proflie"}
                 onPress={() => navigation.navigate("postArticle")}
               />
-            </View>
+            </View> */}
           </ScrollView>
         </View>
 

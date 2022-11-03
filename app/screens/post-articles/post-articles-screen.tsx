@@ -69,6 +69,7 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
         })
         .then(() => {
           console.log("Post Successful")
+          navigation.goBack()
         })
     }
     return (

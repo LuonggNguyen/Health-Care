@@ -1,14 +1,17 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { firebase } from "@react-native-firebase/database"
 import { database } from "../../configs/firebase"
 import { Header, Image } from "@rneui/themed"
 import { color } from "../theme"
-import { moderateScale } from "../utils/Scale/Scaling"
+import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
+import Entypo from "react-native-vector-icons/Entypo"
 
+const width = Dimensions.get("window").width
+const height = Dimensions.get("window").height
 export const DoctorBookingScreen: FC<StackScreenProps<NavigatorParamList, "doctorBooking">> =
   observer(function DoctorBookingScreen({ navigation }) {
     const [listBook, setListBook] = useState<Booking[]>([])
@@ -60,14 +63,11 @@ export const DoctorBookingScreen: FC<StackScreenProps<NavigatorParamList, "docto
                   onPress={() => navigation.navigate("detailsBooking", { booking: item })}
                 >
                   <View style={styles.item}>
-                    <Image
-                      style={{
-                        width: 30,
-                        height: 30,
-                      }}
-                      source={{
-                        uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Icons8_flat_todo_list.svg/768px-Icons8_flat_todo_list.svg.png",
-                      }}
+                    <Entypo
+                      name="ticket"
+                      style={{ marginLeft: scale(16), marginRight: scale(16) }}
+                      size={scale(28)}
+                      color="#333"
                     />
                     <View style={{ marginLeft: 12 }}>
                       <Text style={styles.time}>Date: {item.date}</Text>
@@ -77,7 +77,7 @@ export const DoctorBookingScreen: FC<StackScreenProps<NavigatorParamList, "docto
                 </TouchableOpacity>
               )
             }}
-            numColumns={2}
+            numColumns={1}
           />
         </View>
       </View>
@@ -101,13 +101,15 @@ const styles = StyleSheet.create({
   },
   item: {
     padding: 8,
-    marginVertical: 4,
-    marginHorizontal: 4,
     borderWidth: 1,
     borderColor: "#333",
     borderRadius: 16,
     flexDirection: "row",
     alignItems: "center",
+    width: width - scale(20),
+    height: verticleScale(80),
+    marginTop: scale(10),
+    marginHorizontal: scale(10),
   },
   name: {
     fontSize: moderateScale(18),
