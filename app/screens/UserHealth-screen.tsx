@@ -1,6 +1,6 @@
-import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { View, StyleSheet, Text, Image, FlatList, Button } from "react-native"
+import { View, StyleSheet, Text, Image, FlatList } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { database } from "../../configs/firebase"
@@ -8,11 +8,8 @@ import { Header } from "@rneui/themed"
 import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
 import { color } from "../theme"
 import AntDesign from "react-native-vector-icons/AntDesign"
-import Entypo from "react-native-vector-icons/Entypo"
-import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import { firebase } from "@react-native-firebase/database"
 import Fontisto from "react-native-vector-icons/Fontisto"
-import { BottomSheetModal, BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 
 export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHealth">> = observer(
   function UserHealthScreen({ navigation }) {
@@ -71,7 +68,7 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                       <Text style={styles.name}>{item.nameDoctor}</Text>
                     </View>
                     <View style={styles.boxContent}>
-                      {/* <Text style={styles.title}>{item.title}</Text> */}
+                      <Text style={styles.title}>{item.title}</Text>
                       <Text style={styles.contentPost}>{item.content}</Text>
 
                       <Image
@@ -104,7 +101,7 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                           <AntDesign
                             name="like2"
                             size={scale(24)}
-                            color={color.colorApp}
+                            color={"gray"}
                             onPress={() => {
                               database
                                 .ref("/posts/" + item.idPost + "/like/" + user.uid)
@@ -196,7 +193,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     marginRight: 12,
     color: "#000",
-    marginTop: 10,
+    marginTop: 16,
   },
   contentPost: {
     marginTop: scale(12),
@@ -206,11 +203,12 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   imagePost: {
-    width: scale(500),
+    width: "95%",
     height: scale(200),
     alignSelf: "center",
     marginBottom: scale(10),
     borderRadius: 8,
+    resizeMode: "contain",
   },
   boxLike: {
     alignItems: "center",

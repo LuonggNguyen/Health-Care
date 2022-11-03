@@ -7,7 +7,8 @@ import { firebase } from "@react-native-firebase/database"
 import { database } from "../../configs/firebase"
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native"
 import { MyHeader } from "../components/MyHeader"
-import { Image, Text } from "@rneui/themed"
+import { Text } from "@rneui/themed"
+import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 
 export const UserCancelScreen: FC<StackScreenProps<NavigatorParamList, "userCancel">> = observer(
   function UserCancelScreen({ navigation }) {
@@ -58,15 +59,8 @@ export const UserCancelScreen: FC<StackScreenProps<NavigatorParamList, "userCanc
                   onPress={() => navigation.navigate("detailsBooking", { booking: item })}
                 >
                   <View style={styles.item}>
-                    <Image
-                      style={{
-                        width: 100,
-                        height: 100,
-                      }}
-                      source={{
-                        uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Icons8_flat_todo_list.svg/768px-Icons8_flat_todo_list.svg.png",
-                      }}
-                    />
+                    <MaterialIcons name="list-alt" size={100} color="#000" />
+
                     <View style={{ marginLeft: 12 }}>
                       <Text style={styles.name}>Doctor: {item.nameDoctor}</Text>
                       <Text style={styles.time}>Date: {item.date}</Text>

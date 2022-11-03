@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { Header } from "@rneui/themed"
@@ -17,7 +17,6 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
     const user = firebase.auth().currentUser
     useEffect(() => {
       database.ref("/books").on("value", (snapshot) => {
-        // console.log(snapshot.val())
         try {
           const listkey = Object.keys(snapshot.val())
           listkey.map((item) => {
@@ -79,15 +78,7 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
                   onPress={() => navigation.navigate("detailsBooking", { booking: item })}
                 >
                   <View style={styles.item}>
-                    <Image
-                      style={{
-                        width: 100,
-                        height: 100,
-                      }}
-                      source={{
-                        uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Icons8_flat_todo_list.svg/768px-Icons8_flat_todo_list.svg.png",
-                      }}
-                    />
+                    <MaterialIcons name="list-alt" size={100} color="#000" />
                     <View style={{ marginLeft: 12 }}>
                       <Text style={styles.name}>Doctor: {item.nameDoctor}</Text>
                       <Text style={styles.time}>Date: {item.date}</Text>
