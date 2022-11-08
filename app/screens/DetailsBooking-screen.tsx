@@ -14,7 +14,6 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
   observer(function DetailsBookingScreen({ navigation, route }) {
     const { booking } = route.params
     const [infoDoctor, setInfoDoctor] = useState<InfoDoctor>()
-
     useEffect(() => {
       database.ref("/doctors/" + booking.idDoctor).on("value", (snapshot) => {
         setInfoDoctor(snapshot.val())
@@ -143,8 +142,8 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
               </Text>
             </View>
             <View style={styles.boxTime}>
-              <Text style={{ fontSize: 36, color: "#333", fontWeight: "bold" }}>
-                <AntDesign name="clockcircleo" size={36} color="#333" />
+              <Text style={{ fontSize: 32, color: "#333", fontWeight: "bold" }}>
+                <AntDesign name="clockcircleo" size={32} color="#333" />
                 {" " + getWorkShift(booking.workingTime)}
               </Text>
             </View>
@@ -152,10 +151,10 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
               <Text
                 style={
                   getStatus(booking.status, booking.date) === "Unfinished"
-                    ? { fontSize: 36, color: "#8fce00", fontWeight: "bold" }
+                    ? { fontSize: 32, color: "#8fce00", fontWeight: "bold" }
                     : getStatus(booking.status, booking.date) === "In the past"
-                    ? { fontSize: 36, color: "#888", fontWeight: "bold" }
-                    : { fontSize: 36, color: "red", fontWeight: "bold" }
+                    ? { fontSize: 32, color: "#888", fontWeight: "bold" }
+                    : { fontSize: 32, color: "red", fontWeight: "bold" }
                 }
               >
                 <AntDesign
@@ -164,7 +163,7 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
                       ? "questioncircle"
                       : "closecircle"
                   }
-                  size={36}
+                  size={32}
                   color={
                     getStatus(booking.status, booking.date) === "Unfinished"
                       ? "#8fce00"
@@ -232,7 +231,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   textInfo: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
     color: "#000",
     fontStyle: "italic",

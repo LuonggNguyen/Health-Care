@@ -34,7 +34,7 @@ export const DoctorProfileScreen: FC<StackScreenProps<NavigatorParamList, "docto
         setInfoDoctor(snapshot.val())
       })
       return () => {
-        setInfoDoctor(undefined)
+        setInfoDoctor(null)
       }
     }, [])
     return (

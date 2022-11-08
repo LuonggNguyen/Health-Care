@@ -1,7 +1,6 @@
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react"
-import * as React from "react"
+import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { View, StyleSheet, Text, Image, FlatList, Button } from "react-native"
+import { View, StyleSheet, Text, Image, FlatList } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { database } from "../../configs/firebase"
@@ -9,8 +8,6 @@ import { Header } from "@rneui/themed"
 import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
 import { color } from "../theme"
 import AntDesign from "react-native-vector-icons/AntDesign"
-import Entypo from "react-native-vector-icons/Entypo"
-import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import { firebase } from "@react-native-firebase/database"
 import Fontisto from "react-native-vector-icons/Fontisto"
 
@@ -70,7 +67,7 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                       <Text style={styles.name}>{item.nameDoctor}</Text>
                     </View>
                     <View style={styles.boxContent}>
-                      {/* <Text style={styles.title}>{item.title}</Text> */}
+                      <Text style={styles.title}>{item.title}</Text>
                       <Text style={styles.contentPost}>{item.content}</Text>
 
                       <Image
@@ -103,7 +100,7 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                           <AntDesign
                             name="like2"
                             size={scale(24)}
-                            color={color.colorApp}
+                            color={"gray"}
                             onPress={() => {
                               database
                                 .ref("/posts/" + item.idPost + "/like/" + user.uid)
@@ -153,63 +150,22 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
   },
 )
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#dfdfdf",
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-  },
-  titleHeader: {
-    fontSize: moderateScale(24),
-    fontWeight: "bold",
-    color: "#000",
-  },
-  boxItem: {
-    borderRadius: 18,
-    margin: scale(8),
-    backgroundColor: "#ffff",
+  avatar: {
+    borderRadius: 70,
+    height: verticleScale(50),
+    marginLeft: 12,
+    marginTop: 12,
+    width: verticleScale(50),
   },
   boxAvatar: {
     alignItems: "center",
     flexDirection: "row",
   },
-  avatar: {
-    width: verticleScale(50),
-    height: verticleScale(50),
-    borderRadius: 70,
-    marginLeft: 12,
-    marginTop: 12,
-  },
-  name: {
-    fontSize: moderateScale(18),
-    // fontFamily: "Roboto",
-    fontWeight: "600",
-    color: "#000",
-    marginLeft: 12,
-  },
   boxContent: {},
-  title: {
-    fontSize: moderateScale(16),
-    fontWeight: "700",
-    marginLeft: 12,
-    marginRight: 12,
-    color: "#000",
-    marginTop: 10,
-  },
-  contentPost: {
-    marginTop: scale(12),
-    marginLeft: scale(12),
-    marginBottom: scale(12),
-    color: "#000",
-    marginRight: 6,
-  },
-  imagePost: {
-    width: scale(500),
-    height: scale(200),
-    alignSelf: "center",
-    marginBottom: scale(10),
-    borderRadius: 8,
+  boxItem: {
+    backgroundColor: "#ffff",
+    borderRadius: 18,
+    margin: scale(8),
   },
   boxLike: {
     alignItems: "center",
@@ -219,10 +175,52 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: "gray",
   },
+  container: {
+    backgroundColor: "#dfdfdf",
+    flex: 1,
+  },
+  content: {
+    flex: 1,
+  },
+  contentPost: {
+    color: "#000",
+    marginBottom: scale(12),
+    marginLeft: scale(12),
+    marginRight: 6,
+    marginTop: scale(12),
+  },
   count: {
     color: "#000",
     fontSize: scale(18),
     padding: 8,
     // fontWeight: "bold",
+  },
+  imagePost: {
+    alignSelf: "center",
+    borderRadius: 8,
+    height: scale(200),
+    marginBottom: scale(10),
+    resizeMode: "contain",
+    width: "95%",
+  },
+  name: {
+    fontSize: moderateScale(18),
+    // fontFamily: "Roboto",
+    fontWeight: "600",
+    color: "#000",
+    marginLeft: 12,
+  },
+  title: {
+    color: "#000",
+    fontSize: moderateScale(16),
+    fontWeight: "700",
+    marginLeft: 12,
+    marginRight: 12,
+    marginTop: 16,
+  },
+  titleHeader: {
+    color: "#000",
+    fontSize: moderateScale(24),
+    fontWeight: "bold",
   },
 })

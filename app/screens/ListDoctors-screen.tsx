@@ -19,6 +19,24 @@ export const ListDoctorsScreen: FC<StackScreenProps<NavigatorParamList, "listDoc
         setList([])
       }
     }, [])
+
+    const getExp = (dateString) => {
+      if (!dateString) {
+        return 0
+      } else {
+        var today = new Date()
+        const [day, month, year] = dateString.split("/")
+        const time = new Date(+year, +month - 1, +day)
+        var birthDate = new Date(time)
+
+        var age = today.getFullYear() - birthDate.getFullYear()
+        var m = today.getMonth() - birthDate.getMonth()
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          age--
+        }
+        return age
+      }
+    }
     return (
       <View style={styles.container}>
         <MyHeader title="List Doctor" onPress={() => navigation.goBack()} />
@@ -50,7 +68,9 @@ export const ListDoctorsScreen: FC<StackScreenProps<NavigatorParamList, "listDoc
                     <Text style={styles.name}>{item.name}</Text>
                     <Text style={styles.info}>{item.department}</Text>
                     <Text style={styles.info}>Gender: {item.gender ? "Male" : "Female"}</Text>
-                    <Text style={styles.info}>Year exp: {item.dayStartWork}</Text>
+                    <Text style={styles.info}>
+                      Years of experience: {getExp(item.dayStartWork)}
+                    </Text>
                   </View>
                 </View>
               </TouchableOpacity>

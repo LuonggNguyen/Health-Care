@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite"
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
-import { Button, Header, Image, Input } from "@rneui/themed"
+import { Button, Dialog, Header, Image, Input } from "@rneui/themed"
 import auth from "@react-native-firebase/auth"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { GoogleSignin, GoogleSigninButton } from "@react-native-google-signin/google-signin"
@@ -13,6 +13,7 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
     const [showPass, setShowPass] = useState(true)
     const [email, setEmail] = useState("ngan@doctor.com")
     const [pass, setPass] = useState("123456")
+    const [loading, setLoading] = useState(false)
 
     async function onGoogleButtonPress() {
       try {
@@ -23,6 +24,7 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
         // console.log(GoogleSignin.signIn())
 
         const googleCredential = await auth.GoogleAuthProvider.credential(idToken)
+        setLoading(true)
         return auth()
           .signInWithCredential(googleCredential)
           .then((userCredentials) => {
@@ -31,6 +33,7 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
               index: 0,
               routes: [{ name: "user" }],
             })
+            setLoading(false)
           })
           .catch((err) => {
             console.log("Login Fail !!\n" + err)
@@ -43,15 +46,13 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
     const handleLogin = (username, password) => {
       if (!username || !password) {
         Alert.alert("Can't be empty")
-        // setEmail("")
-        // setPass("")
       } else {
+        setEmail("")
+        setPass("")
+        setLoading(true)
         auth()
           .signInWithEmailAndPassword(username, password)
           .then((infoAccount) => {
-            // navigation.navigate("infoUser")
-            setEmail("")
-            setPass("")
             const checkRole = infoAccount.user.email.search("@doctor")
             if (checkRole == -1) {
               navigation.navigate("user")
@@ -59,13 +60,16 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
                 index: 0,
                 routes: [{ name: "user" }],
               })
+              setLoading(false)
             } else {
               navigation.navigate("doctor")
               navigation.reset({
                 index: 0,
                 routes: [{ name: "doctor" }],
               })
+              setLoading(false)
             }
+
             // Alert.alert("Login Successful !!")
           })
           .catch((error) => {
@@ -81,6 +85,21 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
 
     const goToRegister = () => {
       navigation.navigate("register")
+    }
+    if (loading) {
+      return (
+        <View style={styles.container}>
+          <Header
+            centerComponent={
+              <Text style={{ color: "#000", fontSize: 24, fontWeight: "bold" }}>LOGIN</Text>
+            }
+            backgroundColor="#fff"
+          />
+          <View style={{ flex: 1, justifyContent: "center" }}>
+            <Dialog.Loading />
+          </View>
+        </View>
+      )
     }
     return (
       <View style={styles.container}>
