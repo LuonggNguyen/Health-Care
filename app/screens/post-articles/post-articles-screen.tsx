@@ -56,15 +56,9 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
           comment: [
             {
               idUser: infoDoctor.uid,
-              nameUser: "Nguyen Phuc Ngan",
+              nameUser: "",
               img: "",
               contentComment: "",
-            },
-            {
-              idUser: "ViOuaWcn5LawyPU3t6cJipBPcqA2",
-              nameUser: "Nguyen Hoai Luong (FPL DN)",
-              img: "",
-              contentComment: "Tuyet voi",
             },
           ],
         })
@@ -108,7 +102,7 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
           </View>
           <View style={{ flex: 1 }} />
           <View style={styles.boxButton}>
-            <CustomButton title={"Handle"} onPress={() => postArticles(title, content)} />
+            <CustomButton title={"Post"} onPress={() => postArticles(title, content)} />
           </View>
         </View>
       </View>

@@ -33,7 +33,6 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
         setListPost(null)
       }
     }, [])
-
     return (
       <View style={styles.container}>
         <Header
@@ -69,7 +68,9 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                     </View>
                     <View style={styles.boxContent}>
                       <Text style={styles.title}>{item.title}</Text>
-                      <Text style={styles.contentPost}>{item.content}</Text>
+                      <Text numberOfLines={3} style={styles.contentPost}>
+                        {item.content}
+                      </Text>
 
                       <Image
                         resizeMode="contain"
@@ -111,10 +112,8 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                           />
                         )}
                         <Text style={styles.count}>
-                          {
-                            Object?.values(item?.like).filter((item: Like) => item.status === true)
-                              .length
-                          }
+                          {Object?.values(item?.like).filter((item: Like) => item.status === true)
+                            .length + 50}
                         </Text>
                       </View>
                       <View style={{ flex: 1 }} />
@@ -151,6 +150,31 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
   },
 )
 const styles = StyleSheet.create({
+  avatar: {
+    borderRadius: 70,
+    height: verticleScale(50),
+    marginLeft: 12,
+    marginTop: 12,
+    width: verticleScale(50),
+  },
+  boxAvatar: {
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  boxContent: {},
+  boxItem: {
+    backgroundColor: "#ffff",
+    borderRadius: 18,
+    margin: scale(8),
+  },
+  boxLike: {
+    alignItems: "center",
+    flexDirection: "row",
+    height: verticleScale(50),
+    // backgroundColor: color.line,
+    borderTopWidth: 1,
+    borderColor: "#cccc",
+  },
   container: {
     backgroundColor: "#dfdfdf",
     flex: 1,
@@ -158,26 +182,26 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
   },
-  titleHeader: {
-    fontSize: moderateScale(24),
-    fontWeight: "bold",
+  contentPost: {
     color: "#000",
+    marginBottom: scale(12),
+    marginLeft: scale(12),
+    marginRight: 6,
+    marginTop: scale(12),
   },
-  boxItem: {
-    borderRadius: 18,
-    margin: scale(8),
-    backgroundColor: "#ffff",
+  count: {
+    color: "#000",
+    fontSize: scale(18),
+    padding: 8,
+    // fontWeight: "bold",
   },
-  boxAvatar: {
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  avatar: {
-    width: verticleScale(50),
-    height: verticleScale(50),
-    borderRadius: 70,
-    marginLeft: 12,
-    marginTop: 12,
+  imagePost: {
+    alignSelf: "center",
+    borderRadius: 8,
+    height: scale(200),
+    marginBottom: scale(10),
+    resizeMode: "contain",
+    width: "95%",
   },
   name: {
     fontSize: moderateScale(18),
@@ -186,42 +210,17 @@ const styles = StyleSheet.create({
     color: "#000",
     marginLeft: 12,
   },
-  boxContent: {},
   title: {
+    color: "#000",
     fontSize: moderateScale(16),
     fontWeight: "700",
     marginLeft: 12,
     marginRight: 12,
-    color: "#000",
     marginTop: 16,
   },
-  contentPost: {
-    marginTop: scale(12),
-    marginLeft: scale(12),
-    marginBottom: scale(12),
+  titleHeader: {
     color: "#000",
-    marginRight: 6,
-  },
-  imagePost: {
-    width: "95%",
-    height: scale(200),
-    alignSelf: "center",
-    marginBottom: scale(10),
-    borderRadius: 8,
-    resizeMode: "contain",
-  },
-  boxLike: {
-    alignItems: "center",
-    flexDirection: "row",
-    height: verticleScale(50),
-    // backgroundColor: color.line,
-    borderTopWidth: 1,
-    borderColor: "gray",
-  },
-  count: {
-    color: "#000",
-    fontSize: scale(18),
-    padding: 8,
-    // fontWeight: "bold",
+    fontSize: moderateScale(24),
+    fontWeight: "bold",
   },
 })

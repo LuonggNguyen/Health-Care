@@ -33,6 +33,26 @@ declare interface Booking {
   status: number
 }
 
+  declare interface PostArticle {
+    imagePost: string
+    title : string
+    content : string
+    nameDoctor: string
+    avtDoctor: string
+    idPost: string
+    like: []
+    comment: []
+  }
+  declare interface Like {
+    idUser:string
+    status:boolean
+  }
+  declare interface Comment {
+    idUser:string
+    contentComment:string
+    nameUser:string,
+    img: string,
+  }
 declare interface PostArticle {
   title: string
   content: string
