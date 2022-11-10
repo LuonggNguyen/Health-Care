@@ -40,6 +40,7 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
         .ref("/posts")
         .push()
         .set({
+          idDoctor: infoDoctor.uid,
           title: title,
           content: content,
           nameDoctor: infoDoctor.name,
