@@ -35,6 +35,7 @@ declare interface InfoDoctor {
   }
 
   declare interface PostArticle {
+    imagePost: string
     title : string
     content : string
     nameDoctor: string
@@ -46,10 +47,10 @@ declare interface InfoDoctor {
   declare interface Like {
     idUser:string
     status:boolean
-  }  
+  }
   declare interface Comment {
     idUser:string
     contentComment:string
     nameUser:string,
     img: string,
-  }  
+  }

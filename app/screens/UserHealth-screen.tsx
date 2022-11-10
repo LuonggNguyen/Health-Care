@@ -68,7 +68,9 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                     </View>
                     <View style={styles.boxContent}>
                       <Text style={styles.title}>{item.title}</Text>
-                      <Text style={styles.contentPost}>{item.content}</Text>
+                      <Text numberOfLines={3} style={styles.contentPost}>
+                        {item.content}
+                      </Text>
 
                       <Image
                         resizeMode="contain"
@@ -110,10 +112,8 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                           />
                         )}
                         <Text style={styles.count}>
-                          {
-                            Object?.values(item?.like).filter((item: Like) => item.status === true)
-                              .length
-                          }
+                          {Object?.values(item?.like).filter((item: Like) => item.status === true)
+                            .length + 50}
                         </Text>
                       </View>
                       <View style={{ flex: 1 }} />
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     height: verticleScale(50),
     // backgroundColor: color.line,
     borderTopWidth: 1,
-    borderColor: "gray",
+    borderColor: "#cccc",
   },
   container: {
     backgroundColor: "#dfdfdf",

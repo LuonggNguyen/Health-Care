@@ -94,20 +94,20 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
           <View style={styles.cardDoctor}>
             <View style={styles.infoDoctor}>
               <Image style={styles.imgDoctor} source={{ uri: infoDoctor.photoUrl }} />
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "space-around",
-                  height: 200,
-                }}
-              >
-                <View>
-                  <Text style={[styles.textInfo, { marginTop: 16 }]}>{infoDoctor.name}</Text>
-                  <Text style={{ color: "#000" }}>{infoDoctor.department}</Text>
-                  <Text style={styles.textInfoSmall}>Mail: {infoDoctor.email}</Text>
-                  <Text style={styles.textInfoSmall}>Phone: {infoDoctor.phoneNumber}</Text>
-                </View>
-                <TouchableOpacity>
+            </View>
+            <View
+              style={{
+                // alignItems: "center",
+                paddingLeft: 20,
+              }}
+            >
+              <View>
+                <Text style={[styles.textInfo]}>{infoDoctor.name}</Text>
+                <Text style={{ color: "#000" }}>{infoDoctor.department}</Text>
+                <Text style={styles.textInfoSmall}>Mail: {infoDoctor.email}</Text>
+                {/* <Text style={styles.textInfoSmall}>Phone: {infoDoctor.phoneNumber}</Text> */}
+              </View>
+              {/* <TouchableOpacity>
                   <View
                     style={{
                       height: 66,
@@ -122,18 +122,17 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
                     <Text style={{ fontSize: 20, color: "#000", fontWeight: "bold" }}>+1 </Text>
                     <AntDesign name="heart" size={24} color="red" />
                   </View>
-                </TouchableOpacity>
-                <View />
-              </View>
+                </TouchableOpacity> */}
+              <View />
             </View>
-            <View style={styles.infoDoctor}>
+            {/* <View style={styles.infoDoctor}>
               <Text style={{ color: "#000", fontWeight: "bold", fontSize: 16 }}>
                 {"       " + getAge(infoDoctor.dayStartWork) + "\n Years exp"}
               </Text>
               <Text style={{ color: "#000", fontWeight: "bold", fontSize: 16 }}>
                 100 {""} <AntDesign name="heart" size={20} color="#000" />
               </Text>
-            </View>
+            </View> */}
           </View>
           <View style={styles.infoBooking}>
             <View style={styles.boxTime}>
@@ -199,19 +198,19 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#fffbe1",
+    // backgroundColor: "#fffbe1",
   },
   cardDoctor: {
-    flex: 1,
+    // flex: 1,
     width: "95%",
-    backgroundColor: "#1cc3",
-    borderRadius: 16,
-    marginVertical: 8,
+    // marginVertical: 8,
     justifyContent: "space-around",
   },
   infoDoctor: {
-    flexDirection: "row",
+    // flexDirection: "row",
     justifyContent: "space-around",
+    marginTop: 20,
+    borderRadius: 8,
     alignItems: "center",
   },
   infoBooking: {
@@ -223,8 +222,8 @@ const styles = StyleSheet.create({
   },
   imgDoctor: {
     margin: 8,
-    width: 150,
-    height: 190,
+    width: scale(200),
+    height: scale(200),
     resizeMode: "contain",
     borderWidth: 5,
     borderColor: "#f9f9f9",
@@ -235,10 +234,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#000",
     fontStyle: "italic",
+    // paddingBottom: 10,
   },
   textInfoSmall: {
     color: "#000",
-    paddingHorizontal: 4,
     fontSize: 16,
     fontWeight: "bold",
   },
