@@ -8,8 +8,8 @@ import { Header } from "@rneui/themed"
 import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
 import { color } from "../theme"
 import AntDesign from "react-native-vector-icons/AntDesign"
-import { firebase } from "@react-native-firebase/database"
 import Fontisto from "react-native-vector-icons/Fontisto"
+import { firebase } from "@react-native-firebase/database"
 
 export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHealth">> = observer(
   function UserHealthScreen({ navigation }) {

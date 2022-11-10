@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
   infoBooking: {
     flex: 1,
     width: "95%",
-    marginVertical: 8,
+    marginBottom: 8,
     alignItems: "center",
     justifyContent: "space-around",
   },
