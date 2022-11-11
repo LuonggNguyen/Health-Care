@@ -1,9 +1,18 @@
-import React, { FC, useEffect, useState } from "react"
+import Modal from "react-native-modal"
 import { observer } from "mobx-react-lite"
-import { Dimensions, ImageBackground, ScrollView, StyleSheet, Text, View } from "react-native"
+import React, { FC, useEffect, useState } from "react"
+import {
+  Dimensions,
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-import { Header, Image } from "@rneui/themed"
+import { Button, Header, Image } from "@rneui/themed"
 import auth from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
@@ -13,13 +22,14 @@ import { color } from "../theme"
 import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 import { CustomButton } from "../components/CustomButton"
+import ImgToBase64 from "react-native-image-base64"
+import { launchCamera, launchImageLibrary } from "react-native-image-picker"
 
 const windowWidth = Dimensions.get("window").width
-// const windowHeight = Dimensions.get("window").height
-
 export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userProfile">> = observer(
   function UserProfileScreen({ navigation }) {
     const [infoUser, setInfoUser] = useState<InfoUser>()
+    const [modalVisible, setModalVisible] = useState(false)
     const user = firebase.auth().currentUser
     useEffect(() => {
       GoogleSignin.configure({
@@ -65,6 +75,26 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
         return age
       }
     }
+
+    const selectImage = () => {
+      const options = {
+        maxWidth: 2000,
+        maxHeight: 2000,
+        mediaType: "photo",
+      }
+      launchImageLibrary(options, (response) => {
+        if (response.didCancel) {
+          console.log("User cancelled image picker")
+        } else if (response.didCancel) {
+          console.log("ImagePicker Error: ", response.didCancel)
+        }
+        const source = { uri: response.assets }
+        console.log(source.uri[0].uri)
+        ImgToBase64.getBase64String(source.uri[0].uri)
+          .then((base64String) => console.log(base64String))
+          .catch((err) => console.log(err))
+      })
+    }
     if (infoUser) {
       database.ref("/users/" + firebase.auth().currentUser.uid).update({
         uid: user.uid,
@@ -73,6 +103,7 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
         photoUrl: "https://i.pinimg.com/originals/12/61/dd/1261dda75d943cbd543cb86c15f31baa.jpg",
       })
     }
+    console.log(modalVisible)
 
     return (
       <View style={styles.container}>
@@ -96,7 +127,16 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
                 source={{
                   uri: infoUser?.photoUrl,
                 }}
-              ></Image>
+              >
+                <TouchableOpacity
+                  style={{ position: "absolute", bottom: 8, right: 1, zIndex: 1 }}
+                  onPress={() => {
+                    setModalVisible(!modalVisible)
+                  }}
+                >
+                  <FontAwesome name="exchange" size={30} color="blue" />
+                </TouchableOpacity>
+              </Image>
             </View>
             <View style={styles.boxName}>
               <Text style={styles.name}>{user.displayName || infoUser.name}</Text>
@@ -164,6 +204,23 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
               />
             </View>
           </View>
+          <Modal isVisible={modalVisible} animationIn="zoomIn" animationOut="zoomOut">
+            <View
+              style={{
+                backgroundColor: "#fff",
+                width: "90%",
+                height: verticleScale(500),
+                alignSelf: "center",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Image style={styles.avt} source={{ uri: infoUser?.photoUrl }} />
+              <Button title={"Album"} onPress={selectImage} />
+              <Button title={"Camera"} onPress={() => {}} />
+              <Button title={"Cancel"} onPress={() => setModalVisible(false)} />
+            </View>
+          </Modal>
         </ScrollView>
       </View>
     )
