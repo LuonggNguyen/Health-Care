@@ -11,7 +11,7 @@ import Ionicons from "react-native-vector-icons/Ionicons"
 import DatePicker from "react-native-date-picker"
 import moment from "moment"
 import { CustomButton } from "../components/CustomButton"
-import { scale, verticleScale } from "../utils/Scale/Scaling"
+import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
 import AntDesign from "react-native-vector-icons/AntDesign"
 
 export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detailsDoctor">> =
@@ -115,14 +115,22 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
     const getStatus = () => {
       if (!isInTheFuture(day)) {
         return (
-          <Text style={{ fontWeight: "bold", fontSize: scale(20), color: "gray" }}>!Future</Text>
+          <Text style={{ fontWeight: "bold", fontSize: moderateScale(20), color: "gray" }}>
+            !Future
+          </Text>
         )
       } else {
         if (checkBooking) {
-          return <Text style={{ fontWeight: "bold", fontSize: scale(20), color: "red" }}>Busy</Text>
+          return (
+            <Text style={{ fontWeight: "bold", fontSize: moderateScale(20), color: "red" }}>
+              Busy
+            </Text>
+          )
         } else {
           return (
-            <Text style={{ fontWeight: "bold", fontSize: scale(20), color: "green" }}>Free</Text>
+            <Text style={{ fontWeight: "bold", fontSize: moderateScale(20), color: "green" }}>
+              Free
+            </Text>
           )
         }
       }
@@ -146,10 +154,10 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
             <Image style={styles.imgDoctor} source={{ uri: doctor.photoUrl }} />
             <View style={{ justifyContent: "space-evenly", height: verticleScale(120) }}>
               <Text style={styles.nameDoctor}>{doctor.name}</Text>
-              <Text style={{ fontWeight: "bold", fontSize: 16 }}>{doctor.department}</Text>
-              <Text style={{ fontSize: 16 }}>Poly Hopital</Text>
+              <Text style={{ fontSize: moderateScale(16) }}>{doctor.department}</Text>
+              <Text style={{ fontWeight: "bold", fontSize: moderateScale(16) }}>Poly Hospital</Text>
             </View>
-            <View style={{ width: scale(50) }} />
+            <View style={{ width: scale(0) }} />
           </View>
           <View style={styles.infoDoctor}>
             <View style={styles.rateAndExp}>
@@ -182,9 +190,10 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
               {getStatus()}
             </View>
             <View style={styles.timeBooking}>
-              <Text>Time</Text>
-              <Text style={{ fontSize: scale(20), color: "#000" }}>
-                <AntDesign name="clockcircleo" size={20} color="#000" /> {getWorkShift(shift + 1)}
+              <Text style={{ fontSize: moderateScale(19) }}>Time</Text>
+              <Text style={{ fontSize: moderateScale(18), color: "#000" }}>
+                <AntDesign name="clockcircleo" size={moderateScale(18)} color="#000" />{" "}
+                {getWorkShift(shift + 1)}
               </Text>
             </View>
           </View>
@@ -193,7 +202,7 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
               <Ionicons name="mail" color={"blue"} size={24} />
               <Text
                 style={{
-                  fontSize: scale(18),
+                  fontSize: moderateScale(18),
                   color: "#000",
                   marginLeft: scale(20),
                 }}
@@ -205,7 +214,7 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
               <Ionicons name="call" color={"green"} size={24} />
               <Text
                 style={{
-                  fontSize: scale(18),
+                  fontSize: moderateScale(18),
                   color: "#000",
                   marginLeft: scale(20),
                 }}
@@ -293,7 +302,7 @@ const styles = StyleSheet.create({
   },
   nameDoctor: {
     fontWeight: "bold",
-    fontSize: scale(22),
+    fontSize: moderateScale(22),
     color: "#000",
   },
   rateAndExp: {
@@ -328,7 +337,7 @@ const styles = StyleSheet.create({
   soccer: {
     color: "#000",
     fontWeight: "bold",
-    fontSize: scale(16),
+    fontSize: moderateScale(16),
   },
   timeAndStatus: {
     paddingVertical: 16,
