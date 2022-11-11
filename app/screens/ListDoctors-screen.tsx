@@ -55,8 +55,8 @@ export const ListDoctorsScreen: FC<StackScreenProps<NavigatorParamList, "listDoc
                 <View style={styles.item}>
                   <Image
                     style={{
-                      width: 150,
-                      height: 150,
+                      width: 120,
+                      height: 120,
                       borderRadius: 75,
                       resizeMode: "cover",
                     }}

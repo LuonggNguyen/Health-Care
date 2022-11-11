@@ -8,7 +8,7 @@ import { database } from "../../configs/firebase"
 import { Dialog, Image } from "@rneui/themed"
 import { CustomButton } from "../components/CustomButton"
 import AntDesign from "react-native-vector-icons/AntDesign"
-import { scale } from "../utils/Scale/Scaling"
+import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
 
 export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "detailsBooking">> =
   observer(function DetailsBookingScreen({ navigation, route }) {
@@ -94,85 +94,106 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
           <View style={styles.cardDoctor}>
             <View style={styles.infoDoctor}>
               <Image style={styles.imgDoctor} source={{ uri: infoDoctor.photoUrl }} />
-            </View>
-            <View
-              style={{
-                // alignItems: "center",
-                paddingLeft: 20,
-              }}
-            >
               <View>
                 <Text style={[styles.textInfo]}>{infoDoctor.name}</Text>
-                <Text style={{ color: "#000" }}>{infoDoctor.department}</Text>
-                <Text style={styles.textInfoSmall}>Mail: {infoDoctor.email}</Text>
-                {/* <Text style={styles.textInfoSmall}>Phone: {infoDoctor.phoneNumber}</Text> */}
+                <Text style={{ color: "#000", paddingBottom: 4 }}>{infoDoctor.department}</Text>
+                <Text style={{ fontWeight: "bold", fontSize: moderateScale(16) }}>
+                  Poly Hospital
+                </Text>
               </View>
-              {/* <TouchableOpacity>
-                  <View
-                    style={{
-                      height: 66,
-                      width: 66,
-                      backgroundColor: "#f9f9f9",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      borderRadius: 16,
-                      flexDirection: "row",
-                    }}
-                  >
-                    <Text style={{ fontSize: 20, color: "#000", fontWeight: "bold" }}>+1 </Text>
-                    <AntDesign name="heart" size={24} color="red" />
-                  </View>
-                </TouchableOpacity> */}
-              <View />
             </View>
-            {/* <View style={styles.infoDoctor}>
-              <Text style={{ color: "#000", fontWeight: "bold", fontSize: 16 }}>
-                {"       " + getAge(infoDoctor.dayStartWork) + "\n Years exp"}
-              </Text>
-              <Text style={{ color: "#000", fontWeight: "bold", fontSize: 16 }}>
-                100 {""} <AntDesign name="heart" size={20} color="#000" />
-              </Text>
-            </View> */}
           </View>
           <View style={styles.infoBooking}>
-            <View style={styles.boxTime}>
-              <Text style={{ fontSize: 32, color: "#333", fontWeight: "bold" }}>
-                <AntDesign name="calendar" size={32} color="#333" /> {" " + booking.date}
-              </Text>
+            <View style={styles.infoDoctor}>
+              <View style={styles.rateAndExp}>
+                <View style={styles.icon}>
+                  <AntDesign name="star" size={24} color="gold" />
+                </View>
+                <View style={styles.infoRateAndExp}>
+                  <Text style={styles.soccer}>4.5</Text>
+                  <Text>Ratings</Text>
+                </View>
+              </View>
+              <View style={styles.rateAndExp}>
+                <View style={styles.icon}>
+                  <Image
+                    style={{ width: 30, height: 30, resizeMode: "contain" }}
+                    source={{
+                      uri: "https://cdn.pixabay.com/photo/2020/05/01/18/59/stethoscope-5118688_960_720.png",
+                    }}
+                  />
+                </View>
+                <View style={styles.infoRateAndExp}>
+                  <Text style={styles.soccer}>17 years</Text>
+                  <Text>Experience</Text>
+                </View>
+              </View>
             </View>
             <View style={styles.boxTime}>
-              <Text style={{ fontSize: 32, color: "#333", fontWeight: "bold" }}>
-                <AntDesign name="clockcircleo" size={32} color="#333" />
-                {" " + getWorkShift(booking.workingTime)}
-              </Text>
-            </View>
-            <View style={styles.boxTime}>
-              <Text
-                style={
-                  getStatus(booking.status, booking.date) === "Unfinished"
-                    ? { fontSize: 32, color: "#8fce00", fontWeight: "bold" }
-                    : getStatus(booking.status, booking.date) === "In the past"
-                    ? { fontSize: 32, color: "#888", fontWeight: "bold" }
-                    : { fontSize: 32, color: "red", fontWeight: "bold" }
-                }
-              >
-                <AntDesign
-                  name={
+              <View>
+                <Text
+                  style={{ fontSize: moderateScale(20), alignSelf: "center", paddingBottom: 8 }}
+                >
+                  Status
+                </Text>
+                <Text
+                  style={
                     getStatus(booking.status, booking.date) === "Unfinished"
-                      ? "questioncircle"
-                      : "closecircle"
-                  }
-                  size={32}
-                  color={
-                    getStatus(booking.status, booking.date) === "Unfinished"
-                      ? "#8fce00"
+                      ? { fontSize: moderateScale(18), color: "#8fce00", fontWeight: "bold" }
                       : getStatus(booking.status, booking.date) === "In the past"
-                      ? "#888"
-                      : "red"
+                      ? { fontSize: moderateScale(18), color: "#888", fontWeight: "bold" }
+                      : { fontSize: moderateScale(18), color: "red", fontWeight: "bold" }
                   }
-                />
-                {" " + getStatus(booking.status, booking.date)}
-              </Text>
+                >
+                  <AntDesign
+                    name={
+                      getStatus(booking.status, booking.date) === "Unfinished"
+                        ? "questioncircle"
+                        : "closecircle"
+                    }
+                    size={18}
+                    color={
+                      getStatus(booking.status, booking.date) === "Unfinished"
+                        ? "#8fce00"
+                        : getStatus(booking.status, booking.date) === "In the past"
+                        ? "#888"
+                        : "red"
+                    }
+                  />
+                  {" " + getStatus(booking.status, booking.date)}
+                </Text>
+              </View>
+              <View>
+                <Text
+                  style={{ fontSize: moderateScale(18), alignSelf: "center", paddingBottom: 8 }}
+                >
+                  Date
+                </Text>
+                <Text style={{ fontSize: moderateScale(16), color: "#333", fontWeight: "bold" }}>
+                  <AntDesign name="calendar" size={16} color="#333" /> {" " + booking.date}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.boxTime}>
+              {/* <View></View> */}
+              <View>
+                <Text
+                  style={{ fontSize: moderateScale(18), alignSelf: "center", paddingBottom: 8 }}
+                >
+                  Time
+                </Text>
+                <Text style={{ fontSize: 18, color: "#333", fontWeight: "bold" }}>
+                  <AntDesign name="clockcircleo" size={moderateScale(18)} color="#333" />
+                  {" " + getWorkShift(booking.workingTime)}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.boxTime}>
+              {/* <View></View> */}
+              <View>
+                <Text style={styles.textInfoSmall}>Mail: {infoDoctor.email}</Text>
+                <Text style={styles.textInfoSmall}>Phone: {infoDoctor.phoneNumber}</Text>
+              </View>
             </View>
           </View>
           {getStatus(booking.status, booking.date) === "In the past" ? (
@@ -203,13 +224,12 @@ const styles = StyleSheet.create({
   cardDoctor: {
     // flex: 1,
     width: "95%",
-    // marginVertical: 8,
     justifyContent: "space-around",
   },
   infoDoctor: {
-    // flexDirection: "row",
+    flexDirection: "row",
     justifyContent: "space-around",
-    marginTop: 20,
+    marginTop: 16,
     borderRadius: 8,
     alignItems: "center",
   },
@@ -218,12 +238,12 @@ const styles = StyleSheet.create({
     width: "95%",
     marginBottom: 8,
     alignItems: "center",
-    justifyContent: "space-around",
+    // justifyContent: "space-around",
   },
   imgDoctor: {
-    margin: 8,
-    width: scale(200),
-    height: scale(200),
+    // margin: 8,
+    width: scale(110),
+    height: scale(110),
     resizeMode: "contain",
     borderWidth: 5,
     borderColor: "#f9f9f9",
@@ -233,20 +253,58 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#000",
-    fontStyle: "italic",
-    // paddingBottom: 10,
+    paddingBottom: 4,
   },
   textInfoSmall: {
     color: "#000",
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: moderateScale(18),
+    paddingVertical: 5,
+    // fontWeight: "bold",
   },
   boxTime: {
+    marginTop: 20,
     width: "90%",
     height: scale(90),
-    backgroundColor: "#1cc3",
+    // backgroundColor: "#1cc3",
+    borderColor: "#cccc",
+    borderWidth: 1,
     borderRadius: 18,
     alignItems: "center",
+    justifyContent: "space-around",
+    flexDirection: "row",
+  },
+  rateAndExp: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
     justifyContent: "center",
+  },
+  icon: {
+    height: scale(50),
+    width: scale(50),
+    borderRadius: scale(16),
+    backgroundColor: "#f9f9f9",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  infoRateAndExp: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: scale(16),
+    height: verticleScale(60),
+  },
+  soccer: {
+    color: "#000",
+    fontWeight: "bold",
+    fontSize: moderateScale(16),
   },
 })
