@@ -4,16 +4,18 @@ import { FlatList, Image, ScrollView, StyleSheet, Text, View } from "react-nativ
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { MyHeader } from "../components/MyHeader"
-import { Button } from "@rneui/themed"
+import { Button, Input } from "@rneui/themed"
 import { database } from "../../configs/firebase"
 import { firebase } from "@react-native-firebase/database"
 import { verticleScale, scale, moderateScale } from "../utils/Scale/Scaling"
+import FontAwesome from "react-native-vector-icons/FontAwesome"
 
 export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "detailsArticle">> =
   observer(function DetailsArticleScreen({ navigation, route }) {
     const { post } = route.params
     const user = firebase.auth().currentUser
     const [cmt, setCmt] = useState<Comment[]>()
+    const [comment, setComment] = useState("")
     useEffect(() => {
       database.ref("/posts/" + post.idPost + "/comment").on("value", (res) => {
         setCmt(Object.values(res.val()))
@@ -54,41 +56,65 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
             {!cmt ? (
               <Text>No comment</Text>
             ) : (
-              <View style={{ height: verticleScale(400) }}>
+              <View style={{ height: verticleScale(500) }}>
                 <FlatList
                   nestedScrollEnabled={true}
                   data={cmt}
                   renderItem={({ item }) => {
                     return (
-                      <View>
-                        <Image style={styles.avatar} source={{ uri: item.img }}></Image>
+                      <View style={styles.listComment}>
+                        <Image style={styles.avatarComment} source={{ uri: item.img }}></Image>
+                        <View>
+                          <Text
+                            style={{
+                              fontSize: moderateScale(16),
+                              fontWeight: "600",
+                              paddingBottom: 8,
+                            }}
+                          >
+                            {item.nameUser}
+                          </Text>
 
-                        <Text>{item.contentComment}</Text>
+                          <Text>{item.contentComment}</Text>
+                        </View>
                       </View>
                     )
                   }}
                 />
               </View>
             )}
-            <Button
-              title={"Comment"}
+          </View>
+        </ScrollView>
+        <View style={styles.boxComment}>
+          <View style={{ width: "85%" }}>
+            <Input
+            // value={comment}
+            // onChangeText={(text) => {
+            //   setComment(text)
+            // }}
+            ></Input>
+          </View>
+          <View style={{ justifyContent: "center", paddingHorizontal: 20 }}>
+            <FontAwesome
+              name="send"
+              size={scale(22)}
               onPress={() => {
                 database
                   .ref("/posts/" + post.idPost + "/comment")
                   .push()
                   .set({
                     idUser: user.uid,
-                    contentComment: "Kha lam con zai",
+                    contentComment: comment,
                     nameUser: user.displayName,
-                    img: user.photoURL,
+                    img: "https://i.pinimg.com/originals/12/61/dd/1261dda75d943cbd543cb86c15f31baa.jpg",
                   })
                   .then(() => {
-                    console.log("cmt")
+                    setComment("")
                   })
               }}
-            />
+            ></FontAwesome>
           </View>
-        </ScrollView>
+        </View>
       </View>
     )
   })
@@ -98,18 +124,26 @@ const styles = StyleSheet.create({
     borderRadius: 70,
     height: verticleScale(50),
     marginLeft: 12,
-    marginTop: 12,
+    marginRight: 22,
     width: verticleScale(50),
+  },
+  avatarComment: {
+    borderRadius: 70,
+    height: verticleScale(40),
+    marginLeft: 12,
+    marginRight: 22,
+    width: verticleScale(40),
   },
   boxAvatar: {
     alignItems: "center",
     flexDirection: "row",
+    paddingTop: 8,
   },
   boxContent: {},
   boxItem: {
     backgroundColor: "#ffff",
-    borderRadius: 18,
-    margin: scale(8),
+    // borderRadius: 18,
+    // margin: scale(8),
   },
   boxLike: {
     alignItems: "center",
@@ -129,10 +163,10 @@ const styles = StyleSheet.create({
   imagePost: {
     alignSelf: "center",
     borderRadius: 8,
-    height: scale(200),
-    marginBottom: scale(10),
+    height: scale(230),
+    marginBottom: scale(5),
     resizeMode: "contain",
-    width: "95%",
+    width: "100%",
   },
   name: {
     fontSize: moderateScale(18),
@@ -155,5 +189,24 @@ const styles = StyleSheet.create({
     marginLeft: scale(12),
     marginRight: 6,
     marginTop: scale(12),
+  },
+  boxComment: {
+    flex: 1,
+    flexDirection: "row",
+    alignSelf: "center",
+    marginTop: 8,
+    paddingBottom: 4,
+    position: "absolute",
+    bottom: 0,
+    backgroundColor: "#ffff",
+    // marginHorizontal: 20,
+  },
+  listComment: {
+    padding: 18,
+    backgroundColor: "#ffff",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    flexDirection: "row",
+    alignItems: "center",
   },
 })
