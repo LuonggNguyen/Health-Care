@@ -4,7 +4,7 @@ import { FlatList, Image, ScrollView, StyleSheet, Text, View } from "react-nativ
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { MyHeader } from "../components/MyHeader"
-import { Button, Input } from "@rneui/themed"
+import { Input } from "@rneui/themed"
 import { database } from "../../configs/firebase"
 import { firebase } from "@react-native-firebase/database"
 import { verticleScale, scale, moderateScale } from "../utils/Scale/Scaling"
@@ -19,14 +19,9 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
     useEffect(() => {
       database.ref("/posts/" + post.idPost + "/comment").on("value", (res) => {
         setCmt(Object.values(res.val()))
-        console.log(cmt)
       })
       return () => setCmt(undefined)
     }, [])
-    if (cmt) {
-      cmt.shift()
-    }
-
     return (
       <View style={styles.container}>
         <MyHeader
@@ -35,7 +30,7 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
             await navigation.goBack()
           }}
         />
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.boxItem}>
             <View style={styles.boxAvatar}>
               <Image style={styles.avatar} source={{ uri: post.avtDoctor }}></Image>
@@ -59,7 +54,7 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
               <View style={{ height: verticleScale(500) }}>
                 <FlatList
                   nestedScrollEnabled={true}
-                  data={cmt}
+                  data={cmt.filter((item) => item.contentComment.length > 0)}
                   renderItem={({ item }) => {
                     return (
                       <View style={styles.listComment}>
@@ -88,10 +83,10 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
         <View style={styles.boxComment}>
           <View style={{ width: "85%" }}>
             <Input
-            // value={comment}
-            // onChangeText={(text) => {
-            //   setComment(text)
-            // }}
+              value={comment}
+              onChangeText={(text) => {
+                setComment(text)
+              }}
             ></Input>
           </View>
           <View style={{ justifyContent: "center", paddingHorizontal: 20 }}>
@@ -99,18 +94,22 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
               name="send"
               size={scale(22)}
               onPress={() => {
-                database
-                  .ref("/posts/" + post.idPost + "/comment")
-                  .push()
-                  .set({
-                    idUser: user.uid,
-                    contentComment: comment,
-                    nameUser: user.displayName,
-                    img: "https://i.pinimg.com/originals/12/61/dd/1261dda75d943cbd543cb86c15f31baa.jpg",
-                  })
-                  .then(() => {
-                    setComment("")
-                  })
+                if (comment) {
+                  database
+                    .ref("/posts/" + post.idPost + "/comment")
+                    .push()
+                    .set({
+                      idUser: user.uid,
+                      contentComment: comment,
+                      nameUser: user.displayName,
+                      img: "https://i.pinimg.com/originals/12/61/dd/1261dda75d943cbd543cb86c15f31baa.jpg",
+                    })
+                    .then(() => {
+                      setComment("")
+                    })
+                } else {
+                  console.log("no commet")
+                }
               }}
             ></FontAwesome>
           </View>
