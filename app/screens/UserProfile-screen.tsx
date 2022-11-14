@@ -81,24 +81,28 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
     }
 
     const selectImage = () => {
-      const options: any = {
-        maxWidth: 500,
-        maxHeight: 500,
-        mediaType: "photo",
-      }
-      launchImageLibrary(options, (response) => {
-        if (response.didCancel) {
-          console.log("User cancelled image picker")
-        } else if (response.didCancel) {
-          console.log("ImagePicker Error: ", response.didCancel)
+      try {
+        const options: any = {
+          maxWidth: 500,
+          maxHeight: 500,
+          mediaType: "photo",
         }
-        const source = { uri: response.assets }
-        ImgToBase64.getBase64String(source?.uri[0]?.uri)
-          .then((base64String) => {
-            setImgUpdate("data:image/png;base64," + base64String)
-          })
-          .catch((err) => console.log(err))
-      })
+        launchImageLibrary(options, (response) => {
+          if (response.didCancel) {
+            console.log("User cancelled image picker")
+          } else if (response.didCancel) {
+            console.log("ImagePicker Error: ", response.didCancel)
+          }
+          const source = { uri: response.assets }
+          ImgToBase64.getBase64String(source?.uri[0]?.uri)
+            .then((base64String) => {
+              setImgUpdate("data:image/png;base64," + base64String)
+            })
+            .catch((err) => console.log(err))
+        })
+      } catch (error) {
+        console.log("no bug")
+      }
     }
     const openCamera = () => {
       const options: any = {
