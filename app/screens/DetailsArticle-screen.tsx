@@ -16,12 +16,20 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
     const user = firebase.auth().currentUser
     const [cmt, setCmt] = useState<Comment[]>()
     const [comment, setComment] = useState("")
+    const [imgUser, setImgUser] = useState("")
     useEffect(() => {
       database.ref("/posts/" + post.idPost + "/comment").on("value", (res) => {
         setCmt(Object.values(res.val()))
       })
-      return () => setCmt(undefined)
+      database
+        .ref("/users/" + firebase.auth().currentUser.uid + "/photoUrl")
+        .on("value", (snapshot) => setImgUser(snapshot.val()))
+      return () => {
+        setCmt(null)
+        setImgUser("")
+      }
     }, [])
+
     return (
       <View style={styles.container}>
         <MyHeader
@@ -103,7 +111,7 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                       idUser: user.uid,
                       contentComment: comment,
                       nameUser: user.displayName,
-                      img: "https://i.pinimg.com/originals/12/61/dd/1261dda75d943cbd543cb86c15f31baa.jpg",
+                      img: imgUser,
                     })
                     .then(() => {
                       setComment("")
