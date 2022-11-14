@@ -81,7 +81,7 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
     }
 
     const selectImage = () => {
-      const options = {
+      const options: any = {
         maxWidth: 500,
         maxHeight: 500,
         mediaType: "photo",
@@ -93,7 +93,7 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
           console.log("ImagePicker Error: ", response.didCancel)
         }
         const source = { uri: response.assets }
-        ImgToBase64.getBase64String(source.uri[0].uri)
+        ImgToBase64.getBase64String(source?.uri[0]?.uri)
           .then((base64String) => {
             setImgUpdate("data:image/png;base64," + base64String)
           })
@@ -101,7 +101,7 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
       })
     }
     const openCamera = () => {
-      const options = {
+      const options: any = {
         maxWidth: 500,
         maxHeight: 500,
         mediaType: "photo",
@@ -114,7 +114,7 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
         }
         const source = { uri: response.assets }
         console.log(source.uri[0].uri)
-        ImgToBase64.getBase64String(source.uri[0].uri)
+        ImgToBase64.getBase64String(source?.uri[0]?.uri)
           .then((base64String) => {
             setImgUpdate("data:image/png;base64," + base64String)
           })
@@ -143,15 +143,6 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
         cancelUpdateAvatar()
       }
     }
-
-    if (infoUser) {
-      database.ref("/users/" + firebase.auth().currentUser.uid).update({
-        uid: user.uid,
-        name: user.displayName,
-        email: user.email,
-      })
-    }
-
     return (
       <View style={styles.container}>
         <Header

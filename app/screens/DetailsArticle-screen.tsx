@@ -53,6 +53,7 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
             ) : (
               <View style={{ height: verticleScale(500) }}>
                 <FlatList
+                  showsVerticalScrollIndicator={false}
                   nestedScrollEnabled={true}
                   data={cmt.filter((item) => item.contentComment.length > 0)}
                   renderItem={({ item }) => {

@@ -7,6 +7,7 @@ import { Button, Dialog, Header, Image, Input } from "@rneui/themed"
 import auth from "@react-native-firebase/auth"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { GoogleSignin, GoogleSigninButton } from "@react-native-google-signin/google-signin"
+import { database } from "../../../configs/firebase"
 
 export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = observer(
   function LoginScreen({ navigation }) {
@@ -28,6 +29,9 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
         return auth()
           .signInWithCredential(googleCredential)
           .then((userCredentials) => {
+            database.ref("/users/" + userCredentials.user.uid).update({
+              uid: userCredentials.user.uid,
+            })
             navigation.navigate("user")
             navigation.reset({
               index: 0,
