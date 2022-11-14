@@ -173,12 +173,23 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
                 }}
               >
                 <TouchableOpacity
-                  style={{ position: "absolute", bottom: 8, right: 6, zIndex: 1 }}
+                  style={{
+                    position: "absolute",
+                    bottom: 4,
+                    right: 3,
+                    zIndex: 1,
+                    width: scale(30),
+                    height: scale(30),
+                    backgroundColor: "#777",
+                    borderRadius: scale(15),
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
                   onPress={() => {
                     setModalVisible(!modalVisible)
                   }}
                 >
-                  <FontAwesome name="refresh" size={22} color={color.storybookDarkBg} />
+                  <FontAwesome name="camera" size={16} color="#fff" />
                 </TouchableOpacity>
               </Image>
             </View>
@@ -274,13 +285,27 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
                 >
                   <TouchableOpacity onPress={selectImage} style={{ alignItems: "center" }}>
                     <FontAwesome name="image" size={30} color={color.colorApp} />
-                    <Text style={{ fontSize: 16, fontWeight: "bold", color: color.colorApp }}>
+                    <Text
+                      style={{
+                        fontSize: moderateScale(14),
+                        fontWeight: "bold",
+                        color: color.colorApp,
+                        paddingTop: 6,
+                      }}
+                    >
                       Upload File
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={openCamera} style={{ alignItems: "center" }}>
                     <FontAwesome name="camera" size={30} color={color.colorApp} />
-                    <Text style={{ fontSize: 16, fontWeight: "bold", color: color.colorApp }}>
+                    <Text
+                      style={{
+                        fontSize: moderateScale(14),
+                        fontWeight: "bold",
+                        color: color.colorApp,
+                        paddingTop: 6,
+                      }}
+                    >
                       Open Camera
                     </Text>
                   </TouchableOpacity>
@@ -451,8 +476,8 @@ const styles = StyleSheet.create({
   },
   viewModal: {
     backgroundColor: "#fff",
-    width: "80%",
-    height: verticleScale(400),
+    width: "90%",
+    height: verticleScale(450),
     alignSelf: "center",
     justifyContent: "space-around",
     alignItems: "center",

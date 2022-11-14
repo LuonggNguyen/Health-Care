@@ -78,7 +78,12 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
                   onPress={() => navigation.navigate("detailsBooking", { booking: item })}
                 >
                   <View style={styles.item}>
-                    <MaterialIcons name="list-alt" size={scale(50)} color="#000" />
+                    <MaterialIcons
+                      name="list-alt"
+                      size={scale(50)}
+                      color="#000"
+                      style={{ paddingLeft: 10 }}
+                    />
                     <View style={{ marginLeft: 12 }}>
                       <Text style={styles.name}>Doctor: {item.nameDoctor}</Text>
                       <Text style={styles.time}>Date: {item.date}</Text>

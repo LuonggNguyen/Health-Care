@@ -1,6 +1,14 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { Text, View, StyleSheet, TextInput } from "react-native"
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
 // import { Screen, Text } from "../../components"
@@ -13,6 +21,8 @@ import { CustomButton } from "../../components/CustomButton"
 import { firebase } from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { MyHeader } from "../../components/MyHeader"
+import { launchImageLibrary } from "react-native-image-picker"
+import ImgToBase64 from "react-native-image-base64"
 
 // @ts-ignore
 export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postArticles">> =
@@ -21,6 +31,8 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
     // const { someStore, anotherStore } = useStores()
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
+    const [image, setImage] = useState("")
+
     const [infoDoctor, setInfoDoctor] = useState<InfoDoctor>()
     useEffect(() => {
       GoogleSignin.configure({
@@ -35,7 +47,7 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
         database.ref("/doctors/" + firebase.auth().currentUser.uid).off("child_added", getUser)
       }
     }, [])
-    const postArticles = (title, content) => {
+    const postArticles = (title, content, image) => {
       database
         .ref("/posts")
         .push()
@@ -45,7 +57,7 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
           content: content,
           nameDoctor: infoDoctor.name,
           avtDoctor: infoDoctor.photoUrl,
-          imagePost: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Gull_portrait_ca_usa.jpg",
+          imagePost: image,
           idPost: "",
           like: [
             {
@@ -67,44 +79,95 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
           navigation.goBack()
         })
     }
+    const selectImage = () => {
+      try {
+        const options: any = {
+          maxWidth: 2000,
+          maxHeight: 2000,
+          mediaType: "photo",
+        }
+        launchImageLibrary(options, (response) => {
+          if (response.didCancel) {
+            console.log("User cancelled image picker")
+          } else if (response.didCancel) {
+            console.log("ImagePicker Error: ", response.didCancel)
+          }
+          const source = { uri: response.assets }
+          ImgToBase64.getBase64String(source?.uri[0]?.uri)
+            .then((base64String) => {
+              setImage("data:image/png;base64," + base64String)
+            })
+            .catch((err) => console.log(err))
+        })
+      } catch (error) {
+        console.log("no bug")
+      }
+    }
     return (
       <View style={styles.container}>
         <MyHeader title="New Post" onPress={() => navigation.goBack()} />
-        <View style={styles.content}>
-          <Text style={styles.txtTitle}>Title</Text>
-          <View style={styles.boxTitle}>
-            <TextInput
-              multiline
-              style={{
-                height: verticleScale(80),
-                textAlignVertical: "top",
-                fontSize: 20,
-                color: "#000",
-                fontWeight: "bold",
-              }}
-              onChangeText={(text) => setTitle(text)}
-            ></TextInput>
-          </View>
-          <Text style={styles.txtTitle}>Content</Text>
+        <ScrollView>
+          <View style={styles.content}>
+            <View>
+              <TouchableOpacity onPress={selectImage}>
+                {image == "" ? (
+                  <View
+                    style={{
+                      width: "90%",
+                      paddingVertical: scale(50),
+                      backgroundColor: "#dadada",
+                      alignSelf: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text style={{ fontSize: moderateScale(16) }}>Please select image</Text>
+                  </View>
+                ) : (
+                  <Image
+                    style={[styles.image]}
+                    source={{
+                      uri: image,
+                      // "https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png",
+                    }}
+                  />
+                )}
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.txtTitle}>Title</Text>
+            <View style={styles.boxTitle}>
+              <TextInput
+                multiline
+                style={{
+                  height: verticleScale(80),
+                  textAlignVertical: "top",
+                  fontSize: 20,
+                  color: "#000",
+                  fontWeight: "bold",
+                }}
+                onChangeText={(text) => setTitle(text)}
+              ></TextInput>
+            </View>
+            <Text style={styles.txtTitle}>Content</Text>
 
-          <View style={styles.boxTitle}>
-            <TextInput
-              multiline
-              style={{
-                height: verticleScale(250),
-                textAlignVertical: "top",
-                fontSize: 20,
-                color: "#000",
-                fontWeight: "bold",
-              }}
-              onChangeText={(text) => setContent(text)}
-            ></TextInput>
+            <View style={styles.boxTitle}>
+              <TextInput
+                multiline
+                style={{
+                  height: verticleScale(250),
+                  textAlignVertical: "top",
+                  fontSize: 20,
+                  color: "#000",
+                  fontWeight: "bold",
+                }}
+                onChangeText={(text) => setContent(text)}
+              ></TextInput>
+            </View>
+
+            <View style={styles.boxButton}>
+              <CustomButton title={"Post"} onPress={() => postArticles(title, content, image)} />
+            </View>
           </View>
-          <View style={{ flex: 1 }} />
-          <View style={styles.boxButton}>
-            <CustomButton title={"Post"} onPress={() => postArticles(title, content)} />
-          </View>
-        </View>
+        </ScrollView>
       </View>
     )
   })
@@ -114,14 +177,14 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    marginTop: verticleScale(50),
+    marginTop: verticleScale(10),
   },
   txtTitle: {
     marginTop: 12,
     marginLeft: 12,
     color: "#000",
     fontWeight: "bold",
-    fontSize: moderateScale(24),
+    fontSize: moderateScale(20),
   },
   boxTitle: {
     borderColor: color.colorApp,
@@ -132,9 +195,16 @@ const styles = StyleSheet.create({
   },
   boxButton: {
     alignItems: "center",
-    marginBottom: verticleScale(50),
+
+    marginTop: verticleScale(40),
   },
   button: {
     backgroundColor: color.colorApp,
+  },
+  image: {
+    width: "90%",
+    height: verticleScale(300),
+    alignSelf: "center",
+    borderRadius: 8,
   },
 })

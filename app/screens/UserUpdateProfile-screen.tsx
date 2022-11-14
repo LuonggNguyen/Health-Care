@@ -9,7 +9,7 @@ import { firebase } from "@react-native-firebase/database"
 import { database } from "../../configs/firebase"
 import { color } from "../theme"
 import { CustomText } from "../components/CustomText"
-import { scale, verticleScale } from "../utils/Scale/Scaling"
+import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
 import RadioForm from "react-native-simple-radio-button"
 import { CustomButton } from "../components/CustomButton"
 import Slider from "@react-native-community/slider"
@@ -178,7 +178,11 @@ export const UserUpdateProfileScreen: FC<
           </View>
           <View style={styles.boxGender}>
             <RadioForm
-              labelStyle={{ fontSize: 18, color: color.storybookTextColor, paddingRight: 30 }}
+              labelStyle={{
+                fontSize: moderateScale(16),
+                color: color.storybookTextColor,
+                paddingRight: 30,
+              }}
               labelHorizontal={true}
               formHorizontal={true}
               radio_props={options}
