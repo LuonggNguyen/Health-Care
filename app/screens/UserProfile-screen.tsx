@@ -2,6 +2,7 @@ import Modal from "react-native-modal"
 import { observer } from "mobx-react-lite"
 import React, { FC, useEffect, useState } from "react"
 import {
+  Alert,
   Dimensions,
   ImageBackground,
   ScrollView,
@@ -12,14 +13,14 @@ import {
 } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-import { Button, Header, Image } from "@rneui/themed"
+import { Dialog, Header, Image } from "@rneui/themed"
 import auth from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import { firebase } from "@react-native-firebase/database"
 import { database } from "../../configs/firebase"
 import { color } from "../theme"
 import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
+import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 import { CustomButton } from "../components/CustomButton"
 import ImgToBase64 from "react-native-image-base64"
@@ -30,6 +31,9 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
   function UserProfileScreen({ navigation }) {
     const [infoUser, setInfoUser] = useState<InfoUser>()
     const [modalVisible, setModalVisible] = useState(false)
+    const [imgUpdate, setImgUpdate] = useState("")
+    const [loading, setLoading] = useState(false)
+
     const user = firebase.auth().currentUser
     useEffect(() => {
       GoogleSignin.configure({
@@ -77,9 +81,9 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
     }
 
     const selectImage = () => {
-      const options = {
-        maxWidth: 2000,
-        maxHeight: 2000,
+      const options: any = {
+        maxWidth: 500,
+        maxHeight: 500,
         mediaType: "photo",
       }
       launchImageLibrary(options, (response) => {
@@ -89,22 +93,56 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
           console.log("ImagePicker Error: ", response.didCancel)
         }
         const source = { uri: response.assets }
-        console.log(source.uri[0].uri)
-        ImgToBase64.getBase64String(source.uri[0].uri)
-          .then((base64String) => console.log(base64String))
+        ImgToBase64.getBase64String(source?.uri[0]?.uri)
+          .then((base64String) => {
+            setImgUpdate("data:image/png;base64," + base64String)
+          })
           .catch((err) => console.log(err))
       })
     }
-    if (infoUser) {
-      database.ref("/users/" + firebase.auth().currentUser.uid).update({
-        uid: user.uid,
-        name: user.displayName,
-        email: user.email,
-        photoUrl: "https://i.pinimg.com/originals/12/61/dd/1261dda75d943cbd543cb86c15f31baa.jpg",
+    const openCamera = () => {
+      const options: any = {
+        maxWidth: 500,
+        maxHeight: 500,
+        mediaType: "photo",
+      }
+      launchCamera(options, (response) => {
+        if (response.didCancel) {
+          console.log("User cancelled image picker")
+        } else if (response.didCancel) {
+          console.log("ImagePicker Error: ", response.didCancel)
+        }
+        const source = { uri: response.assets }
+        console.log(source.uri[0].uri)
+        ImgToBase64.getBase64String(source?.uri[0]?.uri)
+          .then((base64String) => {
+            setImgUpdate("data:image/png;base64," + base64String)
+          })
+          .catch((err) => console.log(err))
       })
     }
-    console.log(modalVisible)
+    const cancelUpdateAvatar = () => {
+      setModalVisible(false)
+      setImgUpdate("")
+    }
 
+    const updateAvatar = () => {
+      if (imgUpdate) {
+        setLoading(true)
+        database
+          .ref("/users/" + firebase.auth().currentUser.uid)
+          .update({
+            photoUrl: imgUpdate,
+          })
+          .then(() => {
+            cancelUpdateAvatar()
+            setLoading(false)
+            Alert.alert("Update Avatar Successfully !!")
+          })
+      } else {
+        cancelUpdateAvatar()
+      }
+    }
     return (
       <View style={styles.container}>
         <Header
@@ -125,16 +163,18 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
               <Image
                 style={styles.avt}
                 source={{
-                  uri: infoUser?.photoUrl,
+                  uri:
+                    infoUser?.photoUrl ||
+                    "https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png",
                 }}
               >
                 <TouchableOpacity
-                  style={{ position: "absolute", bottom: 8, right: 1, zIndex: 1 }}
+                  style={{ position: "absolute", bottom: 8, right: 6, zIndex: 1 }}
                   onPress={() => {
                     setModalVisible(!modalVisible)
                   }}
                 >
-                  <FontAwesome name="exchange" size={30} color="blue" />
+                  <FontAwesome name="refresh" size={22} color={color.storybookDarkBg} />
                 </TouchableOpacity>
               </Image>
             </View>
@@ -159,8 +199,6 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
             </View>
             <View style={styles.boxHealth}>
               <View style={styles.blood}>
-                {/* <FontAwesome name="weight" color={"white"} size={scale(20)}></FontAwesome> */}
-
                 <Text style={styles.titleBlood}>Weight</Text>
                 <Text style={styles.textBlood}>
                   {infoUser?.weight}
@@ -205,21 +243,69 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
             </View>
           </View>
           <Modal isVisible={modalVisible} animationIn="zoomIn" animationOut="zoomOut">
-            <View
-              style={{
-                backgroundColor: "#fff",
-                width: "90%",
-                height: verticleScale(500),
-                alignSelf: "center",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Image style={styles.avt} source={{ uri: infoUser?.photoUrl }} />
-              <Button title={"Album"} onPress={selectImage} />
-              <Button title={"Camera"} onPress={() => {}} />
-              <Button title={"Cancel"} onPress={() => setModalVisible(false)} />
-            </View>
+            {loading ? (
+              <View style={styles.viewModal}>
+                <Dialog.Loading />
+              </View>
+            ) : (
+              <View style={styles.viewModal}>
+                <Image
+                  style={[
+                    styles.avt,
+                    {
+                      width: verticleScale(200),
+                      height: verticleScale(200),
+                      borderRadius: scale(100),
+                    },
+                  ]}
+                  source={{
+                    uri:
+                      imgUpdate ||
+                      infoUser?.photoUrl ||
+                      "https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png",
+                  }}
+                />
+                <View
+                  style={{ flexDirection: "row", justifyContent: "space-evenly", width: "100%" }}
+                >
+                  <TouchableOpacity onPress={selectImage} style={{ alignItems: "center" }}>
+                    <FontAwesome name="image" size={30} color={color.colorApp} />
+                    <Text style={{ fontSize: 16, fontWeight: "bold", color: color.colorApp }}>
+                      Upload File
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={openCamera} style={{ alignItems: "center" }}>
+                    <FontAwesome name="camera" size={30} color={color.colorApp} />
+                    <Text style={{ fontSize: 16, fontWeight: "bold", color: color.colorApp }}>
+                      Open Camera
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View
+                  style={{ flexDirection: "row", justifyContent: "space-around", width: "100%" }}
+                >
+                  <TouchableOpacity
+                    onPress={cancelUpdateAvatar}
+                    style={{ justifyContent: "center", alignItems: "center", flexDirection: "row" }}
+                  >
+                    <FontAwesome name="times-circle" size={32} color={"red"} />
+                    <Text style={{ fontSize: 16, fontWeight: "bold", color: "red", margin: 8 }}>
+                      Cancel
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={updateAvatar}
+                    style={{ justifyContent: "center", alignItems: "center", flexDirection: "row" }}
+                  >
+                    <FontAwesome name="check-circle" size={32} color={"green"} />
+                    <Text style={{ fontSize: 16, fontWeight: "bold", color: "green", margin: 8 }}>
+                      Save
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
           </Modal>
         </ScrollView>
       </View>
@@ -358,5 +444,14 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     alignSelf: "center",
     marginTop: 10,
+  },
+  viewModal: {
+    backgroundColor: "#fff",
+    width: "80%",
+    height: verticleScale(400),
+    alignSelf: "center",
+    justifyContent: "space-around",
+    alignItems: "center",
+    borderRadius: 20,
   },
 })

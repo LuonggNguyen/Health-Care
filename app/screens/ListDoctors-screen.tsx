@@ -67,8 +67,8 @@ export const ListDoctorsScreen: FC<StackScreenProps<NavigatorParamList, "listDoc
                   <View style={{ marginLeft: 8 }}>
                     <Text style={styles.name}>{item.name}</Text>
                     <Text style={styles.info}>{item.department}</Text>
-                    <Text style={styles.info}>Gender: {item.gender ? "Male" : "Female"}</Text>
-                    <Text style={styles.info}>
+                    <Text style={styles.info1}>Gender: {item.gender ? "Male" : "Female"}</Text>
+                    <Text style={styles.info1}>
                       Years of experience: {getExp(item.dayStartWork)}
                     </Text>
                   </View>
@@ -115,5 +115,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "black",
     fontWeight: "bold",
+  },
+  info1: {
+    fontSize: 16,
+    color: "black",
   },
 })

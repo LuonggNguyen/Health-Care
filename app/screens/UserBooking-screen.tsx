@@ -9,7 +9,7 @@ import { database } from "../../configs/firebase"
 import { firebase } from "@react-native-firebase/database"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
-import { moderateScale } from "../utils/Scale/Scaling"
+import { moderateScale, scale } from "../utils/Scale/Scaling"
 
 export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBooking">> = observer(
   function UserBookingScreen({ navigation }) {
@@ -78,7 +78,7 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
                   onPress={() => navigation.navigate("detailsBooking", { booking: item })}
                 >
                   <View style={styles.item}>
-                    <MaterialIcons name="list-alt" size={100} color="#000" />
+                    <MaterialIcons name="list-alt" size={scale(50)} color="#000" />
                     <View style={{ marginLeft: 12 }}>
                       <Text style={styles.name}>Doctor: {item.nameDoctor}</Text>
                       <Text style={styles.time}>Date: {item.date}</Text>
@@ -123,10 +123,12 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(18),
     color: "black",
     fontWeight: "bold",
+    padding: 4,
   },
   time: {
     fontSize: 16,
     color: "black",
-    fontWeight: "bold",
+    padding: 4,
+    // fontWeight: "bold",
   },
 })
