@@ -173,12 +173,12 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
                 }}
               >
                 <TouchableOpacity
-                  style={{ position: "absolute", bottom: 8, right: 1, zIndex: 1 }}
+                  style={{ position: "absolute", bottom: 8, right: 6, zIndex: 1 }}
                   onPress={() => {
                     setModalVisible(!modalVisible)
                   }}
                 >
-                  <FontAwesome name="refresh" size={32} color={color.colorApp} />
+                  <FontAwesome name="refresh" size={22} color={color.storybookDarkBg} />
                 </TouchableOpacity>
               </Image>
             </View>

@@ -59,7 +59,7 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
             {!cmt ? (
               <Text>No comment</Text>
             ) : (
-              <View style={{ height: verticleScale(500) }}>
+              <View style={{ height: verticleScale(500), marginBottom: scale(50) }}>
                 <FlatList
                   showsVerticalScrollIndicator={false}
                   nestedScrollEnabled={true}

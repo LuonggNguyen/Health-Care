@@ -5,6 +5,7 @@ import { NavigatorParamList } from "../navigators"
 import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { database } from "../../configs/firebase"
 import { MyHeader } from "../components/MyHeader"
+import { scale } from "../utils/Scale/Scaling"
 const Width = Dimensions.get("window").width
 const Height = Dimensions.get("window").height
 
@@ -55,10 +56,11 @@ export const ListDoctorsScreen: FC<StackScreenProps<NavigatorParamList, "listDoc
                 <View style={styles.item}>
                   <Image
                     style={{
-                      width: 120,
-                      height: 120,
+                      width: scale(70),
+                      height: scale(70),
                       borderRadius: 75,
                       resizeMode: "cover",
+                      marginHorizontal: 15,
                     }}
                     source={{
                       uri: item.photoUrl,
@@ -67,8 +69,8 @@ export const ListDoctorsScreen: FC<StackScreenProps<NavigatorParamList, "listDoc
                   <View style={{ marginLeft: 8 }}>
                     <Text style={styles.name}>{item.name}</Text>
                     <Text style={styles.info}>{item.department}</Text>
-                    <Text style={styles.info}>Gender: {item.gender ? "Male" : "Female"}</Text>
-                    <Text style={styles.info}>
+                    <Text style={styles.info1}>Gender: {item.gender ? "Male" : "Female"}</Text>
+                    <Text style={styles.info1}>
                       Years of experience: {getExp(item.dayStartWork)}
                     </Text>
                   </View>
@@ -110,10 +112,17 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "black",
     fontWeight: "bold",
+    padding: 4,
   },
   info: {
     fontSize: 16,
     color: "black",
     fontWeight: "bold",
+    padding: 4,
+  },
+  info1: {
+    fontSize: 16,
+    color: "black",
+    padding: 4,
   },
 })

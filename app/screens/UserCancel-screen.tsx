@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-import { moderateScale } from "../utils/Scale/Scaling"
+import { moderateScale, scale } from "../utils/Scale/Scaling"
 import { firebase } from "@react-native-firebase/database"
 import { database } from "../../configs/firebase"
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native"
@@ -59,7 +59,7 @@ export const UserCancelScreen: FC<StackScreenProps<NavigatorParamList, "userCanc
                   onPress={() => navigation.navigate("detailsBooking", { booking: item })}
                 >
                   <View style={styles.item}>
-                    <MaterialIcons name="list-alt" size={100} color="#000" />
+                    <MaterialIcons name="list-alt" size={scale(50)} color="#000" />
 
                     <View style={{ marginLeft: 12 }}>
                       <Text style={styles.name}>Doctor: {item.nameDoctor}</Text>
@@ -105,10 +105,12 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(18),
     color: "black",
     fontWeight: "bold",
+    padding: 4,
   },
   time: {
     fontSize: 16,
     color: "black",
-    fontWeight: "bold",
+    padding: 4,
+    // fontWeight: "bold",
   },
 })
