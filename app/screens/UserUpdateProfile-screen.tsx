@@ -46,11 +46,10 @@ export const UserUpdateProfileScreen: FC<
     setLoading(true)
     database
       .ref("/users/" + firebase.auth().currentUser.uid)
-      .set({
+      .update({
         uid: firebase.auth().currentUser.uid,
         name: firebase.auth().currentUser.displayName,
         email: email,
-        photoUrl: "https://i.pinimg.com/originals/12/61/dd/1261dda75d943cbd543cb86c15f31baa.jpg",
         phoneNumber: phone,
         birthday: date,
         gender: gender, //true is male - false is female

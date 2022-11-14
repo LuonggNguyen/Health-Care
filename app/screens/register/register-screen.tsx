@@ -26,18 +26,16 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
     const [email, setEmail] = useState("")
     const [pass, setPass] = useState("")
     const [rePass, setRePass] = useState("")
-    const [avt, setAvt] = useState("")
     const [loading, setLoading] = useState(false)
     const resetForm = () => {
       setEmail("")
       setPass("")
       setRePass("")
       setName("")
-      setAvt("")
     }
 
-    const handleRegister = async (email, pass, rePass, name, avt) => {
-      if (!email || !pass || !rePass || !name || !avt) {
+    const handleRegister = async (email, pass, rePass, name) => {
+      if (!email || !pass || !rePass || !name) {
         Alert.alert("Can't be empty")
         resetForm()
       } else if (email.search("@doctor") != -1) {
@@ -50,7 +48,6 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
         setLoading(true)
         const update = {
           displayName: name,
-          photoURL: avt,
         }
 
         try {
@@ -190,15 +187,9 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
                   )
                 }
               />
-              <Input
-                placeholder="URL Photo Make Avatar"
-                leftIcon={<Ionicons name="image" size={26} color="gray" />}
-                value={avt}
-                onChangeText={(e) => setAvt(e)}
-              />
               <Button
                 onPress={() => {
-                  handleRegister(email, pass, rePass, name, avt)
+                  handleRegister(email, pass, rePass, name)
                 }}
                 title="Register"
                 titleStyle={{ color: "#000", fontSize: 20, fontWeight: "bold" }}
