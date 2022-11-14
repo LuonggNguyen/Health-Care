@@ -4,7 +4,7 @@ import { FlatList, Image, ScrollView, StyleSheet, Text, View } from "react-nativ
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { MyHeader } from "../components/MyHeader"
-import { Input } from "@rneui/themed"
+import { Dialog, Input } from "@rneui/themed"
 import { database } from "../../configs/firebase"
 import { firebase } from "@react-native-firebase/database"
 import { verticleScale, scale, moderateScale } from "../utils/Scale/Scaling"
@@ -16,20 +16,39 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
     const user = firebase.auth().currentUser
     const [cmt, setCmt] = useState<Comment[]>()
     const [comment, setComment] = useState("")
-    const [imgUser, setImgUser] = useState("")
+    const [imgUser, setImgUser] = useState<InfoUser>()
+    const [loading, setLoading] = useState(false)
     useEffect(() => {
+      setLoading(true)
       database.ref("/posts/" + post.idPost + "/comment").on("value", (res) => {
         setCmt(Object.values(res.val()))
       })
       database
         .ref("/users/" + firebase.auth().currentUser.uid + "/photoUrl")
         .on("value", (snapshot) => setImgUser(snapshot.val()))
+      setLoading(false)
       return () => {
         setCmt(null)
-        setImgUser("")
+        setImgUser(null)
       }
     }, [])
+    console.log(imgUser)
 
+    if (loading) {
+      return (
+        <View style={styles.container}>
+          <MyHeader
+            title="Details Post"
+            onPress={async () => {
+              await navigation.goBack()
+            }}
+          />
+          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <Dialog.Loading />
+          </View>
+        </View>
+      )
+    }
     return (
       <View style={styles.container}>
         <MyHeader
