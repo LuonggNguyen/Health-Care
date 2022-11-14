@@ -16,7 +16,8 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
     const user = firebase.auth().currentUser
     const [cmt, setCmt] = useState<Comment[]>()
     const [comment, setComment] = useState("")
-    const [imgUser, setImgUser] = useState<InfoUser>()
+    const [imgUser, setImgUser] = useState()
+    const [imgDoctor, setImgDoctor] = useState()
     const [loading, setLoading] = useState(false)
     useEffect(() => {
       setLoading(true)
@@ -26,13 +27,15 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
       database
         .ref("/users/" + firebase.auth().currentUser.uid + "/photoUrl")
         .on("value", (snapshot) => setImgUser(snapshot.val()))
+      database
+        .ref("/doctors/" + firebase.auth().currentUser.uid + "/photoUrl")
+        .on("value", (snapshot) => setImgDoctor(snapshot.val()))
       setLoading(false)
       return () => {
         setCmt(null)
         setImgUser(null)
       }
     }, [])
-    console.log(imgUser)
 
     if (loading) {
       return (
@@ -129,8 +132,11 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                     .set({
                       idUser: user.uid,
                       contentComment: comment,
-                      nameUser: user.displayName,
-                      img: imgUser,
+                      nameUser:
+                        post.idDoctor == user.uid
+                          ? user.displayName + "  (author)"
+                          : user.displayName,
+                      img: imgUser || imgDoctor,
                     })
                     .then(() => {
                       setComment("")
