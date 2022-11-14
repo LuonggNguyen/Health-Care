@@ -46,9 +46,6 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
         setInfoUser(undefined)
       }
     }, [])
-
-    // const user = auth().currentUser
-    // console.log(user)
     const logout = () => {
       auth().currentUser.providerData[0].providerId == "google.com"
         ? GoogleSignin.signOut().then(() => {
