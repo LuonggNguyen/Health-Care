@@ -18,6 +18,8 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
     const [comment, setComment] = useState("")
     const [imgUser, setImgUser] = useState()
     const [imgDoctor, setImgDoctor] = useState()
+    const [scroll, setScroll] = useState(0)
+    const [listScroll, setListScroll] = useState(0)
     const [loading, setLoading] = useState(false)
     useEffect(() => {
       setLoading(true)
@@ -60,7 +62,14 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
             await navigation.goBack()
           }}
         />
-        <ScrollView showsVerticalScrollIndicator={false}>
+
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          scrollEnabled={listScroll > 0 ? false : true}
+          onScroll={(e) => {
+            setScroll(e.nativeEvent.contentOffset.y)
+          }}
+        >
           <View style={styles.boxItem}>
             <View style={styles.boxAvatar}>
               <Image style={styles.avatar} source={{ uri: post.avtDoctor }}></Image>
@@ -81,10 +90,13 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
             {!cmt ? (
               <Text>No comment</Text>
             ) : (
-              <View style={{ height: verticleScale(500), marginBottom: scale(50) }}>
+              <View style={{ height: verticleScale(450), marginBottom: scale(50) }}>
                 <FlatList
+                  onScroll={(e) => {
+                    setListScroll(e.nativeEvent.contentOffset.y)
+                  }}
+                  nestedScrollEnabled={scroll > 150 ? true : false}
                   showsVerticalScrollIndicator={false}
-                  nestedScrollEnabled={true}
                   data={cmt.filter((item) => item.contentComment.length > 0)}
                   renderItem={({ item }) => {
                     return (
