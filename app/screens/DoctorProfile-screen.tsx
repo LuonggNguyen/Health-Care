@@ -46,7 +46,7 @@ export const DoctorProfileScreen: FC<StackScreenProps<NavigatorParamList, "docto
             <MaterialIcons
               name="logout"
               size={28}
-              color="#000"
+              color={color.colorTextHeader}
               onPress={() =>
                 auth()
                   .signOut()
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   titleHeader: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#000",
+    color: color.colorTextHeader,
   },
   content: {
     flex: 1,

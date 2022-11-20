@@ -162,12 +162,11 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
                 onChangeText={(text) => setContent(text)}
               ></TextInput>
             </View>
-
-            <View style={styles.boxButton}>
-              <CustomButton title={"Post"} onPress={() => postArticles(title, content, image)} />
-            </View>
           </View>
         </ScrollView>
+        <View style={styles.boxButton}>
+          <CustomButton title={"Post"} onPress={() => postArticles(title, content, image)} />
+        </View>
       </View>
     )
   })
@@ -194,9 +193,9 @@ const styles = StyleSheet.create({
     backgroundColor: color.line,
   },
   boxButton: {
-    alignItems: "center",
-
-    marginTop: verticleScale(40),
+    alignSelf: "center",
+    position: "absolute",
+    bottom: 0,
   },
   button: {
     backgroundColor: color.colorApp,

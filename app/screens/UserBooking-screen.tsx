@@ -10,10 +10,14 @@ import { firebase } from "@react-native-firebase/database"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import { moderateScale, scale } from "../utils/Scale/Scaling"
+import { Menu, MenuItem, MenuDivider } from "react-native-material-menu"
 
 export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBooking">> = observer(
   function UserBookingScreen({ navigation }) {
     const [listBook, setListBook] = useState<Booking[]>([])
+    const [visible, setVisible] = useState(false)
+    const hideMenu = () => setVisible(false)
+    const showMenu = () => setVisible(true)
     const user = firebase.auth().currentUser
     useEffect(() => {
       database.ref("/books").on("value", (snapshot) => {
@@ -67,21 +71,48 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
           backgroundColor={color.colorHeader}
           centerComponent={<Text style={styles.titleHeader}>Booking</Text>}
           rightComponent={
-            <MaterialIcons
-              name="note-add"
-              size={28}
-              color="#000"
-              onPress={() => navigation.navigate("listDoctors")}
-            />
+            // <MaterialIcons
+            //   name="note-add"
+            //   size={28}
+            //   color="#000"
+            //   onPress={() => navigation.navigate("listDoctors")}
+            // />
+            <Menu
+              visible={visible}
+              anchor={
+                // <Text onPress={showMenu}>Show menu</Text>
+                <MaterialIcons name="more-vert" size={28} color="#fff" onPress={showMenu} />
+              }
+              onRequestClose={hideMenu}
+            >
+              <MenuItem
+                onPress={() => {
+                  setVisible(false)
+                  navigation.navigate("listDoctors")
+                }}
+              >
+                New Book
+              </MenuItem>
+              <MenuItem
+                onPress={() => {
+                  setVisible(false)
+                  navigation.navigate("userCancel")
+                }}
+              >
+                List Cancel
+              </MenuItem>
+              <MenuItem onPress={() => {}}>List Successful</MenuItem>
+              <MenuDivider />
+            </Menu>
           }
-          leftComponent={
-            <MaterialCommunityIcons
-              name="playlist-remove"
-              size={36}
-              color="#000"
-              onPress={() => navigation.navigate("userCancel")}
-            />
-          }
+          // leftComponent={
+          //   <MaterialCommunityIcons
+          //     name="playlist-remove"
+          //     size={36}
+          //     color="#000"
+          //     onPress={() => navigation.navigate("userCancel")}
+          //   />
+          // }
         />
         <View style={styles.content}>
           <FlatList
@@ -127,7 +158,7 @@ const styles = StyleSheet.create({
   titleHeader: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#000",
+    color: color.colorTextHeader,
   },
   item: {
     padding: 8,

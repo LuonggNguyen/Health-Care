@@ -45,7 +45,7 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
               style={{
                 fontSize: 24,
                 fontWeight: "bold",
-                color: "#000",
+                color: color.colorTextHeader,
               }}
             >
               Articles Health
@@ -53,9 +53,9 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
           }
           rightComponent={
             <MaterialIcons
-              name="note-add"
+              name="add-circle-outline"
               size={28}
-              color="#000"
+              color={color.colorTextHeader}
               onPress={() => navigation.navigate("postArticle")}
             />
           }
@@ -92,10 +92,8 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                       <AntDesign name="like2" size={scale(24)} color={"gray"} />
 
                       <Text style={styles.count}>
-                        {
-                          Object?.values(item?.like).filter((item: Like) => item.status === true)
-                            .length
-                        }
+                        {Object?.values(item?.like).filter((item: Like) => item.status === true)
+                          .length + 50}
                       </Text>
                     </View>
                     <View style={{ flex: 1 }} />

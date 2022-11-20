@@ -20,7 +20,12 @@ export const MyHeader = React.memo(
         centerComponent={<Text style={styles.titleHeader}>{props.title}</Text>}
         backgroundColor={color.colorHeader}
         leftComponent={
-          <Iconicons name="arrow-back" color="#000" size={28} onPress={props.onPress} />
+          <Iconicons
+            name="arrow-back"
+            color={color.colorTextHeader}
+            size={28}
+            onPress={props.onPress}
+          />
         }
       />
     )
@@ -34,6 +39,6 @@ const styles = StyleSheet.create({
   titleHeader: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#000",
+    color: color.colorTextHeader,
   },
 })

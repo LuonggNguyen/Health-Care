@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   titleHeader: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#000",
+    color: color.colorTextHeader,
   },
   item: {
     padding: 8,

@@ -27,6 +27,7 @@ import { DetailsDoctorScreen } from "../screens/DetailsDoctor-screen"
 import { DetailsBookingScreen } from "../screens/DetailsBooking-screen"
 import { UserCancelScreen } from "../screens/UserCancel-screen"
 import { DetailsArticleScreen } from "../screens/DetailsArticle-screen"
+import { color } from "../theme"
 
 export type NavigatorParamList = {
   // 🔥 Your screens go here
@@ -143,7 +144,7 @@ const AppStack = () => {
             // You can return any component that you like here!
           },
           tabBarLabelStyle: { fontWeight: "bold" },
-          tabBarActiveTintColor: "black",
+          tabBarActiveTintColor: color.colorHeader,
           tabBarInactiveTintColor: "black",
           tabBarStyle: {
             borderTopLeftRadius: 12,
