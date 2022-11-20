@@ -60,7 +60,7 @@ export const DoctorBookingScreen: FC<StackScreenProps<NavigatorParamList, "docto
             renderItem={({ item }) => {
               return (
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("detailsBooking", { booking: item })}
+                  onPress={() => navigation.navigate("doctorDetailBooking", { booking: item })}
                 >
                   <View style={styles.item}>
                     <Entypo
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   titleHeader: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#000",
+    color: color.colorTextHeader,
   },
   item: {
     padding: 8,

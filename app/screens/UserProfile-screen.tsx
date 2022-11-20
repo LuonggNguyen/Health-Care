@@ -149,7 +149,9 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
         <Header
           backgroundColor={color.colorHeader}
           centerComponent={<Text style={styles.titleHeader}>User</Text>}
-          rightComponent={<MaterialIcons name="logout" size={24} color="#000" onPress={logout} />}
+          rightComponent={
+            <MaterialIcons name="logout" size={24} color={color.colorTextHeader} onPress={logout} />
+          }
         />
         <ScrollView>
           <View style={styles.content}>
@@ -349,7 +351,7 @@ const styles = StyleSheet.create({
   titleHeader: {
     fontSize: moderateScale(24),
     fontWeight: "bold",
-    color: "#000",
+    color: color.colorTextHeader,
   },
 
   boxAvt: {

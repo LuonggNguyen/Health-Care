@@ -45,6 +45,21 @@ export const UserCancelScreen: FC<StackScreenProps<NavigatorParamList, "userCanc
         setListBook([])
       }
     }, [])
+    const getWorkShift = (w) => {
+      if (w == 1) {
+        return "08:00h - 10:00h"
+      }
+      if (w == 2) {
+        return "11:00h - 13:00h"
+      }
+      if (w == 3) {
+        return "14:00h - 16:00h"
+      }
+      if (w == 4) {
+        return "17:00h - 19:00h"
+      }
+      return "--:--"
+    }
 
     return (
       <View style={styles.container}>
@@ -69,7 +84,7 @@ export const UserCancelScreen: FC<StackScreenProps<NavigatorParamList, "userCanc
                     <View style={{ marginLeft: 12 }}>
                       <Text style={styles.name}>Doctor: {item.nameDoctor}</Text>
                       <Text style={styles.time}>Date: {item.date}</Text>
-                      <Text style={styles.time}>Work shift: {item.workingTime}</Text>
+                      <Text style={styles.time}>Time: {getWorkShift(item.workingTime)}</Text>
                     </View>
                   </View>
                 </TouchableOpacity>

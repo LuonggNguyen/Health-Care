@@ -77,6 +77,22 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
       }
       return "In the past"
     }
+    const getYear = (dateString) => {
+      if (!dateString) {
+        return 0
+      } else {
+        var today = new Date()
+        const [day, month, year] = dateString.split("/")
+        const time = new Date(+year, +month - 1, +day)
+        var birthDate = new Date(time)
+        var age = today.getFullYear() - birthDate.getFullYear()
+        var m = today.getMonth() - birthDate.getMonth()
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          age--
+        }
+        return age
+      }
+    }
     if (!infoDoctor) {
       return (
         <View style={styles.container}>
@@ -110,8 +126,8 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
                   <AntDesign name="star" size={24} color="gold" />
                 </View>
                 <View style={styles.infoRateAndExp}>
-                  <Text style={styles.soccer}>4.5</Text>
                   <Text>Ratings</Text>
+                  <Text style={styles.soccer}>3.5</Text>
                 </View>
               </View>
               <View style={styles.rateAndExp}>
@@ -124,8 +140,8 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
                   />
                 </View>
                 <View style={styles.infoRateAndExp}>
-                  <Text style={styles.soccer}>17 years</Text>
                   <Text>Experience</Text>
+                  <Text style={styles.soccer}>{getYear(infoDoctor.dayStartWork) + " Year"}</Text>
                 </View>
               </View>
             </View>

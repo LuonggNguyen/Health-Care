@@ -9,7 +9,14 @@ import { useColorScheme } from "react-native"
 import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { navigationRef, useBackButtonHandler } from "./navigation-utilities"
-import { ArticleScreen, LoginScreen, PostArticlesScreen, RegisterScreen } from "../screens"
+import {
+  AdminScreen,
+  ArticleScreen,
+  DoctorDetailBookingScreen,
+  LoginScreen,
+  PostArticlesScreen,
+  RegisterScreen,
+} from "../screens"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { UserProfileScreen } from "../screens/UserProfile-screen"
 import { UserBookingScreen } from "../screens/UserBooking-screen"
@@ -27,6 +34,7 @@ import { DetailsDoctorScreen } from "../screens/DetailsDoctor-screen"
 import { DetailsBookingScreen } from "../screens/DetailsBooking-screen"
 import { UserCancelScreen } from "../screens/UserCancel-screen"
 import { DetailsArticleScreen } from "../screens/DetailsArticle-screen"
+import { color } from "../theme"
 
 export type NavigatorParamList = {
   // 🔥 Your screens go here
@@ -73,6 +81,10 @@ export type NavigatorParamList = {
   //health news
   userHealth: undefined
   doctorHealth: undefined
+  doctorDetailBooking: {
+    booking: Booking
+  }
+  admin: undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
@@ -143,7 +155,7 @@ const AppStack = () => {
             // You can return any component that you like here!
           },
           tabBarLabelStyle: { fontWeight: "bold" },
-          tabBarActiveTintColor: "black",
+          tabBarActiveTintColor: color.colorHeader,
           tabBarInactiveTintColor: "black",
           tabBarStyle: {
             borderTopLeftRadius: 12,
@@ -160,10 +172,12 @@ const AppStack = () => {
   }
 
   const checkRole = () => {
-    if (user.email.search("@doctor") == -1) {
+    if (user.email.search("@doctor") == -1 && user.email.search("@admin") == -1) {
       return "user"
-    } else {
+    } else if (user.email.search("@doctor") != -1 && user.email.search("@doctor") == -1) {
       return "doctor"
+    } else {
+      return "admin"
     }
   }
 
@@ -187,6 +201,8 @@ const AppStack = () => {
       <Stack.Screen name="article" component={ArticleScreen} />
       <Stack.Screen name="userCancel" component={UserCancelScreen} />
       <Stack.Screen name="detailsArticle" component={DetailsArticleScreen} />
+      <Stack.Screen name="doctorDetailBooking" component={DoctorDetailBookingScreen} />
+      <Stack.Screen name="admin" component={AdminScreen} />
 
       {/** 🔥 Your screens go here */}
     </Stack.Navigator>

@@ -4,6 +4,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -17,6 +18,8 @@ import Ionicons from "react-native-vector-icons/Ionicons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import auth from "@react-native-firebase/auth"
 import { database } from "../../../configs/firebase"
+import { color } from "../../theme"
+import { verticleScale } from "../../utils/Scale/Scaling"
 
 export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">> = observer(
   function RegisterScreen({ navigation }) {
@@ -40,6 +43,8 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
         resetForm()
       } else if (email.search("@doctor") != -1) {
         Alert.alert("Email @doctor only for Doctor !!")
+      } else if (email.search("@admin") != -1) {
+        Alert.alert("Email @admin only for Admin !!")
       } else if (pass != rePass) {
         Alert.alert("Incorrect re-password")
         setPass("")
@@ -124,7 +129,7 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
           centerComponent={
             <Text style={{ color: "#000", fontSize: 24, fontWeight: "bold" }}>REGISTER</Text>
           }
-          backgroundColor="#fff"
+          backgroundColor={color.colorHeader}
         />
         <KeyboardAvoidingView
           style={styles.cardRegister}
@@ -205,12 +210,14 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
-        <View style={styles.footer}>
-          <Text style={{ color: "#000", fontSize: 16 }}>Do you already have an account ? </Text>
-          <TouchableOpacity onPress={goToLogin}>
-            <Text style={{ color: "#000", fontSize: 16, fontWeight: "bold" }}>Signin now!!</Text>
-          </TouchableOpacity>
-        </View>
+        <SafeAreaView>
+          <View style={styles.footer}>
+            <Text style={{ color: "#000", fontSize: 16 }}>Do you already have an account ? </Text>
+            <TouchableOpacity onPress={goToLogin}>
+              <Text style={{ color: "#000", fontSize: 16, fontWeight: "bold" }}>Signin now!!</Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
       </View>
     )
   },
@@ -222,6 +229,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   cardRegister: {
+    // marginTop: verticleScale(120),
     flex: 1,
     width: "90%",
     justifyContent: "center",

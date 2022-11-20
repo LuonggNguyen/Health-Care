@@ -43,7 +43,7 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
               style={{
                 fontSize: 24,
                 fontWeight: "bold",
-                color: "#000",
+                color: color.colorTextHeader,
               }}
             >
               Articles Health

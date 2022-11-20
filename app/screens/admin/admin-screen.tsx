@@ -1,0 +1,103 @@
+import React, { FC, useEffect, useState } from "react"
+import { observer } from "mobx-react-lite"
+import { FlatList, StyleSheet, TouchableOpacity, View, Text, SafeAreaView } from "react-native"
+import { StackScreenProps } from "@react-navigation/stack"
+import { NavigatorParamList } from "../../navigators"
+import { color } from "../../theme"
+import { database } from "../../../configs/firebase"
+import { moderateScale, scale, verticleScale } from "../../utils/Scale/Scaling"
+import { Header } from "@rneui/themed"
+import MaterialIcons from "react-native-vector-icons/MaterialIcons"
+import auth from "@react-native-firebase/auth"
+import { GoogleSignin } from "@react-native-google-signin/google-signin"
+
+// @ts-ignore
+export const AdminScreen: FC<StackScreenProps<NavigatorParamList, "admin">> = observer(
+  function AdminScreen({ navigation }) {
+    // const navigation = useNavigation()
+    const [listDoctors, setListDoctors] = useState([])
+
+    useEffect(() => {
+      database.ref("/doctors").on("value", (response) => {
+        setListDoctors(Object.values(response.val()))
+      })
+      console.log(listDoctors)
+    }, [])
+    const logout = () => {
+      auth().currentUser.providerData[0].providerId == "google.com"
+        ? GoogleSignin.signOut().then(() => {
+            auth().signOut()
+            navigation.navigate("login")
+          })
+        : auth()
+            .signOut()
+            .then(() => {
+              navigation.navigate("login")
+            })
+    }
+
+    return (
+      <View style={styles.container}>
+        <Header
+          centerComponent={
+            <Text style={{ color: color.colorTextHeader, fontSize: 24, fontWeight: "bold" }}>
+              List Doctors
+            </Text>
+          }
+          rightComponent={
+            <MaterialIcons name="logout" size={24} color={color.colorTextHeader} onPress={logout} />
+          }
+          backgroundColor={color.colorHeader}
+        />
+        <SafeAreaView>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={listDoctors}
+            renderItem={({ item }) => {
+              return (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("doctorUpdateProfile", { detailsDoctor: item })
+                  }
+                >
+                  <View style={styles.content}>
+                    <View style={styles.boxInfor}>
+                      <Text style={styles.textName}>{item.name}</Text>
+                      <Text style={styles.text}>{item.department}</Text>
+                      <Text style={styles.text}>{item.email}</Text>
+                      <Text style={styles.text}>{item.gender ? "Male" : "Female"}</Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              )
+            }}
+            numColumns={1}
+          />
+        </SafeAreaView>
+      </View>
+    )
+  },
+)
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  content: {
+    marginTop: verticleScale(12),
+  },
+  boxInfor: {
+    marginHorizontal: scale(20),
+    backgroundColor: "#ccc",
+    borderRadius: 16,
+    alignItems: "center",
+  },
+  textName: {
+    padding: verticleScale(6),
+    fontSize: moderateScale(18),
+    fontWeight: "500",
+  },
+  text: {
+    padding: verticleScale(2),
+    fontSize: moderateScale(14),
+  },
+})
