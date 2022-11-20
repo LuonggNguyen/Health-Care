@@ -97,7 +97,11 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                   }}
                   nestedScrollEnabled={scroll > 150 ? true : false}
                   showsVerticalScrollIndicator={false}
-                  data={cmt.filter((item) => item.contentComment.length > 0)}
+                  data={cmt
+                    .filter((item) => item.contentComment.length > 0)
+                    .sort((a, b) => {
+                      return Date.parse(b.timeComment) - Date.parse(a.timeComment)
+                    })}
                   renderItem={({ item }) => {
                     return (
                       <View style={styles.listComment}>
@@ -149,6 +153,7 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                           ? user.displayName + "  (author)"
                           : user.displayName,
                       img: imgUser || imgDoctor,
+                      timeComment: new Date().toString(),
                     })
                     .then(() => {
                       setComment("")

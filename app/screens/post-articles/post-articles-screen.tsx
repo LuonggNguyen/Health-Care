@@ -47,16 +47,18 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
         database.ref("/doctors/" + firebase.auth().currentUser.uid).off("child_added", getUser)
       }
     }, [])
+
     const postArticles = (title, content, image) => {
       database
         .ref("/posts")
         .push()
         .set({
           idDoctor: infoDoctor.uid,
-          title: title,
-          content: content,
           nameDoctor: infoDoctor.name,
           avtDoctor: infoDoctor.photoUrl,
+          timePost: new Date().toString(),
+          title: title,
+          content: content,
           imagePost: image,
           idPost: "",
           like: [
