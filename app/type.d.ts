@@ -32,8 +32,8 @@ declare interface Booking {
   idBook: string
   status: number
 }
-
   declare interface PostArticle {
+    timePost: string
     imagePost: string
     title : string
     content : string
@@ -52,6 +52,7 @@ declare interface Booking {
     contentComment:string
     nameUser:string,
     img: string,
+    timeComment:string
   }
 declare interface PostArticle {
   title: string

@@ -33,6 +33,7 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
         setListPost(null)
       }
     }, [])
+
     return (
       <View style={styles.container}>
         <Header
@@ -55,7 +56,9 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
           ) : (
             <FlatList
               showsVerticalScrollIndicator={false}
-              data={listPost}
+              data={listPost.sort((a, b) => {
+                return Date.parse(b.timePost) - Date.parse(a.timePost)
+              })}
               renderItem={({ item }) => {
                 const checkLike = Object?.values(item?.like).find(
                   (item: Like) => item.idUser === user?.uid,
