@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Alert, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
 import { Button, Dialog, Header, Image, Input } from "@rneui/themed"
@@ -8,6 +8,9 @@ import auth from "@react-native-firebase/auth"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { GoogleSignin, GoogleSigninButton } from "@react-native-google-signin/google-signin"
 import { database } from "../../../configs/firebase"
+import { MyHeader } from "../../components/MyHeader"
+import { color } from "../../theme"
+import { verticleScale } from "../../utils/Scale/Scaling"
 
 export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = observer(
   function LoginScreen({ navigation }) {
@@ -58,18 +61,27 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
           .signInWithEmailAndPassword(username, password)
           .then((infoAccount) => {
             const checkRole = infoAccount.user.email.search("@doctor")
-            if (checkRole == -1) {
+            const checkAdmin = infoAccount.user.email.search("@admin")
+
+            if (checkRole == -1 && checkAdmin == -1) {
               navigation.navigate("user")
               navigation.reset({
                 index: 0,
                 routes: [{ name: "user" }],
               })
               setLoading(false)
-            } else {
+            } else if (checkRole != -1 && checkAdmin == -1) {
               navigation.navigate("doctor")
               navigation.reset({
                 index: 0,
                 routes: [{ name: "doctor" }],
+              })
+              setLoading(false)
+            } else {
+              navigation.navigate("admin")
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "admin" }],
               })
               setLoading(false)
             }
@@ -95,10 +107,14 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
         <View style={styles.container}>
           <Header
             centerComponent={
-              <Text style={{ color: "#000", fontSize: 24, fontWeight: "bold" }}>LOGIN</Text>
+              <Text style={{ color: color.colorTextHeader, fontSize: 24, fontWeight: "bold" }}>
+                Login
+              </Text>
             }
-            backgroundColor="#fff"
+            backgroundColor={color.colorHeader}
           />
+          {/* <MyHeader title="Doctor Profile" onPress={() => navigation.goBack()} /> */}
+
           <View style={{ flex: 1, justifyContent: "center" }}>
             <Dialog.Loading />
           </View>
@@ -161,12 +177,16 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
             onPress={() => onGoogleButtonPress().then(() => console.log("Signed in with Google!"))}
           />
         </View>
-        <View style={styles.footer}>
-          <Text style={{ color: "#000", fontSize: 16 }}>Don't have an account ? </Text>
-          <TouchableOpacity onPress={goToRegister}>
-            <Text style={{ color: "#000", fontSize: 16, fontWeight: "bold" }}>Register now!!</Text>
-          </TouchableOpacity>
-        </View>
+        <SafeAreaView>
+          <View style={styles.footer}>
+            <Text style={{ color: "#000", fontSize: 16 }}>Don't have an account ? </Text>
+            <TouchableOpacity onPress={goToRegister}>
+              <Text style={{ color: "#000", fontSize: 16, fontWeight: "bold" }}>
+                Register now!!
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
       </View>
     )
   },
@@ -179,15 +199,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   logo: {
-    flex: 1,
+    // flex: 1,
     width: "90%",
+    height: "30%",
     resizeMode: "cover",
     marginBottom: 8,
   },
   cardLogin: {
-    flex: 2,
+    flex: 1,
     width: "90%",
-    marginVertical: 8,
+    marginTop: verticleScale(30),
   },
   footer: {
     alignItems: "center",

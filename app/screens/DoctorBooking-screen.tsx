@@ -60,7 +60,7 @@ export const DoctorBookingScreen: FC<StackScreenProps<NavigatorParamList, "docto
             renderItem={({ item }) => {
               return (
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("detailsBooking", { booking: item })}
+                  onPress={() => navigation.navigate("doctorDetailBooking", { booking: item })}
                 >
                   <View style={styles.item}>
                     <Entypo

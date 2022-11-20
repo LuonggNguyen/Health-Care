@@ -165,8 +165,9 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
                 <AntDesign name="star" size={24} color="gold" />
               </View>
               <View style={styles.infoRateAndExp}>
-                <Text style={styles.soccer}>4.5</Text>
                 <Text>Ratings</Text>
+
+                <Text style={styles.soccer}>4.5</Text>
               </View>
             </View>
             <View style={styles.rateAndExp}>
@@ -179,8 +180,9 @@ export const DetailsDoctorScreen: FC<StackScreenProps<NavigatorParamList, "detai
                 />
               </View>
               <View style={styles.infoRateAndExp}>
-                <Text style={styles.soccer}>{getYear(doctor.dayStartWork)} years</Text>
                 <Text>Experience</Text>
+
+                <Text style={styles.soccer}>{getYear(doctor.dayStartWork)} years</Text>
               </View>
             </View>
           </View>

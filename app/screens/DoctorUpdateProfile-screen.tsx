@@ -1,29 +1,32 @@
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { StyleSheet, View } from "react-native"
+import { StyleSheet, View, Text } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { MyHeader } from "../components/MyHeader"
 import { firebase } from "@react-native-firebase/database"
-import { Button } from "@rneui/themed"
+import { Button, Input } from "@rneui/themed"
 import { database } from "../../configs/firebase"
 
 export const DoctorUpdateProfileScreen: FC<
   StackScreenProps<NavigatorParamList, "doctorUpdateProfile">
 > = observer(function DoctorUpdateProfileScreen({ navigation, route }) {
   const doctor = route.params.detailsDoctor
-  console.log("Doctor ", doctor.dayStartWork)
 
   const user = firebase.auth().currentUser
+  const [email, setEmail] = useState("")
+  const [name, setName] = useState("")
+  const [phone, setPhone] = useState("")
+  // const [name, setName] = useState("")
 
   const updateInfoDoctor = () => {
     database
-      .ref("/doctors/" + user.uid)
+      .ref("/doctors/" + doctor.uid)
       .set({
         uid: doctor.uid,
-        name: user.displayName,
-        email: user.email,
-        phoneNumber: "0383334687",
+        name: name == "" ? doctor.name : name,
+        email: email == "" ? doctor.email : email,
+        phoneNumber: phone == "" ? doctor.phoneNumber : phone,
         dayStartWork: "20/10/2005",
         department: "Internal medicine doctor",
         birthDay: "11/10/1970",
@@ -36,13 +39,27 @@ export const DoctorUpdateProfileScreen: FC<
 
   return (
     <View style={styles.container}>
-      <MyHeader title="Doctor Profile" onPress={() => navigation.goBack()} />
-      <Button
-        title={"Save Info Doctor"}
-        onPress={() => {
-          navigation.navigate("postArticle")
+      <MyHeader title="Update Doctor" onPress={() => navigation.goBack()} />
+      <Input
+        placeholder="Name"
+        onChangeText={(name) => {
+          setName(name)
         }}
-      />
+      ></Input>
+      <Input
+        placeholder="Email"
+        onChangeText={(email) => {
+          setEmail(email)
+        }}
+      ></Input>
+      <Input
+        placeholder="Phone Number"
+        onChangeText={(phone) => {
+          setPhone(phone)
+        }}
+      ></Input>
+
+      <Button title={"Save Info Doctor"} onPress={updateInfoDoctor} />
     </View>
   )
 })
