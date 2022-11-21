@@ -34,22 +34,6 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
       navigation.goBack()
     }
 
-    const getAge = (dateString) => {
-      if (!dateString) {
-        return 0
-      } else {
-        var today = new Date()
-        const [day, month, year] = dateString.split("/")
-        const time = new Date(+year, +month - 1, +day)
-        var birthDate = new Date(time)
-        var age = today.getFullYear() - birthDate.getFullYear()
-        var m = today.getMonth() - birthDate.getMonth()
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-          age--
-        }
-        return age
-      }
-    }
     const getWorkShift = (w) => {
       if (w == 1) {
         return "08:00h - 10:00h"
@@ -65,18 +49,7 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
       }
       return "--:--"
     }
-    const getStatus = (s, d) => {
-      if (s == 1 && getAge(d) < 0) {
-        return "Unfinished"
-      }
-      if (s == 2) {
-        return "In the past"
-      }
-      if (s == 3) {
-        return "Canceled"
-      }
-      return "In the past"
-    }
+
     const getYear = (dateString) => {
       if (!dateString) {
         return 0
@@ -92,6 +65,18 @@ export const DetailsBookingScreen: FC<StackScreenProps<NavigatorParamList, "deta
         }
         return age
       }
+    }
+    const getStatus = (s, d) => {
+      if (s == 1 && getYear(d) < 0) {
+        return "Unfinished"
+      }
+      if (s == 2) {
+        return "In the past"
+      }
+      if (s == 3) {
+        return "Canceled"
+      }
+      return "In the past"
     }
     if (!infoDoctor) {
       return (

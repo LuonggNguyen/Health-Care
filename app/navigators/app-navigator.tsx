@@ -117,7 +117,7 @@ const AppStack = () => {
             // You can return any component that you like here!
           },
           tabBarLabelStyle: { fontWeight: "bold" },
-          tabBarActiveTintColor: "black",
+          tabBarActiveTintColor: color.colorHeader,
           tabBarInactiveTintColor: "black",
           tabBarStyle: {
             borderTopLeftRadius: 12,
@@ -172,12 +172,12 @@ const AppStack = () => {
   }
 
   const checkRole = () => {
-    if (user.email.search("@doctor") == -1 && user.email.search("@admin") == -1) {
-      return "user"
-    } else if (user.email.search("@doctor") != -1 && user.email.search("@doctor") == -1) {
+    if (user.email.search("@doctor") != -1) {
       return "doctor"
-    } else {
+    } else if (user.email.search("@admin") != -1) {
       return "admin"
+    } else {
+      return "user"
     }
   }
 

@@ -22,6 +22,7 @@ export const AdminScreen: FC<StackScreenProps<NavigatorParamList, "admin">> = ob
         setListDoctors(Object.values(response.val()))
       })
       console.log(listDoctors)
+      return () => setListDoctors(undefined)
     }, [])
     const logout = () => {
       auth().currentUser.providerData[0].providerId == "google.com"

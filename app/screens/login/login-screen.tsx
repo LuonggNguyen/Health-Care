@@ -8,7 +8,6 @@ import auth from "@react-native-firebase/auth"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { GoogleSignin, GoogleSigninButton } from "@react-native-google-signin/google-signin"
 import { database } from "../../../configs/firebase"
-import { MyHeader } from "../../components/MyHeader"
 import { color } from "../../theme"
 import { verticleScale } from "../../utils/Scale/Scaling"
 
@@ -70,7 +69,7 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
                 routes: [{ name: "user" }],
               })
               setLoading(false)
-            } else if (checkRole != -1 && checkAdmin == -1) {
+            } else if (checkRole != -1) {
               navigation.navigate("doctor")
               navigation.reset({
                 index: 0,
@@ -130,7 +129,8 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
           backgroundColor="#fff"
         />
         <Image
-          source={{ uri: "https://www.pngmart.com/files/6/Healthcare-PNG-Transparent.png" }}
+          source={require("./banner.png")}
+          style={styles.banner}
           containerStyle={styles.logo}
           PlaceholderContent={<Text>loading</Text>}
         />
@@ -202,8 +202,12 @@ const styles = StyleSheet.create({
     // flex: 1,
     width: "90%",
     height: "30%",
-    resizeMode: "cover",
     marginBottom: 8,
+  },
+  banner: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "contain",
   },
   cardLogin: {
     flex: 1,
