@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { View, StyleSheet, Text, Image, FlatList } from "react-native"
+import { View, StyleSheet, Text, Image, FlatList, TouchableOpacity } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { database } from "../../configs/firebase"
@@ -65,22 +65,28 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                 ) as Like
                 return (
                   <View style={styles.boxItem}>
-                    <View style={styles.boxAvatar}>
-                      <Image style={styles.avatar} source={{ uri: item.avtDoctor }}></Image>
-                      <Text style={styles.name}>{item.nameDoctor}</Text>
-                    </View>
-                    <View style={styles.boxContent}>
-                      <Text style={styles.title}>{item.title}</Text>
-                      <Text numberOfLines={3} style={styles.contentPost}>
-                        {item.content}
-                      </Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate("detailsArticle", { post: item })
+                      }}
+                    >
+                      <View style={styles.boxAvatar}>
+                        <Image style={styles.avatar} source={{ uri: item.avtDoctor }}></Image>
+                        <Text style={styles.name}>{item.nameDoctor}</Text>
+                      </View>
+                      <View style={styles.boxContent}>
+                        <Text style={styles.title}>{item.title}</Text>
+                        <Text numberOfLines={3} style={styles.contentPost}>
+                          {item.content}
+                        </Text>
 
-                      <Image
-                        resizeMode="contain"
-                        style={styles.imagePost}
-                        source={{ uri: item.imagePost }}
-                      ></Image>
-                    </View>
+                        <Image
+                          resizeMode="contain"
+                          style={styles.imagePost}
+                          source={{ uri: item.imagePost }}
+                        ></Image>
+                      </View>
+                    </TouchableOpacity>
                     <View style={styles.boxLike}>
                       <View
                         style={{

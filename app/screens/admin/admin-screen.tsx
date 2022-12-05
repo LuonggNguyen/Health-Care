@@ -1,6 +1,14 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { FlatList, StyleSheet, TouchableOpacity, View, Text, SafeAreaView } from "react-native"
+import {
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Text,
+  SafeAreaView,
+  Image,
+} from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
 import { color } from "../../theme"
@@ -10,6 +18,7 @@ import { Header } from "@rneui/themed"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import auth from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import { CustomButton } from "../../components/CustomButton"
 
 // @ts-ignore
 export const AdminScreen: FC<StackScreenProps<NavigatorParamList, "admin">> = observer(
@@ -50,31 +59,41 @@ export const AdminScreen: FC<StackScreenProps<NavigatorParamList, "admin">> = ob
           }
           backgroundColor={color.colorHeader}
         />
-        <SafeAreaView>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={listDoctors}
-            renderItem={({ item }) => {
-              return (
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate("doctorUpdateProfile", { detailsDoctor: item })
-                  }
-                >
-                  <View style={styles.content}>
-                    <View style={styles.boxInfor}>
-                      <Text style={styles.textName}>{item.name}</Text>
-                      <Text style={styles.text}>{item.department}</Text>
-                      <Text style={styles.text}>{item.email}</Text>
-                      <Text style={styles.text}>{item.gender ? "Male" : "Female"}</Text>
-                    </View>
+        {/* <SafeAreaView> */}
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={listDoctors}
+          renderItem={({ item }) => {
+            return (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("doctorUpdateProfile", { detailsDoctor: item })}
+              >
+                <View style={styles.content}>
+                  <View style={{ paddingLeft: 20 }}>
+                    <Image
+                      style={{ width: scale(90), height: scale(90) }}
+                      source={{ uri: item.photoUrl }}
+                    ></Image>
                   </View>
-                </TouchableOpacity>
-              )
-            }}
-            numColumns={1}
-          />
-        </SafeAreaView>
+                  <View style={styles.boxInfor}>
+                    <Text style={styles.textName}>{item.name}</Text>
+                    <Text style={styles.text}>{item.department}</Text>
+                    <Text style={styles.text}>{item.email}</Text>
+                    <Text style={styles.text}>{item.gender ? "Male" : "Female"}</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            )
+          }}
+          numColumns={1}
+        />
+        <CustomButton
+          title={"Create"}
+          onPress={() => {
+            navigation.navigate("registerDoctor")
+          }}
+        />
+        {/* </SafeAreaView> */}
       </View>
     )
   },
@@ -84,11 +103,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    marginTop: verticleScale(12),
+    marginTop: verticleScale(10),
+    marginHorizontal: 6,
+    paddingVertical: 10,
+    flexDirection: "row",
+    borderColor: "#bcbcbcbc",
+    borderWidth: 1,
+    borderRadius: 8,
   },
   boxInfor: {
     marginHorizontal: scale(20),
-    backgroundColor: "#ccc",
     borderRadius: 16,
     alignItems: "center",
   },

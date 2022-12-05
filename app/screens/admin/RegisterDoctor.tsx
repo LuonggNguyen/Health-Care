@@ -20,9 +20,10 @@ import auth from "@react-native-firebase/auth"
 import { database } from "../../../configs/firebase"
 import { color } from "../../theme"
 import { verticleScale } from "../../utils/Scale/Scaling"
+import Toast from "react-native-simple-toast"
 
-export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">> = observer(
-  function RegisterScreen({ navigation }) {
+export const RegisterDoctor: FC<StackScreenProps<NavigatorParamList, "register">> = observer(
+  function RegisterDoctor({ navigation }) {
     const [showPass, setShowPass] = useState(true)
     const [showRePass, setShowRePass] = useState(true)
     const [name, setName] = useState("")
@@ -41,8 +42,8 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
       if (!email || !pass || !rePass || !name) {
         Alert.alert("Can't be empty")
         resetForm()
-      } else if (email.search("@doctor") != -1) {
-        Alert.alert("Email @doctor only for Doctor !!")
+      } else if (email.search("@doctor") == -1) {
+        Alert.alert("You need to use email @doctor")
       } else if (email.search("@admin") != -1) {
         Alert.alert("Email @admin only for Admin !!")
       } else if (pass != rePass) {
@@ -74,26 +75,29 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
             .currentUser.updateProfile(update)
             .then(() => {
               database
-                .ref("/users/" + auth().currentUser.uid)
+                .ref("/doctors/" + auth().currentUser.uid)
                 .set({
                   uid: auth().currentUser.uid,
                   name: auth().currentUser.displayName,
                   email: auth().currentUser.email,
-                  photoUrl: auth().currentUser.photoURL,
-                  phoneNumber: auth().currentUser.phoneNumber,
+                  photoUrl:
+                    "https://static.vecteezy.com/system/resources/previews/001/206/141/original/doctors-png.png",
+                  phoneNumber: "0999999999",
                 })
                 .then(() => {
                   setLoading(false)
-                  Alert.alert("", "User account created & signed in!", [
-                    {
-                      text: "Cancel",
-                      onPress: () => {},
-                      style: "cancel",
-                    },
-                    { text: "OK", onPress: () => goToLogin() },
-                  ])
+                  //   Alert.alert("", "Doctor account created & signed in!", [
+                  //     {
+                  //       text: "Cancel",
+                  //       onPress: () => {},
+                  //       style: "cancel",
+                  //     },
+                  //     // { text: "OK", onPress: () => goToLogin() },
+                  //   ])
+                  Toast.showWithGravity("This is a long toast at the top.", Toast.LONG, Toast.TOP)
                   resetForm()
-                  goToLogin()
+                  //   goToLogin()
+                  navigation.goBack()
                 })
             })
             .catch((e) => console.log(e))
@@ -129,7 +133,7 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
           centerComponent={
             <Text style={{ color: "#000", fontSize: 24, fontWeight: "bold" }}>REGISTER</Text>
           }
-          backgroundColor={color.colorTextHeader}
+          backgroundColor={color.colorHeader}
         />
         <KeyboardAvoidingView
           style={styles.cardRegister}
