@@ -86,7 +86,7 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                 style={{
                   height: verticleScale(450),
                   marginBottom: scale(50),
-                  marginTop: verticleScale(8),
+                  // marginTop: verticleScale(8),
                   paddingTop: verticleScale(20),
                   backgroundColor: "#ffff",
                 }}
@@ -94,9 +94,9 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                 <View style={{ paddingBottom: verticleScale(12) }}>
                   <Text
                     style={{
-                      fontSize: moderateScale(16),
+                      fontSize: moderateScale(18),
                       textAlign: "center",
-                      fontFamily: "Roboto",
+                      // fontFamily: "Roboto",
                     }}
                   >
                     Comment
