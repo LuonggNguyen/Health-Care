@@ -4,7 +4,7 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
-import React from "react"
+import React, { useEffect } from "react"
 import { useColorScheme } from "react-native"
 import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
@@ -36,6 +36,7 @@ import { UserCancelScreen } from "../screens/UserCancel-screen"
 import { DetailsArticleScreen } from "../screens/DetailsArticle-screen"
 import { color } from "../theme"
 import { RegisterDoctor } from "../screens/admin/RegisterDoctor"
+import SplashScreen from "react-native-splash-screen"
 
 export type NavigatorParamList = {
   // 🔥 Your screens go here
@@ -217,6 +218,10 @@ interface NavigationProps extends Partial<React.ComponentProps<typeof Navigation
 export const AppNavigator = (props: NavigationProps) => {
   const colorScheme = useColorScheme()
   useBackButtonHandler(canExit)
+  useEffect(() => {
+    SplashScreen.hide()
+    return () => {}
+  }, [])
   return (
     <NavigationContainer
       ref={navigationRef}
