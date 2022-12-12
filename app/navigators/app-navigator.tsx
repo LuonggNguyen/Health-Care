@@ -55,7 +55,7 @@ export type NavigatorParamList = {
     detailsUser: InfoUser
   }
   doctorUpdateProfile: {
-    detailsDoctor
+    detailsDoctor: InfoDoctor
   }
 
   //booking

@@ -1,11 +1,10 @@
 import React, { FC, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { StyleSheet, View, Text } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { MyHeader } from "../components/MyHeader"
-import { firebase } from "@react-native-firebase/database"
-import { Button, Input } from "@rneui/themed"
+import { Input } from "@rneui/themed"
 import { database } from "../../configs/firebase"
 import { color } from "../theme"
 import { CustomButton } from "../components/CustomButton"
@@ -15,11 +14,9 @@ export const DoctorUpdateProfileScreen: FC<
   StackScreenProps<NavigatorParamList, "doctorUpdateProfile">
 > = observer(function DoctorUpdateProfileScreen({ navigation, route }) {
   const doctor = route.params.detailsDoctor
-
-  const user = firebase.auth().currentUser
-  const [email, setEmail] = useState("")
-  const [name, setName] = useState("")
-  const [phone, setPhone] = useState("")
+  const [email, setEmail] = useState(doctor.email ?? "")
+  const [name, setName] = useState(doctor.name ?? "")
+  const [phone, setPhone] = useState(doctor.phoneNumber ?? "")
   // const [name, setName] = useState("")
 
   const updateInfoDoctor = (name, email, phone) => {
@@ -56,6 +53,7 @@ export const DoctorUpdateProfileScreen: FC<
           style={styles.input}
           inputContainerStyle={{ borderBottomWidth: 0 }}
           placeholder="Name"
+          value={name}
           onChangeText={(name) => {
             setName(name)
           }}
@@ -64,6 +62,7 @@ export const DoctorUpdateProfileScreen: FC<
           style={styles.input}
           inputContainerStyle={{ borderBottomWidth: 0 }}
           placeholder="Email"
+          value={email}
           onChangeText={(email) => {
             setEmail(email)
           }}
@@ -72,6 +71,7 @@ export const DoctorUpdateProfileScreen: FC<
           style={styles.input}
           inputContainerStyle={{ borderBottomWidth: 0 }}
           placeholder="Phone Number"
+          value={phone}
           onChangeText={(phone) => {
             setPhone(phone)
           }}
@@ -81,6 +81,9 @@ export const DoctorUpdateProfileScreen: FC<
       {/* <Button title={"Save Info Doctor"} onPress={updateInfoDoctor} /> */}
       <View style={styles.boxButton}>
         <CustomButton title={"Update"} onPress={() => updateInfoDoctor(name, email, phone)} />
+      </View>
+      <View style={styles.boxButton}>
+        <CustomButton title={"Delete Doctor"} onPress={deleteDoctor} />
       </View>
     </View>
   )

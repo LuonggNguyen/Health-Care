@@ -3,15 +3,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import {
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Text,
-  SafeAreaView,
-  Image,
-} from "react-native"
+import { FlatList, StyleSheet, TouchableOpacity, View, Text, SafeAreaView } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
 import { color } from "../../theme"
@@ -21,12 +13,11 @@ import { Header } from "@rneui/themed"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import auth from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import { CustomButton } from "../../components/CustomButton"
+import { FAB, Image } from "@rneui/base"
 
 // @ts-ignore
 export const AdminScreen: FC<StackScreenProps<NavigatorParamList, "admin">> = observer(
   function AdminScreen({ navigation }) {
-    // const navigation = useNavigation()
     const [listDoctors, setListDoctors] = useState([])
 
     useEffect(() => {
@@ -62,41 +53,47 @@ export const AdminScreen: FC<StackScreenProps<NavigatorParamList, "admin">> = ob
           }
           backgroundColor={color.colorHeader}
         />
-        {/* <SafeAreaView> */}
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={listDoctors}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity
-                onPress={() => navigation.navigate("doctorUpdateProfile", { detailsDoctor: item })}
-              >
-                <View style={styles.content}>
-                  <View style={{ paddingLeft: 20 }}>
-                    <Image
-                      style={{ width: scale(90), height: scale(90) }}
-                      source={{ uri: item.photoUrl }}
-                    ></Image>
+        <SafeAreaView>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={listDoctors}
+            renderItem={({ item }) => {
+              return (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("doctorUpdateProfile", { detailsDoctor: item })
+                  }
+                >
+                  <View style={styles.content}>
+                    <View style={{ paddingLeft: 20 }}>
+                      <Image
+                        style={{ width: scale(90), height: scale(90) }}
+                        source={{ uri: item.photoUrl }}
+                      ></Image>
+                    </View>
+                    <View style={styles.boxInfor}>
+                      <Text style={styles.textName}>{item.name}</Text>
+                      <Text style={styles.text}>{item.department}</Text>
+                      <Text style={styles.text}>{item.email}</Text>
+                      <Text style={styles.text}>{item.gender ? "Male" : "Female"}</Text>
+                    </View>
                   </View>
-                  <View style={styles.boxInfor}>
-                    <Text style={styles.textName}>{item.name}</Text>
-                    <Text style={styles.text}>{item.department}</Text>
-                    <Text style={styles.text}>{item.email}</Text>
-                    <Text style={styles.text}>{item.gender ? "Male" : "Female"}</Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            )
-          }}
-          numColumns={1}
-        />
-        <CustomButton
-          title={"Create"}
+                </TouchableOpacity>
+              )
+            }}
+            numColumns={1}
+          />
+        </SafeAreaView>
+        <FAB
+          placement="right"
+          size="large"
+          color={color.colorHeader}
           onPress={() => {
             navigation.navigate("registerDoctor")
           }}
-        />
-        {/* </SafeAreaView> */}
+        >
+          <MaterialIcons name="add" color={"#fff"} size={28} />
+        </FAB>
       </View>
     )
   },
