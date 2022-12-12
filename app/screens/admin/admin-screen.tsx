@@ -1,3 +1,6 @@
+/* eslint-disable react-native/no-color-literals */
+/* eslint-disable react-native/sort-styles */
+/* eslint-disable react-native/no-inline-styles */
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import {
@@ -34,7 +37,7 @@ export const AdminScreen: FC<StackScreenProps<NavigatorParamList, "admin">> = ob
       return () => setListDoctors(undefined)
     }, [])
     const logout = () => {
-      auth().currentUser.providerData[0].providerId == "google.com"
+      auth().currentUser.providerData[0].providerId === "google.com"
         ? GoogleSignin.signOut().then(() => {
             auth().signOut()
             navigation.navigate("login")

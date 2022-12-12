@@ -82,7 +82,26 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
             {!cmt ? (
               <Text>No comment</Text>
             ) : (
-              <View style={{ height: verticleScale(450), marginBottom: scale(50) }}>
+              <View
+                style={{
+                  height: verticleScale(450),
+                  marginBottom: scale(50),
+                  marginTop: verticleScale(8),
+                  paddingTop: verticleScale(20),
+                  backgroundColor: "#ffff",
+                }}
+              >
+                <View style={{ paddingBottom: verticleScale(12) }}>
+                  <Text
+                    style={{
+                      fontSize: moderateScale(16),
+                      textAlign: "center",
+                      fontFamily: "Roboto",
+                    }}
+                  >
+                    Comment
+                  </Text>
+                </View>
                 <FlatList
                   nestedScrollEnabled={true}
                   showsVerticalScrollIndicator={false}
@@ -181,7 +200,8 @@ const styles = StyleSheet.create({
   boxContent: {},
   boxItem: {
     backgroundColor: "#ffff",
-    // borderRadius: 18,
+    borderRadius: scale(6),
+    paddingBottom: verticleScale(30),
     // margin: scale(8),
   },
   boxLike: {
