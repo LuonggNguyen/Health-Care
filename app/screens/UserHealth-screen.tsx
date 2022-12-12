@@ -10,6 +10,7 @@ import { color } from "../theme"
 import AntDesign from "react-native-vector-icons/AntDesign"
 import Fontisto from "react-native-vector-icons/Fontisto"
 import { firebase } from "@react-native-firebase/database"
+import { TouchableOpacity } from "react-native-gesture-handler"
 
 export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHealth">> = observer(
   function UserHealthScreen({ navigation }) {
@@ -74,7 +75,6 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                       <Text numberOfLines={3} style={styles.contentPost}>
                         {item.content}
                       </Text>
-
                       <Image
                         resizeMode="contain"
                         style={styles.imagePost}
