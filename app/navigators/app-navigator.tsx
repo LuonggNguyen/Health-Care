@@ -35,6 +35,7 @@ import { DetailsBookingScreen } from "../screens/DetailsBooking-screen"
 import { UserCancelScreen } from "../screens/UserCancel-screen"
 import { DetailsArticleScreen } from "../screens/DetailsArticle-screen"
 import { color } from "../theme"
+import { RegisterDoctor } from "../screens/admin/RegisterDoctor"
 
 export type NavigatorParamList = {
   // 🔥 Your screens go here
@@ -85,6 +86,7 @@ export type NavigatorParamList = {
     booking: Booking
   }
   admin: undefined
+  registerDoctor: undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
@@ -203,6 +205,7 @@ const AppStack = () => {
       <Stack.Screen name="detailsArticle" component={DetailsArticleScreen} />
       <Stack.Screen name="doctorDetailBooking" component={DoctorDetailBookingScreen} />
       <Stack.Screen name="admin" component={AdminScreen} />
+      <Stack.Screen name="registerDoctor" component={RegisterDoctor} />
 
       {/** 🔥 Your screens go here */}
     </Stack.Navigator>
