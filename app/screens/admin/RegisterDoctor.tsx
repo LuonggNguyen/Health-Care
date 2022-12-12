@@ -1,28 +1,18 @@
 import React, { FC, useState } from "react"
 import { observer } from "mobx-react-lite"
-import {
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native"
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
-import { Button, Dialog, Header, Input } from "@rneui/themed"
+import { Button, Dialog, Input } from "@rneui/themed"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import auth from "@react-native-firebase/auth"
 import { database } from "../../../configs/firebase"
-import { color } from "../../theme"
-import { verticleScale } from "../../utils/Scale/Scaling"
+import Toast from "react-native-simple-toast"
+import { MyHeader } from "../../components/MyHeader"
 
-export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">> = observer(
-  function RegisterScreen({ navigation }) {
+export const RegisterDoctor: FC<StackScreenProps<NavigatorParamList, "register">> = observer(
+  function RegisterDoctor({ navigation }) {
     const [showPass, setShowPass] = useState(true)
     const [showRePass, setShowRePass] = useState(true)
     const [name, setName] = useState("")
@@ -41,8 +31,8 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
       if (!email || !pass || !rePass || !name) {
         Alert.alert("Can't be empty")
         resetForm()
-      } else if (email.search("@doctor") != -1) {
-        Alert.alert("Email @doctor only for Doctor !!")
+      } else if (email.search("@doctor") == -1) {
+        Alert.alert("You need to use email @doctor")
       } else if (email.search("@admin") != -1) {
         Alert.alert("Email @admin only for Admin !!")
       } else if (pass != rePass) {
@@ -74,26 +64,20 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
             .currentUser.updateProfile(update)
             .then(() => {
               database
-                .ref("/users/" + auth().currentUser.uid)
+                .ref("/doctors/" + auth().currentUser.uid)
                 .set({
                   uid: auth().currentUser.uid,
                   name: auth().currentUser.displayName,
                   email: auth().currentUser.email,
-                  photoUrl: auth().currentUser.photoURL,
-                  phoneNumber: auth().currentUser.phoneNumber,
+                  photoUrl:
+                    "https://static.vecteezy.com/system/resources/previews/001/206/141/original/doctors-png.png",
+                  phoneNumber: "0999999999",
                 })
                 .then(() => {
                   setLoading(false)
-                  Alert.alert("", "User account created & signed in!", [
-                    {
-                      text: "Cancel",
-                      onPress: () => {},
-                      style: "cancel",
-                    },
-                    { text: "OK", onPress: () => goToLogin() },
-                  ])
+                  Toast.showWithGravity("Register Successfull !!", Toast.LONG, Toast.TOP)
                   resetForm()
-                  goToLogin()
+                  navigation.goBack()
                 })
             })
             .catch((e) => console.log(e))
@@ -103,20 +87,11 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
       }
     }
 
-    const goToLogin = () => {
-      navigation.navigate("login")
-    }
-
     const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : -250
     if (loading) {
       return (
         <View style={styles.container}>
-          <Header
-            centerComponent={
-              <Text style={{ color: "#000", fontSize: 24, fontWeight: "bold" }}>REGISTER</Text>
-            }
-            backgroundColor="#fff"
-          />
+          <MyHeader title="Register Doctor" onPress={() => navigation.goBack()} />
           <View style={{ flex: 1, justifyContent: "center" }}>
             <Dialog.Loading />
           </View>
@@ -125,12 +100,7 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
     }
     return (
       <View style={styles.container}>
-        <Header
-          centerComponent={
-            <Text style={{ color: "#000", fontSize: 24, fontWeight: "bold" }}>REGISTER</Text>
-          }
-          backgroundColor={color.colorTextHeader}
-        />
+        <MyHeader title="Register Doctor" onPress={() => navigation.goBack()} />
         <KeyboardAvoidingView
           style={styles.cardRegister}
           behavior="position"
@@ -210,14 +180,6 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
-        <SafeAreaView>
-          <View style={styles.footer}>
-            <Text style={{ color: "#000", fontSize: 16 }}>Do you already have an account ? </Text>
-            <TouchableOpacity onPress={goToLogin}>
-              <Text style={{ color: "#000", fontSize: 16, fontWeight: "bold" }}>Signin now!!</Text>
-            </TouchableOpacity>
-          </View>
-        </SafeAreaView>
       </View>
     )
   },

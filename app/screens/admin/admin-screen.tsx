@@ -10,11 +10,11 @@ import { Header } from "@rneui/themed"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import auth from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import { FAB, Image } from "@rneui/base"
 
 // @ts-ignore
 export const AdminScreen: FC<StackScreenProps<NavigatorParamList, "admin">> = observer(
   function AdminScreen({ navigation }) {
-    // const navigation = useNavigation()
     const [listDoctors, setListDoctors] = useState([])
 
     useEffect(() => {
@@ -62,6 +62,12 @@ export const AdminScreen: FC<StackScreenProps<NavigatorParamList, "admin">> = ob
                   }
                 >
                   <View style={styles.content}>
+                    <View style={{ paddingLeft: 20 }}>
+                      <Image
+                        style={{ width: scale(90), height: scale(90) }}
+                        source={{ uri: item.photoUrl }}
+                      ></Image>
+                    </View>
                     <View style={styles.boxInfor}>
                       <Text style={styles.textName}>{item.name}</Text>
                       <Text style={styles.text}>{item.department}</Text>
@@ -75,6 +81,16 @@ export const AdminScreen: FC<StackScreenProps<NavigatorParamList, "admin">> = ob
             numColumns={1}
           />
         </SafeAreaView>
+        <FAB
+          placement="right"
+          size="large"
+          color={color.colorHeader}
+          onPress={() => {
+            navigation.navigate("registerDoctor")
+          }}
+        >
+          <MaterialIcons name="add" color={"#fff"} size={28} />
+        </FAB>
       </View>
     )
   },
@@ -84,11 +100,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    marginTop: verticleScale(12),
+    marginTop: verticleScale(10),
+    marginHorizontal: 6,
+    paddingVertical: 10,
+    flexDirection: "row",
+    borderColor: "#bcbcbcbc",
+    borderWidth: 1,
+    borderRadius: 8,
   },
   boxInfor: {
     marginHorizontal: scale(20),
-    backgroundColor: "#ccc",
     borderRadius: 16,
     alignItems: "center",
   },
