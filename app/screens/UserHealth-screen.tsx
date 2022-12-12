@@ -1,3 +1,7 @@
+/* eslint-disable react-native/no-unused-styles */
+/* eslint-disable react-native/sort-styles */
+/* eslint-disable react-native/no-color-literals */
+/* eslint-disable react-native/no-inline-styles */
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { View, StyleSheet, Text, Image, FlatList, TouchableOpacity } from "react-native"
