@@ -25,11 +25,13 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
               idPost: key,
             })
           })
-          const myList = Object.values(response.val()).filter(
+          const myList = Object?.values(response.val()).filter(
             (item: PostArticle) => item.idDoctor === user.uid,
           )
           setListPost(myList)
-        } catch (error) {}
+        } catch (error) {
+          console.log(error)
+        }
       })
 
       return () => {
@@ -61,74 +63,80 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
           }
         />
         <View style={styles.content}>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={listPost}
-            renderItem={({ item }) => {
-              return (
-                <View style={styles.boxItem}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate("detailsArticle", { post: item })
-                    }}
-                  >
-                    <View style={styles.boxAvatar}>
-                      <Image style={styles.avatar} source={{ uri: item.avtDoctor }}></Image>
-                      <Text style={styles.name}>{item.nameDoctor}</Text>
-                    </View>
-                    <View style={styles.boxContent}>
-                      <Text style={styles.title}>{item.title}</Text>
-                      <Text style={styles.contentPost}>{item.content}</Text>
-
-                      <Image
-                        resizeMode="contain"
-                        style={styles.imagePost}
-                        source={{ uri: item.imagePost }}
-                      ></Image>
-                    </View>
-                  </TouchableOpacity>
-                  <View style={styles.boxLike}>
-                    <View
-                      style={{
-                        marginLeft: scale(60),
-                        flexDirection: "row",
-                        alignItems: "center",
+          {!listPost ? (
+            <Text>No Artical Health</Text>
+          ) : (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={listPost.sort((a, b) => {
+                return Date.parse(b.timePost) - Date.parse(a.timePost)
+              })}
+              renderItem={({ item }) => {
+                return (
+                  <View style={styles.boxItem}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate("detailsArticle", { post: item })
                       }}
                     >
-                      <AntDesign name="like2" size={scale(24)} color={"gray"} />
+                      <View style={styles.boxAvatar}>
+                        <Image style={styles.avatar} source={{ uri: item.avtDoctor }}></Image>
+                        <Text style={styles.name}>{item.nameDoctor}</Text>
+                      </View>
+                      <View style={styles.boxContent}>
+                        <Text style={styles.title}>{item.title}</Text>
+                        <Text style={styles.contentPost}>{item.content}</Text>
 
-                      <Text style={styles.count}>
-                        {Object?.values(item?.like).filter((item: Like) => item.status === true)
-                          .length + 50}
-                      </Text>
-                    </View>
-                    <View style={{ flex: 1 }} />
-                    <View
-                      style={{
-                        marginRight: scale(60),
-                        flexDirection: "row",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Fontisto
-                        name="comment"
-                        size={scale(22)}
-                        color="gray"
-                        onPress={() => navigation.navigate("detailsArticle", { post: item })}
-                      />
-                      <Text style={styles.count}>
-                        {!Object?.values(item?.comment)
-                          ? 0
-                          : Object?.values(item?.comment).filter(
-                              (item: Comment) => item.contentComment.length > 0,
-                            ).length}
-                      </Text>
+                        <Image
+                          resizeMode="contain"
+                          style={styles.imagePost}
+                          source={{ uri: item.imagePost }}
+                        ></Image>
+                      </View>
+                    </TouchableOpacity>
+                    <View style={styles.boxLike}>
+                      <View
+                        style={{
+                          marginLeft: scale(60),
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <AntDesign name="like2" size={scale(24)} color={"gray"} />
+
+                        <Text style={styles.count}>
+                          {Object?.values(item?.like).filter((item: Like) => item.status === true)
+                            .length + 50}
+                        </Text>
+                      </View>
+                      <View style={{ flex: 1 }} />
+                      <View
+                        style={{
+                          marginRight: scale(60),
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Fontisto
+                          name="comment"
+                          size={scale(22)}
+                          color="gray"
+                          onPress={() => navigation.navigate("detailsArticle", { post: item })}
+                        />
+                        <Text style={styles.count}>
+                          {!Object?.values(item?.comment)
+                            ? 0
+                            : Object?.values(item?.comment).filter(
+                                (item: Comment) => item.contentComment.length > 0,
+                              ).length}
+                        </Text>
+                      </View>
                     </View>
                   </View>
-                </View>
-              )
-            }}
-          />
+                )
+              }}
+            />
+          )}
         </View>
       </View>
     )

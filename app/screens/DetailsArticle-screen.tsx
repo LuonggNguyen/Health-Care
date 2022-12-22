@@ -30,7 +30,9 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
     useEffect(() => {
       setLoading(true)
       database.ref("/posts/" + post.idPost + "/comment").on("value", (res) => {
-        setCmt(Object.values(res.val()))
+        try {
+          setCmt(Object?.values(res.val()))
+        } catch (error) {}
       })
       database
         .ref("/users/" + firebase.auth().currentUser.uid + "/photoUrl")
@@ -129,6 +131,13 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                   <MenuItem
                     onPress={() => {
                       setVisible(false)
+                      navigation.goBack()
+                      database
+                        .ref("/posts/" + post.idPost)
+                        .remove()
+                        .then(() => {
+                          alert("Delete successful !!")
+                        })
                     }}
                   >
                     Delete Post
