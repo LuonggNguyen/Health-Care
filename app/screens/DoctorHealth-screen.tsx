@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { FlatList, StyleSheet, Text, View } from "react-native"
+import { FlatList, Image, StyleSheet, Text, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-import { Header, Image } from "@rneui/themed"
+import { Header } from "@rneui/themed"
 import { color } from "../theme"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import { firebase } from "@react-native-firebase/database"
@@ -74,7 +74,6 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                   <View style={styles.boxContent}>
                     <Text style={styles.title}>{item.title}</Text>
                     <Text style={styles.contentPost}>{item.content}</Text>
-
                     <Image
                       resizeMode="contain"
                       style={styles.imagePost}
