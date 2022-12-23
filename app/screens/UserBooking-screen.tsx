@@ -8,7 +8,6 @@ import { color } from "../theme"
 import { database } from "../../configs/firebase"
 import { firebase } from "@react-native-firebase/database"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import { moderateScale, scale } from "../utils/Scale/Scaling"
 import { Menu, MenuItem, MenuDivider } from "react-native-material-menu"
 
@@ -71,12 +70,6 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
           backgroundColor={color.colorHeader}
           centerComponent={<Text style={styles.titleHeader}>Booking</Text>}
           rightComponent={
-            // <MaterialIcons
-            //   name="note-add"
-            //   size={28}
-            //   color="#000"
-            //   onPress={() => navigation.navigate("listDoctors")}
-            // />
             <Menu
               visible={visible}
               anchor={

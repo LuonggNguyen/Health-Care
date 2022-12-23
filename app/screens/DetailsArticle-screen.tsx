@@ -3,12 +3,16 @@ import { observer } from "mobx-react-lite"
 import { FlatList, Image, ScrollView, StyleSheet, Text, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-import { MyHeader } from "../components/MyHeader"
 import { Dialog, Input } from "@rneui/themed"
 import { database } from "../../configs/firebase"
 import { firebase } from "@react-native-firebase/database"
 import { verticleScale, scale, moderateScale } from "../utils/Scale/Scaling"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
+import MaterialIcons from "react-native-vector-icons/MaterialIcons"
+import Iconicons from "react-native-vector-icons/Ionicons"
+import { Header } from "@rneui/base"
+import { color } from "../theme"
+import { Menu, MenuDivider, MenuItem } from "react-native-material-menu"
 
 export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "detailsArticle">> =
   observer(function DetailsArticleScreen({ navigation, route }) {
@@ -19,10 +23,16 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
     const [imgUser, setImgUser] = useState()
     const [imgDoctor, setImgDoctor] = useState()
     const [loading, setLoading] = useState(false)
+    const [visible, setVisible] = useState(false)
+    const hideMenu = () => setVisible(false)
+    const showMenu = () => setVisible(true)
+
     useEffect(() => {
       setLoading(true)
       database.ref("/posts/" + post.idPost + "/comment").on("value", (res) => {
-        setCmt(Object.values(res.val()))
+        try {
+          setCmt(Object?.values(res.val()))
+        } catch (error) {}
       })
       database
         .ref("/users/" + firebase.auth().currentUser.uid + "/photoUrl")
@@ -37,14 +47,40 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
       }
     }, [])
 
+    const checkRole = () => {
+      if (user.email.search("@doctor") != -1) {
+        return "doctor"
+      } else if (user.email.search("@admin") != -1) {
+        return "admin"
+      } else {
+        return "user"
+      }
+    }
+
     if (loading) {
       return (
         <View style={styles.container}>
-          <MyHeader
-            title="Details Post"
-            onPress={async () => {
-              await navigation.goBack()
-            }}
+          <Header
+            backgroundColor={color.colorHeader}
+            leftComponent={
+              <Iconicons
+                name="arrow-back"
+                color={color.colorTextHeader}
+                size={28}
+                onPress={() => navigation.goBack()}
+              />
+            }
+            centerComponent={
+              <Text
+                style={{
+                  fontSize: 24,
+                  fontWeight: "bold",
+                  color: color.colorTextHeader,
+                }}
+              >
+                Details Post
+              </Text>
+            }
           />
           <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
             <Dialog.Loading />
@@ -54,11 +90,65 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
     }
     return (
       <View style={styles.container}>
-        <MyHeader
-          title="Details Post"
-          onPress={async () => {
-            await navigation.goBack()
-          }}
+        <Header
+          backgroundColor={color.colorHeader}
+          leftComponent={
+            <Iconicons
+              name="arrow-back"
+              color={color.colorTextHeader}
+              size={28}
+              onPress={() => navigation.goBack()}
+            />
+          }
+          centerComponent={
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: "bold",
+                color: color.colorTextHeader,
+              }}
+            >
+              Details Post
+            </Text>
+          }
+          rightComponent={
+            checkRole() === "doctor" ? (
+              <>
+                <Menu
+                  visible={visible}
+                  anchor={
+                    <MaterialIcons name="more-vert" size={28} color="#fff" onPress={showMenu} />
+                  }
+                  onRequestClose={hideMenu}
+                >
+                  <MenuItem
+                    onPress={() => {
+                      setVisible(false)
+                    }}
+                  >
+                    Edit Post
+                  </MenuItem>
+                  <MenuItem
+                    onPress={() => {
+                      setVisible(false)
+                      navigation.goBack()
+                      database
+                        .ref("/posts/" + post.idPost)
+                        .remove()
+                        .then(() => {
+                          alert("Delete successful !!")
+                        })
+                    }}
+                  >
+                    Delete Post
+                  </MenuItem>
+                  <MenuDivider />
+                </Menu>
+              </>
+            ) : (
+              <></>
+            )
+          }
         />
 
         <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled={true}>
@@ -111,6 +201,8 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                       return Date.parse(b.timeComment) - Date.parse(a.timeComment)
                     })}
                   renderItem={({ item }) => {
+                    console.log("cmt ", cmt)
+
                     return (
                       <View style={styles.listComment}>
                         <Image style={styles.avatarComment} source={{ uri: item.img }}></Image>

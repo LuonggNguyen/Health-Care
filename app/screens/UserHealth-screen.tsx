@@ -159,6 +159,13 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
   },
 )
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#dfdfdf",
+    flex: 1,
+  },
+  content: {
+    flex: 1,
+  },
   avatar: {
     borderRadius: 70,
     height: verticleScale(50),
@@ -180,16 +187,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     height: verticleScale(50),
-    // backgroundColor: color.line,
     borderTopWidth: 1,
     borderColor: "#cccc",
-  },
-  container: {
-    backgroundColor: "#dfdfdf",
-    flex: 1,
-  },
-  content: {
-    flex: 1,
   },
   contentPost: {
     color: "#000",
