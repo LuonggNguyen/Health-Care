@@ -27,8 +27,6 @@ import ImgToBase64 from "react-native-image-base64"
 // @ts-ignore
 export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postArticles">> =
   observer(function PostArticlesScreen({ navigation }) {
-    // Pull in one of our MST stores
-    // const { someStore, anotherStore } = useStores()
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
     const [image, setImage] = useState("")

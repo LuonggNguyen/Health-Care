@@ -124,6 +124,9 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                   <MenuItem
                     onPress={() => {
                       setVisible(false)
+                      navigation.navigate("postArticle", {
+                        postUpdate: post,
+                      })
                     }}
                   >
                     Edit Post
@@ -131,12 +134,12 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                   <MenuItem
                     onPress={() => {
                       setVisible(false)
-                      navigation.goBack()
                       database
                         .ref("/posts/" + post.idPost)
                         .remove()
                         .then(() => {
                           alert("Delete successful !!")
+                          navigation.goBack()
                         })
                     }}
                   >

@@ -73,7 +73,7 @@ export type NavigatorParamList = {
 
   //post
   postArticle: {
-    post: PostArticle
+    postUpdate: PostArticle
   }
   article: undefined
   detailsArticle: {

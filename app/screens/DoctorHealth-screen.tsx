@@ -16,6 +16,7 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
   observer(function DoctorHealthScreen({ navigation }) {
     const [listPost, setListPost] = useState([])
     const user = firebase.auth().currentUser
+
     useEffect(() => {
       database.ref("/posts").on("value", (response) => {
         try {
