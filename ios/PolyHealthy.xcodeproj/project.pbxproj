@@ -95,6 +95,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		107FCA31227F4FA98534198A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			path = "";
+			sourceTree = "<group>";
+		};
 		13B07FAE1A68108700A75B9A /* PolyHealthy */ = {
 			isa = PBXGroup;
 			children = (
@@ -189,14 +197,6 @@
 			);
 			name = PolyHealthyTests;
 			sourceTree = "<group>";
-		};
-		107FCA31227F4FA98534198A /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 

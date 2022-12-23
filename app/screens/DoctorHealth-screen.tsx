@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { FlatList, StyleSheet, Text, TouchableOpacity, View, Image } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
-import { Header, Image } from "@rneui/themed"
+import { Header, Input } from "@rneui/themed"
 import { color } from "../theme"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import { firebase } from "@react-native-firebase/database"
@@ -11,10 +11,15 @@ import { database } from "../../configs/firebase"
 import AntDesign from "react-native-vector-icons/AntDesign"
 import Fontisto from "react-native-vector-icons/Fontisto"
 import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
+import Modal from "react-native-modal"
+import FontAwesome from "react-native-vector-icons/FontAwesome"
 
 export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctorHealth">> =
   observer(function DoctorHealthScreen({ navigation }) {
     const [listPost, setListPost] = useState([])
+    const [showModal, setShowModal] = useState(false)
+    const [cmt, setCmt] = useState<Comment[]>([])
+    const [comment, setComment] = useState("")
     const user = firebase.auth().currentUser
 
     useEffect(() => {
@@ -122,7 +127,12 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                           name="comment"
                           size={scale(22)}
                           color="gray"
-                          onPress={() => navigation.navigate("detailsArticle", { post: item })}
+                          onPress={() => {
+                            // navigation.navigate("detailsArticle", { post: item })
+
+                            setCmt(Object?.values(item?.comment))
+                            setShowModal(true)
+                          }}
                         />
                         <Text style={styles.count}>
                           {!Object?.values(item?.comment)
@@ -133,6 +143,116 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                         </Text>
                       </View>
                     </View>
+                    <Modal
+                      style={{
+                        // backgroundColor: '#fff',
+                        padding: 0,
+                        margin: 0,
+                        justifyContent: "flex-end",
+                      }}
+                      isVisible={showModal}
+                      onBackdropPress={() => {
+                        setShowModal(false)
+                      }}
+                      backdropTransitionOutTiming={0}
+                      backdropColor="#ccc"
+                      backdropOpacity={0.2}
+                    >
+                      <View
+                        style={{
+                          backgroundColor: "#fff",
+                          height: "80%",
+                        }}
+                      >
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            paddingHorizontal: scale(12),
+                            paddingVertical: scale(14),
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: moderateScale(18),
+                              textAlign: "center",
+                              flex: 1,
+                            }}
+                          >
+                            Comment
+                          </Text>
+                        </View>
+                        <FlatList
+                          nestedScrollEnabled={true}
+                          showsVerticalScrollIndicator={false}
+                          data={cmt
+                            .filter((item) => item.contentComment.length > 0)
+                            .sort((a, b) => {
+                              return Date.parse(b.timeComment) - Date.parse(a.timeComment)
+                            })}
+                          renderItem={({ item }) => {
+                            return (
+                              <View style={styles.listComment}>
+                                <Image
+                                  style={styles.avatarComment}
+                                  source={{ uri: item.img }}
+                                ></Image>
+                                <View>
+                                  <Text
+                                    style={{
+                                      fontSize: moderateScale(16),
+                                      fontWeight: "600",
+                                      paddingBottom: 8,
+                                    }}
+                                  >
+                                    {item.nameUser}
+                                  </Text>
+
+                                  <Text>{item.contentComment}</Text>
+                                </View>
+                              </View>
+                            )
+                          }}
+                        />
+                        <View style={styles.boxComment}>
+                          <View style={{ width: "85%" }}>
+                            <Input
+                              value={comment}
+                              onChangeText={(text) => {
+                                setComment(text)
+                              }}
+                            ></Input>
+                          </View>
+                          <View style={{ justifyContent: "center", paddingHorizontal: 20 }}>
+                            <FontAwesome
+                              name="send"
+                              size={scale(22)}
+                              onPress={() => {
+                                // if (comment) {
+                                //   database
+                                //     .ref("/posts/" + post.idPost + "/comment")
+                                //     .push()
+                                //     .set({
+                                //       idUser: user.uid,
+                                //       contentComment: comment,
+                                //       nameUser:
+                                //         post.idDoctor == user.uid
+                                //           ? user.displayName + "  (author)"
+                                //           : user.displayName,
+                                //       img: imgUser || imgDoctor,
+                                //       timeComment: new Date().toString(),
+                                //     })
+                                //     .then(() => {
+                                //       setComment("")
+                                //     })
+                                // } else {
+                                //   console.log("no commet")
+                                // }
+                              }}
+                            ></FontAwesome>
+                          </View>
+                        </View>
+                      </View>
+                    </Modal>
                   </View>
                 )
               }}
@@ -212,5 +332,31 @@ const styles = StyleSheet.create({
     color: "#000",
     fontSize: scale(18),
     padding: 8,
+  },
+  listComment: {
+    padding: 18,
+    backgroundColor: "#ffff",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  avatarComment: {
+    borderRadius: 70,
+    height: verticleScale(40),
+    marginLeft: 12,
+    marginRight: 22,
+    width: verticleScale(40),
+  },
+  boxComment: {
+    flex: 1,
+    flexDirection: "row",
+    alignSelf: "center",
+    marginTop: 8,
+    paddingBottom: 4,
+    position: "absolute",
+    bottom: 0,
+    backgroundColor: "#ffff",
+    // marginHorizontal: 20,
   },
 })

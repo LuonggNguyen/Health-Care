@@ -23,6 +23,7 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { MyHeader } from "../../components/MyHeader"
 import { launchImageLibrary } from "react-native-image-picker"
 import ImgToBase64 from "react-native-image-base64"
+import { Dialog } from "@rneui/themed"
 
 // @ts-ignore
 export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postArticles">> =
@@ -30,6 +31,7 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
     const [image, setImage] = useState("")
+    const [loading, setLoading] = useState(false)
 
     const [infoDoctor, setInfoDoctor] = useState<InfoDoctor>()
     useEffect(() => {
@@ -50,6 +52,7 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
       if (!title || !content || !image) {
         alert("Content cannot be left blank")
       } else {
+        setLoading(true)
         database
           .ref("/posts")
           .push()
@@ -78,8 +81,11 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
             ],
           })
           .then(() => {
-            console.log("Post Successful")
+            setLoading(false)
             navigation.goBack()
+          })
+          .catch(() => {
+            setLoading(false)
           })
       }
     }
@@ -150,6 +156,9 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
                 }}
                 onChangeText={(text) => setTitle(text)}
               ></TextInput>
+            </View>
+            <View style={{ position: "absolute", top: "49%", left: "49%" }}>
+              {loading && <Dialog.Loading />}
             </View>
             <Text style={styles.txtTitle}>Content</Text>
 
