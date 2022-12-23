@@ -23,6 +23,7 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { MyHeader } from "../../components/MyHeader"
 import { launchImageLibrary } from "react-native-image-picker"
 import ImgToBase64 from "react-native-image-base64"
+import { Dialog } from "@rneui/themed"
 
 // @ts-ignore
 export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postArticles">> =
@@ -32,6 +33,7 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
     const [image, setImage] = useState("")
+    const [loading, setLoading] = useState(false)
 
     const [infoDoctor, setInfoDoctor] = useState<InfoDoctor>()
     useEffect(() => {
@@ -49,41 +51,41 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
     }, [])
 
     const postArticles = (title, content, image) => {
-      if (!title || !content || !image) {
-        alert("Content cannot be left blank")
-      } else {
-        database
-          .ref("/posts")
-          .push()
-          .set({
-            idDoctor: infoDoctor.uid,
-            nameDoctor: infoDoctor.name,
-            avtDoctor: infoDoctor.photoUrl,
-            timePost: new Date().toString(),
-            title: title,
-            content: content,
-            imagePost: image,
-            idPost: "",
-            like: [
-              {
-                idUser: infoDoctor.uid,
-                status: false,
-              },
-            ],
-            comment: [
-              {
-                idUser: infoDoctor.uid,
-                nameUser: "",
-                img: "",
-                contentComment: "",
-              },
-            ],
-          })
-          .then(() => {
-            console.log("Post Successful")
-            navigation.goBack()
-          })
-      }
+      setLoading(true)
+      database
+        .ref("/posts")
+        .push()
+        .set({
+          idDoctor: infoDoctor.uid,
+          nameDoctor: infoDoctor.name,
+          avtDoctor: infoDoctor.photoUrl,
+          timePost: new Date().toString(),
+          title: title,
+          content: content,
+          imagePost: image,
+          idPost: "",
+          like: [
+            {
+              idUser: infoDoctor.uid,
+              status: false,
+            },
+          ],
+          comment: [
+            {
+              idUser: infoDoctor.uid,
+              nameUser: "",
+              img: "",
+              contentComment: "",
+            },
+          ],
+        })
+        .then(() => {
+          setLoading(false)
+          navigation.goBack()
+        })
+        .catch(() => {
+          setLoading(false)
+        })
     }
     const selectImage = () => {
       try {
@@ -153,6 +155,7 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
                 onChangeText={(text) => setTitle(text)}
               ></TextInput>
             </View>
+            {loading && <Dialog.Loading />}
             <Text style={styles.txtTitle}>Content</Text>
 
             <View style={styles.boxTitle}>

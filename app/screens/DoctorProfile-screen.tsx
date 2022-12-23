@@ -108,7 +108,7 @@ export const DoctorProfileScreen: FC<StackScreenProps<NavigatorParamList, "docto
           .then(() => {
             cancelUpdateAvatar()
             setLoading(false)
-            // Alert.alert("Update Avatar Successfully !!")
+            Alert.alert("Update Avatar Successfully !!")
             // setTimeout(() => {
             //   Utils.showSuccessToast({
             //     text1: "Update Avatar Successfully",
