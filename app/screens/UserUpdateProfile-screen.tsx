@@ -120,7 +120,14 @@ export const UserUpdateProfileScreen: FC<
               setOpen(false)
             }}
           />
-          <Text style={{ color: "#000", fontSize: 20, fontWeight: "bold", marginVertical: 8 }}>
+          <Text
+            style={{
+              color: "#000",
+              fontSize: moderateScale(20),
+              fontWeight: "bold",
+              marginVertical: 8,
+            }}
+          >
             Info Health
           </Text>
           <View style={styles.boxSlider}>
@@ -158,7 +165,9 @@ export const UserUpdateProfileScreen: FC<
             leftIcon={<FontAwesome name="heartbeat" size={24} color="gray" />}
           />
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={{ color: "#000", fontSize: 16, fontWeight: "bold", margin: 8 }}>
+            <Text
+              style={{ color: "#000", fontSize: moderateScale(16), fontWeight: "bold", margin: 8 }}
+            >
               Blood Pressure
             </Text>
             <Input
@@ -211,7 +220,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   titleHeader: {
-    fontSize: 24,
+    fontSize: moderateScale(20),
     fontWeight: "bold",
   },
   content: {

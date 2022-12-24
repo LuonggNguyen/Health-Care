@@ -148,7 +148,7 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
                 style={{
                   height: verticleScale(80),
                   textAlignVertical: "top",
-                  fontSize: 20,
+                  fontSize: moderateScale(18),
                   color: "#000",
                   fontWeight: "bold",
                 }}
@@ -164,7 +164,7 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
                 style={{
                   height: verticleScale(250),
                   textAlignVertical: "top",
-                  fontSize: 20,
+                  fontSize: moderateScale(18),
                   color: "#000",
                   fontWeight: "bold",
                 }}
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     color: "#000",
     fontWeight: "bold",
-    fontSize: moderateScale(20),
+    fontSize: moderateScale(18),
   },
   boxTitle: {
     borderColor: color.colorApp,
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   boxButton: {
     alignSelf: "center",
     position: "absolute",
-    bottom: 0,
+    bottom: scale(10),
   },
   button: {
     backgroundColor: color.colorApp,

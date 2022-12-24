@@ -19,7 +19,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import auth from "@react-native-firebase/auth"
 import { database } from "../../../configs/firebase"
 import { color } from "../../theme"
-import { verticleScale } from "../../utils/Scale/Scaling"
+import { moderateScale, verticleScale } from "../../utils/Scale/Scaling"
 
 export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">> = observer(
   function RegisterScreen({ navigation }) {
@@ -113,7 +113,9 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
         <View style={styles.container}>
           <Header
             centerComponent={
-              <Text style={{ color: "#000", fontSize: 24, fontWeight: "bold" }}>REGISTER</Text>
+              <Text style={{ color: "#000", fontSize: moderateScale(20), fontWeight: "bold" }}>
+                REGISTER
+              </Text>
             }
             backgroundColor="#fff"
           />
@@ -127,7 +129,9 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
       <View style={styles.container}>
         <Header
           centerComponent={
-            <Text style={{ color: "#000", fontSize: 24, fontWeight: "bold" }}>REGISTER</Text>
+            <Text style={{ color: "#000", fontSize: moderateScale(20), fontWeight: "bold" }}>
+              REGISTER
+            </Text>
           }
           backgroundColor={color.colorTextHeader}
         />
@@ -197,7 +201,7 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
                   handleRegister(email, pass, rePass, name)
                 }}
                 title="Register"
-                titleStyle={{ color: "#000", fontSize: 20, fontWeight: "bold" }}
+                titleStyle={{ color: "#000", fontSize: moderateScale(18), fontWeight: "bold" }}
                 color="#fff"
                 type="solid"
                 buttonStyle={{
@@ -212,9 +216,13 @@ export const RegisterScreen: FC<StackScreenProps<NavigatorParamList, "register">
         </KeyboardAvoidingView>
         <SafeAreaView>
           <View style={styles.footer}>
-            <Text style={{ color: "#000", fontSize: 16 }}>Do you already have an account ? </Text>
+            <Text style={{ color: "#000", fontSize: moderateScale(16) }}>
+              Do you already have an account ?{" "}
+            </Text>
             <TouchableOpacity onPress={goToLogin}>
-              <Text style={{ color: "#000", fontSize: 16, fontWeight: "bold" }}>Signin now!!</Text>
+              <Text style={{ color: "#000", fontSize: moderateScale(16), fontWeight: "bold" }}>
+                Signin now!!
+              </Text>
             </TouchableOpacity>
           </View>
         </SafeAreaView>

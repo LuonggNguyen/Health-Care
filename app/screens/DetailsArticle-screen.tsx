@@ -66,14 +66,14 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
               <Iconicons
                 name="arrow-back"
                 color={color.colorTextHeader}
-                size={28}
+                size={scale(24)}
                 onPress={() => navigation.goBack()}
               />
             }
             centerComponent={
               <Text
                 style={{
-                  fontSize: 24,
+                  fontSize: moderateScale(20),
                   fontWeight: "bold",
                   color: color.colorTextHeader,
                 }}
@@ -96,14 +96,14 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
             <Iconicons
               name="arrow-back"
               color={color.colorTextHeader}
-              size={28}
+              size={scale(24)}
               onPress={() => navigation.goBack()}
             />
           }
           centerComponent={
             <Text
               style={{
-                fontSize: 24,
+                fontSize: moderateScale(20),
                 fontWeight: "bold",
                 color: color.colorTextHeader,
               }}
@@ -117,7 +117,12 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                 <Menu
                   visible={visible}
                   anchor={
-                    <MaterialIcons name="more-vert" size={28} color="#fff" onPress={showMenu} />
+                    <MaterialIcons
+                      name="more-vert"
+                      size={scale(24)}
+                      color="#fff"
+                      onPress={showMenu}
+                    />
                   }
                   onRequestClose={hideMenu}
                 >
@@ -201,8 +206,6 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                       return Date.parse(b.timeComment) - Date.parse(a.timeComment)
                     })}
                   renderItem={({ item }) => {
-                    console.log("cmt ", cmt)
-
                     return (
                       <View style={styles.listComment}>
                         <Image style={styles.avatarComment} source={{ uri: item.img }}></Image>

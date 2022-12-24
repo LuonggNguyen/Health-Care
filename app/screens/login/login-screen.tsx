@@ -9,7 +9,7 @@ import Ionicons from "react-native-vector-icons/Ionicons"
 import { GoogleSignin, GoogleSigninButton } from "@react-native-google-signin/google-signin"
 import { database } from "../../../configs/firebase"
 import { color } from "../../theme"
-import { verticleScale } from "../../utils/Scale/Scaling"
+import { moderateScale, verticleScale } from "../../utils/Scale/Scaling"
 
 export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = observer(
   function LoginScreen({ navigation }) {
@@ -106,7 +106,13 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
         <View style={styles.container}>
           <Header
             centerComponent={
-              <Text style={{ color: color.colorTextHeader, fontSize: 24, fontWeight: "bold" }}>
+              <Text
+                style={{
+                  color: color.colorTextHeader,
+                  fontSize: moderateScale(20),
+                  fontWeight: "bold",
+                }}
+              >
                 Login
               </Text>
             }
@@ -124,7 +130,9 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
       <View style={styles.container}>
         <Header
           centerComponent={
-            <Text style={{ color: "#000", fontSize: 24, fontWeight: "bold" }}>LOGIN</Text>
+            <Text style={{ color: "#000", fontSize: moderateScale(20), fontWeight: "bold" }}>
+              LOGIN
+            </Text>
           }
           backgroundColor="#fff"
         />
@@ -179,9 +187,11 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
         </View>
         <SafeAreaView>
           <View style={styles.footer}>
-            <Text style={{ color: "#000", fontSize: 16 }}>Don't have an account ? </Text>
+            <Text style={{ color: "#000", fontSize: moderateScale(16) }}>
+              Don't have an account ?{" "}
+            </Text>
             <TouchableOpacity onPress={goToRegister}>
-              <Text style={{ color: "#000", fontSize: 16, fontWeight: "bold" }}>
+              <Text style={{ color: "#000", fontSize: moderateScale(16), fontWeight: "bold" }}>
                 Register now!!
               </Text>
             </TouchableOpacity>

@@ -20,9 +20,24 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
     const [showModal, setShowModal] = useState(false)
     const [cmt, setCmt] = useState<Comment[]>([])
     const [comment, setComment] = useState("")
+    const [imgUser, setImgUser] = useState()
+    const [imgDoctor, setImgDoctor] = useState()
     const user = firebase.auth().currentUser
 
     useEffect(() => {
+      getData()
+      database
+        .ref("/users/" + firebase.auth().currentUser.uid + "/photoUrl")
+        .on("value", (snapshot) => setImgUser(snapshot.val()))
+      database
+        .ref("/doctors/" + firebase.auth().currentUser.uid + "/photoUrl")
+        .on("value", (snapshot) => setImgDoctor(snapshot.val()))
+
+      return () => {
+        setListPost(null)
+      }
+    }, [])
+    const getData = () => {
       database.ref("/posts").on("value", (response) => {
         try {
           const listkey = Object.keys(response.val())
@@ -39,11 +54,7 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
           console.log(error)
         }
       })
-
-      return () => {
-        setListPost(null)
-      }
-    }, [])
+    }
     return (
       <View style={styles.container}>
         <Header
@@ -51,7 +62,7 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
           centerComponent={
             <Text
               style={{
-                fontSize: 24,
+                fontSize: moderateScale(20),
                 fontWeight: "bold",
                 color: color.colorTextHeader,
               }}
@@ -62,7 +73,7 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
           rightComponent={
             <MaterialIcons
               name="add-circle-outline"
-              size={28}
+              size={scale(24)}
               color={color.colorTextHeader}
               onPress={() => navigation.navigate("postArticle")}
             />
@@ -129,7 +140,6 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                           color="gray"
                           onPress={() => {
                             // navigation.navigate("detailsArticle", { post: item })
-
                             setCmt(Object?.values(item?.comment))
                             setShowModal(true)
                           }}
@@ -181,38 +191,41 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                             Comment
                           </Text>
                         </View>
-                        <FlatList
-                          nestedScrollEnabled={true}
-                          showsVerticalScrollIndicator={false}
-                          data={cmt
-                            .filter((item) => item.contentComment.length > 0)
-                            .sort((a, b) => {
-                              return Date.parse(b.timeComment) - Date.parse(a.timeComment)
-                            })}
-                          renderItem={({ item }) => {
-                            return (
-                              <View style={styles.listComment}>
-                                <Image
-                                  style={styles.avatarComment}
-                                  source={{ uri: item.img }}
-                                ></Image>
-                                <View>
-                                  <Text
-                                    style={{
-                                      fontSize: moderateScale(16),
-                                      fontWeight: "600",
-                                      paddingBottom: 8,
-                                    }}
-                                  >
-                                    {item.nameUser}
-                                  </Text>
+                        <View style={{ paddingBottom: verticleScale(110) }}>
+                          <FlatList
+                            nestedScrollEnabled={true}
+                            showsVerticalScrollIndicator={false}
+                            data={cmt
+                              .filter((item) => item.contentComment.length > 0)
+                              .sort((a, b) => {
+                                return Date.parse(b.timeComment) - Date.parse(a.timeComment)
+                              })}
+                            renderItem={({ item }) => {
+                              return (
+                                <View style={styles.listComment}>
+                                  <Image
+                                    style={styles.avatarComment}
+                                    source={{ uri: item.img }}
+                                  ></Image>
+                                  <View>
+                                    <Text
+                                      style={{
+                                        fontSize: moderateScale(16),
+                                        fontWeight: "600",
+                                        paddingBottom: 8,
+                                      }}
+                                    >
+                                      {item.nameUser}
+                                    </Text>
 
-                                  <Text>{item.contentComment}</Text>
+                                    <Text>{item.contentComment}</Text>
+                                  </View>
                                 </View>
-                              </View>
-                            )
-                          }}
-                        />
+                              )
+                            }}
+                          />
+                        </View>
+
                         <View style={styles.boxComment}>
                           <View style={{ width: "85%" }}>
                             <Input
@@ -227,26 +240,28 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                               name="send"
                               size={scale(22)}
                               onPress={() => {
-                                // if (comment) {
-                                //   database
-                                //     .ref("/posts/" + post.idPost + "/comment")
-                                //     .push()
-                                //     .set({
-                                //       idUser: user.uid,
-                                //       contentComment: comment,
-                                //       nameUser:
-                                //         post.idDoctor == user.uid
-                                //           ? user.displayName + "  (author)"
-                                //           : user.displayName,
-                                //       img: imgUser || imgDoctor,
-                                //       timeComment: new Date().toString(),
-                                //     })
-                                //     .then(() => {
-                                //       setComment("")
-                                //     })
-                                // } else {
-                                //   console.log("no commet")
-                                // }
+                                if (comment) {
+                                  database
+                                    .ref("/posts/" + item.idPost + "/comment")
+                                    .push()
+                                    .set({
+                                      idUser: user.uid,
+                                      contentComment: comment,
+                                      nameUser:
+                                        item.idDoctor == user.uid
+                                          ? user.displayName + "  (author)"
+                                          : user.displayName,
+                                      img: imgUser || imgDoctor,
+                                      timeComment: new Date().toString(),
+                                    })
+                                    .then(() => {
+                                      getData()
+                                      // setCmt(Object?.values(item?.comment))
+                                      setComment("")
+                                    })
+                                } else {
+                                  console.log("no commet")
+                                }
                               }}
                             ></FontAwesome>
                           </View>
@@ -313,8 +328,9 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   imagePost: {
-    width: "95%",
-    height: scale(200),
+    minWidth: "95%",
+    // height: scale(200),
+    minHeight: verticleScale(200),
     alignSelf: "center",
     marginBottom: scale(10),
     borderRadius: 8,

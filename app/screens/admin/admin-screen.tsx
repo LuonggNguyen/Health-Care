@@ -92,7 +92,7 @@ export const AdminScreen: FC<StackScreenProps<NavigatorParamList, "admin">> = ob
             navigation.navigate("registerDoctor")
           }}
         >
-          <MaterialIcons name="add" color={"#fff"} size={28} />
+          <MaterialIcons name="add" color={"#fff"} size={scale(24)} />
         </FAB>
       </View>
     )

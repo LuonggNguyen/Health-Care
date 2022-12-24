@@ -8,7 +8,7 @@ import { Input } from "@rneui/themed"
 import { database } from "../../configs/firebase"
 import { color } from "../theme"
 import { CustomButton } from "../components/CustomButton"
-import { verticleScale } from "../utils/Scale/Scaling"
+import { moderateScale, verticleScale } from "../utils/Scale/Scaling"
 
 export const DoctorUpdateProfileScreen: FC<
   StackScreenProps<NavigatorParamList, "doctorUpdateProfile">
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   titleHeader: {
-    fontSize: 24,
+    fontSize: moderateScale(20),
     fontWeight: "bold",
   },
   input: {

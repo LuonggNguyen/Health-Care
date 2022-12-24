@@ -74,7 +74,7 @@ export const UserBookingScreen: FC<StackScreenProps<NavigatorParamList, "userBoo
               visible={visible}
               anchor={
                 // <Text onPress={showMenu}>Show menu</Text>
-                <MaterialIcons name="more-vert" size={28} color="#fff" onPress={showMenu} />
+                <MaterialIcons name="more-vert" size={scale(24)} color="#fff" onPress={showMenu} />
               }
               onRequestClose={hideMenu}
             >
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   titleHeader: {
-    fontSize: 24,
+    fontSize: moderateScale(20),
     fontWeight: "bold",
     color: color.colorTextHeader,
   },
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   time: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     color: "black",
     padding: 4,
     // fontWeight: "bold",

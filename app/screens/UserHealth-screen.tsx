@@ -41,7 +41,7 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
           centerComponent={
             <Text
               style={{
-                fontSize: 24,
+                fontSize: moderateScale(20),
                 fontWeight: "bold",
                 color: color.colorTextHeader,
               }}
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
   },
   count: {
     color: "#000",
-    fontSize: scale(18),
+    fontSize: moderateScale(18),
     padding: 8,
     // fontWeight: "bold",
   },

@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   textInfo: {
-    fontSize: 24,
+    fontSize: moderateScale(22),
     fontWeight: "bold",
     color: "#000",
     paddingBottom: 4,
