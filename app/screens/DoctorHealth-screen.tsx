@@ -64,7 +64,7 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
               name="add-circle-outline"
               size={28}
               color={color.colorTextHeader}
-              onPress={() => navigation.navigate("postArticle")}
+              onPress={() => navigation.navigate("postArticle", {})}
             />
           }
         />

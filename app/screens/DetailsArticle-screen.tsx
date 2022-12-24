@@ -26,6 +26,12 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
     const [visible, setVisible] = useState(false)
     const hideMenu = () => setVisible(false)
     const showMenu = () => setVisible(true)
+    const updatePost: UpdatePost = {
+      idPost: post.idPost,
+      img: post.imagePost,
+      title: post.title,
+      content: post.content,
+    }
 
     useEffect(() => {
       setLoading(true)
@@ -124,9 +130,7 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                   <MenuItem
                     onPress={() => {
                       setVisible(false)
-                      navigation.navigate("postArticle", {
-                        postUpdate: post,
-                      })
+                      navigation.navigate("postArticle", { postUpdate: updatePost })
                     }}
                   >
                     Edit Post
@@ -204,8 +208,6 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                       return Date.parse(b.timeComment) - Date.parse(a.timeComment)
                     })}
                   renderItem={({ item }) => {
-                    console.log("cmt ", cmt)
-
                     return (
                       <View style={styles.listComment}>
                         <Image style={styles.avatarComment} source={{ uri: item.img }}></Image>

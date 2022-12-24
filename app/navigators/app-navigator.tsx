@@ -11,7 +11,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { navigationRef, useBackButtonHandler } from "./navigation-utilities"
 import {
   AdminScreen,
-  ArticleScreen,
   DoctorDetailBookingScreen,
   LoginScreen,
   PostArticlesScreen,
@@ -73,9 +72,9 @@ export type NavigatorParamList = {
 
   //post
   postArticle: {
-    postUpdate: PostArticle
+    postUpdate?: UpdatePost
   }
-  article: undefined
+
   detailsArticle: {
     post: PostArticle
   }
@@ -201,7 +200,6 @@ const AppStack = () => {
       <Stack.Screen name="detailsDoctor" component={DetailsDoctorScreen} />
       <Stack.Screen name="detailsBooking" component={DetailsBookingScreen} />
       <Stack.Screen name="postArticle" component={PostArticlesScreen} />
-      <Stack.Screen name="article" component={ArticleScreen} />
       <Stack.Screen name="userCancel" component={UserCancelScreen} />
       <Stack.Screen name="detailsArticle" component={DetailsArticleScreen} />
       <Stack.Screen name="doctorDetailBooking" component={DoctorDetailBookingScreen} />
