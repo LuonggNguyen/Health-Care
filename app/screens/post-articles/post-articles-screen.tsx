@@ -11,9 +11,6 @@ import {
 } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
-// import { Screen, Text } from "../../components"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "../../models"
 import { color } from "../../theme"
 import { database } from "../../../configs/firebase"
 import { moderateScale, scale, verticleScale } from "../../utils/Scale/Scaling"
@@ -26,15 +23,14 @@ import ImgToBase64 from "react-native-image-base64"
 import { Dialog } from "@rneui/themed"
 
 // @ts-ignore
-export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postArticles">> =
-  observer(function PostArticlesScreen({ navigation }) {
-    // Pull in one of our MST stores
-    // const { someStore, anotherStore } = useStores()
-    const [title, setTitle] = useState("")
-    const [content, setContent] = useState("")
-    const [image, setImage] = useState("")
-    const [loading, setLoading] = useState(false)
+export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postArticle">> = observer(
+  function PostArticlesScreen({ navigation, route }) {
+    const { postUpdate } = route.params
 
+    const [title, setTitle] = useState(postUpdate?.title ?? "")
+    const [content, setContent] = useState(postUpdate?.content ?? "")
+    const [image, setImage] = useState(postUpdate?.img ?? "")
+    const [loading, setLoading] = useState(false)
     const [infoDoctor, setInfoDoctor] = useState<InfoDoctor>()
     useEffect(() => {
       GoogleSignin.configure({
@@ -51,41 +47,68 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
     }, [])
 
     const postArticles = (title, content, image) => {
-      setLoading(true)
-      database
-        .ref("/posts")
-        .push()
-        .set({
-          idDoctor: infoDoctor.uid,
-          nameDoctor: infoDoctor.name,
-          avtDoctor: infoDoctor.photoUrl,
-          timePost: new Date().toString(),
-          title: title,
-          content: content,
-          imagePost: image,
-          idPost: "",
-          like: [
-            {
-              idUser: infoDoctor.uid,
-              status: false,
-            },
-          ],
-          comment: [
-            {
-              idUser: infoDoctor.uid,
-              nameUser: "",
-              img: "",
-              contentComment: "",
-            },
-          ],
-        })
-        .then(() => {
-          setLoading(false)
-          navigation.goBack()
-        })
-        .catch(() => {
-          setLoading(false)
-        })
+      if (!title || !content || !image) {
+        alert("Content cannot be left blank")
+      } else {
+        setLoading(true)
+        database
+          .ref("/posts")
+          .push()
+          .set({
+            idDoctor: infoDoctor.uid,
+            nameDoctor: infoDoctor.name,
+            avtDoctor: infoDoctor.photoUrl,
+            timePost: new Date().toString(),
+            title: title,
+            content: content,
+            imagePost: image,
+            idPost: "",
+            like: [
+              {
+                idUser: infoDoctor.uid,
+                status: false,
+              },
+            ],
+            comment: [
+              {
+                idUser: infoDoctor.uid,
+                nameUser: "",
+                img: "",
+                contentComment: "",
+              },
+            ],
+          })
+          .then(() => {
+            setLoading(false)
+            navigation.goBack()
+          })
+          .catch(() => {
+            setLoading(false)
+          })
+      }
+    }
+
+    const updateArticles = (title, content, image) => {
+      if (!title || !content || !image) {
+        alert("Content cannot be left blank")
+      } else {
+        setLoading(true)
+        database
+          .ref("/posts/" + postUpdate.idPost)
+          .update({
+            title: title,
+            content: content,
+            imagePost: image,
+            timePost: new Date().toString(),
+          })
+          .then(() => {
+            setLoading(false)
+            navigation.navigate("doctor")
+          })
+          .catch(() => {
+            setLoading(false)
+          })
+      }
     }
     const selectImage = () => {
       try {
@@ -135,7 +158,6 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
                     style={[styles.image]}
                     source={{
                       uri: image,
-                      // "https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png",
                     }}
                   />
                 )}
@@ -152,10 +174,13 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
                   color: "#000",
                   fontWeight: "bold",
                 }}
+                value={title}
                 onChangeText={(text) => setTitle(text)}
               ></TextInput>
             </View>
-            {loading && <Dialog.Loading />}
+            <View style={{ position: "absolute", top: "49%", left: "49%", zIndex: 999 }}>
+              {loading && <Dialog.Loading />}
+            </View>
             <Text style={styles.txtTitle}>Content</Text>
 
             <View style={styles.boxTitle}>
@@ -168,17 +193,28 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
                   color: "#000",
                   fontWeight: "bold",
                 }}
+                value={content}
                 onChangeText={(text) => setContent(text)}
               ></TextInput>
             </View>
           </View>
         </ScrollView>
         <View style={styles.boxButton}>
-          <CustomButton title={"Post"} onPress={() => postArticles(title, content, image)} />
+          <CustomButton
+            title={postUpdate ? "Update Post" : "Post"}
+            onPress={() => {
+              if (postUpdate) {
+                updateArticles(title, content, image)
+              } else {
+                postArticles(title, content, image)
+              }
+            }}
+          />
         </View>
       </View>
     )
-  })
+  },
+)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
