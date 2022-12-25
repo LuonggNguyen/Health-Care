@@ -4,17 +4,25 @@ import { View, StyleSheet, Text, Image, FlatList, TouchableOpacity } from "react
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { database } from "../../configs/firebase"
-import { Header } from "@rneui/themed"
+import { Header, Input } from "@rneui/themed"
 import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
 import { color } from "../theme"
 import AntDesign from "react-native-vector-icons/AntDesign"
 import Fontisto from "react-native-vector-icons/Fontisto"
 import { firebase } from "@react-native-firebase/database"
+import FontAwesome from "react-native-vector-icons/FontAwesome"
+import Modal from "react-native-modal"
 
 export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHealth">> = observer(
   function UserHealthScreen({ navigation }) {
     const [listPost, setListPost] = useState([])
     const user = firebase.auth().currentUser
+    const [comment, setComment] = useState("")
+    const [imgUser, setImgUser] = useState("")
+    const [idPost, setIdPost] = useState("")
+    const [cmt, setCmt] = useState<Comment[]>([])
+    const [showModal, setShowModal] = useState(false)
+
     useEffect(() => {
       database.ref("/posts").on("value", (response) => {
         try {
@@ -28,6 +36,9 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
           setListPost(myList)
         } catch (error) {}
       })
+      database
+        .ref("/users/" + firebase.auth().currentUser.uid + "/photoUrl")
+        .on("value", (snapshot) => setImgUser(snapshot.val()))
 
       return () => {
         setListPost(null)
@@ -63,6 +74,8 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                 const checkLike = Object?.values(item?.like).find(
                   (item: Like) => item.idUser === user?.uid,
                 ) as Like
+                console.log("checkLike ", checkLike)
+
                 return (
                   <View style={styles.boxItem}>
                     <TouchableOpacity
@@ -137,7 +150,12 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                           name="comment"
                           size={scale(22)}
                           color="gray"
-                          onPress={() => navigation.navigate("detailsArticle", { post: item })}
+                          onPress={() => {
+                            // navigation.navigate("detailsArticle", { post: item })
+                            setCmt(Object?.values(item?.comment))
+                            setIdPost(item?.idPost)
+                            setShowModal(true)
+                          }}
                         />
                         <Text style={styles.count}>
                           {!Object?.values(item?.comment)
@@ -154,6 +172,117 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
             />
           )}
         </View>
+        <Modal
+          style={{
+            // backgroundColor: '#fff',
+            padding: 0,
+            margin: 0,
+            justifyContent: "flex-end",
+          }}
+          isVisible={showModal}
+          onBackdropPress={() => {
+            setShowModal(false)
+          }}
+          backdropTransitionOutTiming={0}
+          backdropColor="#ccc"
+          backdropOpacity={0.2}
+        >
+          <View
+            style={{
+              backgroundColor: "#fff",
+              height: "80%",
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                paddingHorizontal: scale(12),
+                paddingVertical: scale(14),
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: moderateScale(18),
+                  textAlign: "center",
+                  flex: 1,
+                }}
+              >
+                Comment
+              </Text>
+            </View>
+            <View style={{ paddingBottom: verticleScale(110) }}>
+              <FlatList
+                nestedScrollEnabled={true}
+                showsVerticalScrollIndicator={false}
+                data={cmt
+                  .filter((item) => item.contentComment.length > 0)
+                  .sort((a, b) => {
+                    return Date.parse(b.timeComment) - Date.parse(a.timeComment)
+                  })}
+                renderItem={({ item }) => {
+                  return (
+                    <View style={styles.listComment}>
+                      <Image style={styles.avatarComment} source={{ uri: item.img }}></Image>
+                      <View>
+                        <Text
+                          style={{
+                            fontSize: moderateScale(16),
+                            fontWeight: "600",
+                            paddingBottom: 8,
+                          }}
+                        >
+                          {item.nameUser}
+                        </Text>
+
+                        <Text>{item.contentComment}</Text>
+                      </View>
+                    </View>
+                  )
+                }}
+              />
+            </View>
+
+            <View style={styles.boxComment}>
+              <View style={{ width: "85%" }}>
+                <Input
+                  value={comment}
+                  onChangeText={(text) => {
+                    setComment(text)
+                  }}
+                ></Input>
+              </View>
+              <View style={{ justifyContent: "center", paddingHorizontal: 20 }}>
+                <FontAwesome
+                  name="send"
+                  size={scale(22)}
+                  onPress={() => {
+                    console.log("Idddd ", idPost)
+
+                    if (comment) {
+                      database
+                        .ref("/posts/" + idPost + "/comment")
+                        .push()
+                        .set({
+                          idUser: user.uid,
+                          contentComment: comment,
+                          nameUser: user.displayName + "  (author)",
+                          img: imgUser,
+                          timeComment: new Date().toString(),
+                        })
+                        .then(() => {
+                          // getData()
+                          // setCmt(Object?.values(item?.comment))
+                        })
+                      setComment("")
+                    } else {
+                      console.log("no commet")
+                    }
+                  }}
+                ></FontAwesome>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     )
   },
@@ -165,6 +294,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    paddingBottom: verticleScale(40),
   },
   avatar: {
     borderRadius: 70,
@@ -230,5 +360,31 @@ const styles = StyleSheet.create({
     color: "#000",
     fontSize: moderateScale(24),
     fontWeight: "bold",
+  },
+  boxComment: {
+    flex: 1,
+    flexDirection: "row",
+    alignSelf: "center",
+    marginTop: 8,
+    paddingBottom: 4,
+    position: "absolute",
+    bottom: 0,
+    backgroundColor: "#ffff",
+    // marginHorizontal: 20,
+  },
+  listComment: {
+    padding: 18,
+    backgroundColor: "#ffff",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  avatarComment: {
+    borderRadius: 70,
+    height: verticleScale(40),
+    marginLeft: 12,
+    marginRight: 22,
+    width: verticleScale(40),
   },
 })

@@ -20,12 +20,17 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
     const [showModal, setShowModal] = useState(false)
     const [cmt, setCmt] = useState<Comment[]>([])
     const [comment, setComment] = useState("")
+    const [imgDoctor, setImgDoctor] = useState()
     const [idPost, setIdPost] = useState()
 
     const user = firebase.auth().currentUser
 
     useEffect(() => {
       getData()
+      database
+        .ref("/doctors/" + firebase.auth().currentUser.uid + "/photoUrl")
+        .on("value", (snapshot) => setImgDoctor(snapshot.val()))
+
       return () => {
         setListPost(null)
       }
@@ -108,64 +113,50 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                       </View>
                     </TouchableOpacity>
                     <View style={styles.boxLike}>
-                      <TouchableOpacity
-                        style={{ flex: 1, alignItems: "center" }}
-                        onPress={() => {
-                          checkLike?.status == true
-                            ? database
+                      <View
+                        style={{
+                          // marginLeft: scale(60),
+                          width: "50%",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {checkLike?.status ? (
+                          <AntDesign
+                            name="like1"
+                            size={scale(24)}
+                            color={color.colorApp}
+                            onPress={() => {
+                              console.log("true ", checkLike?.status)
+                              database
                                 .ref("/posts/" + item.idPost + "/like/" + user.uid)
                                 .update({ status: false, idUser: user.uid })
                                 .then(() => {})
-                            : database
+                            }}
+                          />
+                        ) : (
+                          <AntDesign
+                            name="like2"
+                            size={scale(24)}
+                            color={"gray"}
+                            onPress={() => {
+                              console.log("false ", checkLike?.status)
+                              database
                                 .ref("/posts/" + item.idPost + "/like/" + user.uid)
                                 .update({ status: true, idUser: user.uid })
                                 .then(() => {})
-                        }}
-                      >
-                        <View
-                          style={{
-                            // marginLeft: scale(60),
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            width: "50%",
-                          }}
-                        >
-                          {checkLike?.status ? (
-                            <AntDesign
-                              name="like1"
-                              size={scale(24)}
-                              color={color.colorApp}
-                              onPress={() => {
-                                database
-                                  .ref("/posts/" + item.idPost + "/like/" + user.uid)
-                                  .update({ status: false, idUser: user.uid })
-                                  .then(() => {})
-                              }}
-                            />
-                          ) : (
-                            <AntDesign
-                              name="like2"
-                              size={scale(24)}
-                              color={"gray"}
-                              onPress={() => {
-                                database
-                                  .ref("/posts/" + item.idPost + "/like/" + user.uid)
-                                  .update({ status: true, idUser: user.uid })
-                                  .then(() => {})
-                              }}
-                            />
-                          )}
-
-                          <Text style={styles.count}>
-                            {Object?.values(item?.like).filter((item: Like) => item.status === true)
-                              .length + 50}
-                          </Text>
-                        </View>
-                      </TouchableOpacity>
+                            }}
+                          />
+                        )}
+                        <Text style={styles.count}>
+                          {Object?.values(item?.like).filter((item: Like) => item.status === true)
+                            .length + 50}
+                        </Text>
+                      </View>
                       {/* <View style={{ flex: 1 }} /> */}
                       <TouchableOpacity
-                        style={{ flex: 1, alignItems: "center" }}
+                        style={{ width: "50%", alignItems: "center" }}
                         onPress={() => {
                           // navigation.navigate("detailsArticle", { post: item })
                           setCmt(Object?.values(item?.comment))
@@ -177,7 +168,7 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                           style={{
                             flexDirection: "row",
                             alignItems: "center",
-                            width: "50%",
+
                             justifyContent: "center",
                           }}
                         >
@@ -192,129 +183,123 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                         </View>
                       </TouchableOpacity>
                     </View>
-                    <Modal
-                      style={{
-                        // backgroundColor: '#fff',
-                        padding: 0,
-                        margin: 0,
-                        justifyContent: "flex-end",
-                      }}
-                      isVisible={showModal}
-                      onBackdropPress={() => {
-                        setShowModal(false)
-                      }}
-                      backdropTransitionOutTiming={0}
-                      backdropColor="#ccc"
-                      backdropOpacity={0.2}
-                    >
-                      <View
-                        style={{
-                          backgroundColor: "#fff",
-                          height: "80%",
-                        }}
-                      >
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            paddingHorizontal: scale(12),
-                            paddingVertical: scale(14),
-                          }}
-                        >
-                          <Text
-                            style={{
-                              fontSize: moderateScale(18),
-                              textAlign: "center",
-                              flex: 1,
-                            }}
-                          >
-                            Comment
-                          </Text>
-                        </View>
-                        <View style={{ paddingBottom: verticleScale(110) }}>
-                          <FlatList
-                            nestedScrollEnabled={true}
-                            showsVerticalScrollIndicator={false}
-                            data={cmt
-                              .filter((item) => item.contentComment.length > 0)
-                              .sort((a, b) => {
-                                return Date.parse(b.timeComment) - Date.parse(a.timeComment)
-                              })}
-                            renderItem={({ item }) => {
-                              return (
-                                <View style={styles.listComment}>
-                                  <Image
-                                    style={styles.avatarComment}
-                                    source={{ uri: item.img }}
-                                  ></Image>
-                                  <View>
-                                    <Text
-                                      style={{
-                                        fontSize: moderateScale(16),
-                                        fontWeight: "600",
-                                        paddingBottom: 8,
-                                      }}
-                                    >
-                                      {item.nameUser}
-                                    </Text>
-
-                                    <Text>{item.contentComment}</Text>
-                                  </View>
-                                </View>
-                              )
-                            }}
-                          />
-                        </View>
-
-                        <View style={styles.boxComment}>
-                          <View style={{ width: "85%" }}>
-                            <Input
-                              value={comment}
-                              onChangeText={(text) => {
-                                setComment(text)
-                              }}
-                            ></Input>
-                          </View>
-                          <View style={{ justifyContent: "center", paddingHorizontal: 20 }}>
-                            <FontAwesome
-                              name="send"
-                              size={scale(22)}
-                              onPress={() => {
-                                console.log("Idddd ", idPost)
-
-                                // if (comment) {
-                                //   database
-                                //     .ref("/posts/" + item.idPost + "/comment")
-                                //     .push()
-                                //     .set({
-                                //       idUser: user.uid,
-                                //       contentComment: comment,
-                                //       nameUser:
-                                //         item.idDoctor == user.uid
-                                //           ? user.displayName + "  (author)"
-                                //           : user.displayName,
-                                //       img: imgUser || imgDoctor,
-                                //       timeComment: new Date().toString(),
-                                //     })
-                                //     .then(() => {
-                                //       getData()
-                                //       // setCmt(Object?.values(item?.comment))
-                                //       setComment("")
-                                //     })
-                                // } else {
-                                //   console.log("no commet")
-                                // }
-                              }}
-                            ></FontAwesome>
-                          </View>
-                        </View>
-                      </View>
-                    </Modal>
                   </View>
                 )
               }}
             />
           )}
         </View>
+        <Modal
+          style={{
+            // backgroundColor: '#fff',
+            padding: 0,
+            margin: 0,
+            justifyContent: "flex-end",
+          }}
+          isVisible={showModal}
+          onBackdropPress={() => {
+            setShowModal(false)
+          }}
+          backdropTransitionOutTiming={0}
+          backdropColor="#ccc"
+          backdropOpacity={0.2}
+        >
+          <View
+            style={{
+              backgroundColor: "#fff",
+              height: "80%",
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                paddingHorizontal: scale(12),
+                paddingVertical: scale(14),
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: moderateScale(18),
+                  textAlign: "center",
+                  flex: 1,
+                }}
+              >
+                Comment
+              </Text>
+            </View>
+            <View style={{ paddingBottom: verticleScale(110) }}>
+              <FlatList
+                nestedScrollEnabled={true}
+                showsVerticalScrollIndicator={false}
+                data={cmt
+                  .filter((item) => item.contentComment.length > 0)
+                  .sort((a, b) => {
+                    return Date.parse(b.timeComment) - Date.parse(a.timeComment)
+                  })}
+                renderItem={({ item }) => {
+                  return (
+                    <View style={styles.listComment}>
+                      <Image style={styles.avatarComment} source={{ uri: item.img }}></Image>
+                      <View>
+                        <Text
+                          style={{
+                            fontSize: moderateScale(16),
+                            fontWeight: "600",
+                            paddingBottom: 8,
+                          }}
+                        >
+                          {item.nameUser}
+                        </Text>
+
+                        <Text>{item.contentComment}</Text>
+                      </View>
+                    </View>
+                  )
+                }}
+              />
+            </View>
+
+            <View style={styles.boxComment}>
+              <View style={{ width: "85%" }}>
+                <Input
+                  value={comment}
+                  onChangeText={(text) => {
+                    setComment(text)
+                  }}
+                ></Input>
+              </View>
+              <View style={{ justifyContent: "center", paddingHorizontal: 20 }}>
+                <FontAwesome
+                  name="send"
+                  size={scale(22)}
+                  onPress={() => {
+                    console.log("Idddd ", idPost)
+
+                    if (comment) {
+                      database
+                        .ref("/posts/" + idPost + "/comment")
+                        .push()
+                        .set({
+                          idUser: user.uid,
+                          contentComment: comment,
+                          nameUser: user.displayName + "  (author)",
+                          img: imgDoctor,
+                          timeComment: new Date().toString(),
+                        })
+                        .then(() => {
+                          getData()
+                          // setCmt(Object?.values(item?.comment))
+                        })
+                      setComment("")
+                    } else {
+                      console.log("no commet")
+                    }
+                  }}
+                ></FontAwesome>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     )
   })
