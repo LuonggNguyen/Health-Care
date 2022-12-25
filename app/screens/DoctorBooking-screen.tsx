@@ -11,7 +11,6 @@ import { moderateScale, scale, verticleScale } from "../utils/Scale/Scaling"
 import Entypo from "react-native-vector-icons/Entypo"
 
 const width = Dimensions.get("window").width
-const height = Dimensions.get("window").height
 export const DoctorBookingScreen: FC<StackScreenProps<NavigatorParamList, "doctorBooking">> =
   observer(function DoctorBookingScreen({ navigation }) {
     const [listBook, setListBook] = useState<Booking[]>([])

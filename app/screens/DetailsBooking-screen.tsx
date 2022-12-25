@@ -220,10 +220,8 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     alignItems: "center",
-    // backgroundColor: "#fffbe1",
   },
   cardDoctor: {
-    // flex: 1,
     width: "95%",
     justifyContent: "space-around",
   },
@@ -239,10 +237,8 @@ const styles = StyleSheet.create({
     width: "95%",
     marginBottom: 8,
     alignItems: "center",
-    // justifyContent: "space-around",
   },
   imgDoctor: {
-    // margin: 8,
     width: scale(110),
     height: scale(110),
     resizeMode: "contain",
@@ -260,13 +256,11 @@ const styles = StyleSheet.create({
     color: "#000",
     fontSize: moderateScale(18),
     paddingVertical: 5,
-    // fontWeight: "bold",
   },
   boxTime: {
     marginTop: 20,
     width: "90%",
     height: scale(90),
-    // backgroundColor: "#1cc3",
     borderColor: "#cccc",
     borderWidth: 1,
     borderRadius: 18,
