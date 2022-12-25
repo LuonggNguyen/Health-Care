@@ -178,7 +178,7 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
                 onChangeText={(text) => setTitle(text)}
               ></TextInput>
             </View>
-            <View style={{ position: "absolute", top: "49%", left: "49%", zIndex: 999 }}>
+            <View style={{ position: "absolute", top: "40%", left: "49%", zIndex: 999 }}>
               {loading && <Dialog.Loading />}
             </View>
             <Text style={styles.txtTitle}>Content</Text>
@@ -222,6 +222,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     marginTop: verticleScale(10),
+    paddingBottom: verticleScale(100),
   },
   txtTitle: {
     marginTop: 12,

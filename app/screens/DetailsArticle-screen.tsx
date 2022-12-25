@@ -166,17 +166,17 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
         <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled={true}>
           <View style={styles.boxItem}>
             <View style={styles.boxAvatar}>
-              <Image style={styles.avatar} source={{ uri: post.avtDoctor }}></Image>
-              <Text style={styles.name}>{post.nameDoctor}</Text>
+              <Image style={styles.avatar} source={{ uri: post?.avtDoctor }}></Image>
+              <Text style={styles.name}>{post?.nameDoctor}</Text>
             </View>
             <View style={styles.boxContent}>
-              <Text style={styles.title}>{post.title}</Text>
-              <Text style={styles.contentPost}>{post.content}</Text>
+              <Text style={styles.title}>{post?.title}</Text>
+              <Text style={styles.contentPost}>{post?.content}</Text>
 
               <Image
                 resizeMode="contain"
                 style={styles.imagePost}
-                source={{ uri: post.imagePost }}
+                source={{ uri: post?.imagePost }}
               ></Image>
             </View>
           </View>
@@ -204,7 +204,32 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                     Comment
                   </Text>
                 </View>
-                <FlatList
+                {cmt
+                  .filter((item) => item.contentComment.length > 0)
+                  .sort((a, b) => {
+                    return Date.parse(b.timeComment) - Date.parse(a.timeComment)
+                  })
+                  .map((a) => {
+                    return (
+                      <View style={styles.listComment}>
+                        <Image style={styles.avatarComment} source={{ uri: a?.img }}></Image>
+                        <View>
+                          <Text
+                            style={{
+                              fontSize: moderateScale(16),
+                              fontWeight: "600",
+                              paddingBottom: 8,
+                            }}
+                          >
+                            {a?.nameUser}
+                          </Text>
+
+                          <Text>{a?.contentComment}</Text>
+                        </View>
+                      </View>
+                    )
+                  })}
+                {/* <FlatList
                   nestedScrollEnabled={true}
                   showsVerticalScrollIndicator={false}
                   data={cmt
@@ -232,7 +257,7 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                       </View>
                     )
                   }}
-                />
+                /> */}
               </View>
             )}
           </View>
@@ -265,9 +290,8 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                       img: imgUser || imgDoctor,
                       timeComment: new Date().toString(),
                     })
-                    .then(() => {
-                      setComment("")
-                    })
+                    .then(() => {})
+                  setComment("")
                 } else {
                   console.log("no commet")
                 }

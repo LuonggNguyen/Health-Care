@@ -20,19 +20,12 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
     const [showModal, setShowModal] = useState(false)
     const [cmt, setCmt] = useState<Comment[]>([])
     const [comment, setComment] = useState("")
-    const [imgUser, setImgUser] = useState()
-    const [imgDoctor, setImgDoctor] = useState()
+    const [idPost, setIdPost] = useState()
+
     const user = firebase.auth().currentUser
 
     useEffect(() => {
       getData()
-      database
-        .ref("/users/" + firebase.auth().currentUser.uid + "/photoUrl")
-        .on("value", (snapshot) => setImgUser(snapshot.val()))
-      database
-        .ref("/doctors/" + firebase.auth().currentUser.uid + "/photoUrl")
-        .on("value", (snapshot) => setImgDoctor(snapshot.val()))
-
       return () => {
         setListPost(null)
       }
@@ -89,6 +82,9 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                 return Date.parse(b.timePost) - Date.parse(a.timePost)
               })}
               renderItem={({ item }) => {
+                const checkLike = Object?.values(item?.like).find(
+                  (item: Like) => item.idUser === user?.uid,
+                ) as Like
                 return (
                   <View style={styles.boxItem}>
                     <TouchableOpacity
@@ -112,46 +108,89 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                       </View>
                     </TouchableOpacity>
                     <View style={styles.boxLike}>
-                      <View
-                        style={{
-                          marginLeft: scale(60),
-                          flexDirection: "row",
-                          alignItems: "center",
+                      <TouchableOpacity
+                        style={{ flex: 1, alignItems: "center" }}
+                        onPress={() => {
+                          checkLike?.status == true
+                            ? database
+                                .ref("/posts/" + item.idPost + "/like/" + user.uid)
+                                .update({ status: false, idUser: user.uid })
+                                .then(() => {})
+                            : database
+                                .ref("/posts/" + item.idPost + "/like/" + user.uid)
+                                .update({ status: true, idUser: user.uid })
+                                .then(() => {})
                         }}
                       >
-                        <AntDesign name="like2" size={scale(24)} color={"gray"} />
-
-                        <Text style={styles.count}>
-                          {Object?.values(item?.like).filter((item: Like) => item.status === true)
-                            .length + 50}
-                        </Text>
-                      </View>
-                      <View style={{ flex: 1 }} />
-                      <View
-                        style={{
-                          marginRight: scale(60),
-                          flexDirection: "row",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Fontisto
-                          name="comment"
-                          size={scale(22)}
-                          color="gray"
-                          onPress={() => {
-                            // navigation.navigate("detailsArticle", { post: item })
-                            setCmt(Object?.values(item?.comment))
-                            setShowModal(true)
+                        <View
+                          style={{
+                            // marginLeft: scale(60),
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "50%",
                           }}
-                        />
-                        <Text style={styles.count}>
-                          {!Object?.values(item?.comment)
-                            ? 0
-                            : Object?.values(item?.comment).filter(
-                                (item: Comment) => item.contentComment.length > 0,
-                              ).length}
-                        </Text>
-                      </View>
+                        >
+                          {checkLike?.status ? (
+                            <AntDesign
+                              name="like1"
+                              size={scale(24)}
+                              color={color.colorApp}
+                              onPress={() => {
+                                database
+                                  .ref("/posts/" + item.idPost + "/like/" + user.uid)
+                                  .update({ status: false, idUser: user.uid })
+                                  .then(() => {})
+                              }}
+                            />
+                          ) : (
+                            <AntDesign
+                              name="like2"
+                              size={scale(24)}
+                              color={"gray"}
+                              onPress={() => {
+                                database
+                                  .ref("/posts/" + item.idPost + "/like/" + user.uid)
+                                  .update({ status: true, idUser: user.uid })
+                                  .then(() => {})
+                              }}
+                            />
+                          )}
+
+                          <Text style={styles.count}>
+                            {Object?.values(item?.like).filter((item: Like) => item.status === true)
+                              .length + 50}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                      {/* <View style={{ flex: 1 }} /> */}
+                      <TouchableOpacity
+                        style={{ flex: 1, alignItems: "center" }}
+                        onPress={() => {
+                          // navigation.navigate("detailsArticle", { post: item })
+                          setCmt(Object?.values(item?.comment))
+                          setIdPost(item?.idPost)
+                          setShowModal(true)
+                        }}
+                      >
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            width: "50%",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Fontisto name="comment" size={scale(22)} color="gray" />
+                          <Text style={styles.count}>
+                            {!Object?.values(item?.comment)
+                              ? 0
+                              : Object?.values(item?.comment).filter(
+                                  (item: Comment) => item.contentComment.length > 0,
+                                ).length}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
                     </View>
                     <Modal
                       style={{
@@ -240,28 +279,30 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                               name="send"
                               size={scale(22)}
                               onPress={() => {
-                                if (comment) {
-                                  database
-                                    .ref("/posts/" + item.idPost + "/comment")
-                                    .push()
-                                    .set({
-                                      idUser: user.uid,
-                                      contentComment: comment,
-                                      nameUser:
-                                        item.idDoctor == user.uid
-                                          ? user.displayName + "  (author)"
-                                          : user.displayName,
-                                      img: imgUser || imgDoctor,
-                                      timeComment: new Date().toString(),
-                                    })
-                                    .then(() => {
-                                      getData()
-                                      // setCmt(Object?.values(item?.comment))
-                                      setComment("")
-                                    })
-                                } else {
-                                  console.log("no commet")
-                                }
+                                console.log("Idddd ", idPost)
+
+                                // if (comment) {
+                                //   database
+                                //     .ref("/posts/" + item.idPost + "/comment")
+                                //     .push()
+                                //     .set({
+                                //       idUser: user.uid,
+                                //       contentComment: comment,
+                                //       nameUser:
+                                //         item.idDoctor == user.uid
+                                //           ? user.displayName + "  (author)"
+                                //           : user.displayName,
+                                //       img: imgUser || imgDoctor,
+                                //       timeComment: new Date().toString(),
+                                //     })
+                                //     .then(() => {
+                                //       getData()
+                                //       // setCmt(Object?.values(item?.comment))
+                                //       setComment("")
+                                //     })
+                                // } else {
+                                //   console.log("no commet")
+                                // }
                               }}
                             ></FontAwesome>
                           </View>
