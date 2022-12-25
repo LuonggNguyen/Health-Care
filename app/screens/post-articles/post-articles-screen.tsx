@@ -170,7 +170,7 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
                 style={{
                   height: verticleScale(80),
                   textAlignVertical: "top",
-                  fontSize: 20,
+                  fontSize: moderateScale(18),
                   color: "#000",
                   fontWeight: "bold",
                 }}
@@ -178,7 +178,7 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
                 onChangeText={(text) => setTitle(text)}
               ></TextInput>
             </View>
-            <View style={{ position: "absolute", top: "49%", left: "49%", zIndex: 999 }}>
+            <View style={{ position: "absolute", top: "40%", left: "49%", zIndex: 999 }}>
               {loading && <Dialog.Loading />}
             </View>
             <Text style={styles.txtTitle}>Content</Text>
@@ -189,7 +189,7 @@ export const PostArticlesScreen: FC<StackScreenProps<NavigatorParamList, "postAr
                 style={{
                   height: verticleScale(250),
                   textAlignVertical: "top",
-                  fontSize: 20,
+                  fontSize: moderateScale(18),
                   color: "#000",
                   fontWeight: "bold",
                 }}
@@ -222,13 +222,14 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     marginTop: verticleScale(10),
+    paddingBottom: verticleScale(100),
   },
   txtTitle: {
     marginTop: 12,
     marginLeft: 12,
     color: "#000",
     fontWeight: "bold",
-    fontSize: moderateScale(20),
+    fontSize: moderateScale(18),
   },
   boxTitle: {
     borderColor: color.colorApp,
@@ -240,7 +241,7 @@ const styles = StyleSheet.create({
   boxButton: {
     alignSelf: "center",
     position: "absolute",
-    bottom: 0,
+    bottom: scale(10),
   },
   button: {
     backgroundColor: color.colorApp,

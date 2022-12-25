@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { Dimensions, View, Text, StyleSheet } from "react-native"
+import { Dimensions, View, Text, StyleSheet, ScrollView } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
 import { MyHeader } from "../../components/MyHeader"
@@ -80,114 +80,146 @@ export const DoctorDetailBookingScreen: FC<
   return (
     <View style={styles.container}>
       <MyHeader title="Details Patient" onPress={() => navigation.goBack()}></MyHeader>
-      <View style={styles.content}>
-        <View style={styles.cardUser}>
-          <View style={styles.infoUser}>
-            <Image style={styles.imgUser} source={{ uri: infoUser.photoUrl }} />
-            <View style={{ justifyContent: "space-around" }}>
-              <Text style={[styles.textInfo]}>{infoUser.name}</Text>
-              <Text style={{ color: "#000", paddingBottom: 4 }}>{infoUser.phoneNumber}</Text>
-              <Text style={{ fontWeight: "bold", fontSize: moderateScale(16) }}>
-                {infoUser?.gender ? "Male" : "Female"} - {getAge(infoUser.birthday).toString()}
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View>
-          <View style={styles.boxHealth}>
-            <View style={styles.blood}>
-              <Text style={styles.titleBlood}>Blood Pressure</Text>
-              <Text style={styles.textBlood}>{infoUser?.bloodPressure}</Text>
-            </View>
-            <View style={styles.heart}>
-              <Text style={styles.titleBlood}>Heart Beat</Text>
-              <View style={styles.rowHeartbeat}>
-                <FontAwesome name="heartbeat" color={"white"} size={scale(20)}></FontAwesome>
-                <Text style={styles.textBlood}>{infoUser?.heartbeat}</Text>
+      <ScrollView>
+        <View style={styles.content}>
+          <View style={styles.cardUser}>
+            <View style={styles.infoUser}>
+              <Image style={styles.imgUser} source={{ uri: infoUser.photoUrl }} />
+              <View>
+                <Text style={[styles.textInfo]}>{infoUser.name}</Text>
+                <Text style={{ color: "#000", paddingBottom: 4, fontWeight: "500" }}>
+                  {infoUser.phoneNumber}
+                </Text>
+                <Text style={{ fontWeight: "500", fontSize: moderateScale(16), color: "#000" }}>
+                  {infoUser?.gender ? "Male" : "Female"} - {getAge(infoUser.birthday).toString()}
+                </Text>
               </View>
-              <Text style={{ color: "white", fontSize: moderateScale(12), marginTop: 10 }}>
-                Normal Heart Rate
-              </Text>
             </View>
           </View>
-          <View style={styles.boxHealth}>
-            <View style={styles.blood}>
-              <Text style={styles.titleBlood}>Weight</Text>
-              <Text style={styles.textBlood}>
-                {infoUser?.weight}
-                {" Kg"}
-              </Text>
-              <Text style={{ color: "white", fontSize: moderateScale(12), marginTop: 10 }}>
-                {infoUser?.weight > 40 ? "Weight Normal" : "Weight Too Low"}
-              </Text>
-            </View>
-            <View style={styles.heart}>
-              <Text style={styles.titleBlood}>Height</Text>
-              <View style={styles.rowHeartbeat}>
-                <FontAwesome name="male" color={"white"} size={scale(20)}></FontAwesome>
-                <Text style={styles.textBlood}>{infoUser?.height}</Text>
-              </View>
-              <Text style={{ color: "white", fontSize: moderateScale(12), marginTop: 10 }}>
-                Normal Heart Rate
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.boxTime}>
-          <View>
-            <Text style={{ fontSize: moderateScale(20), alignSelf: "center", paddingBottom: 8 }}>
-              Status
+          <View
+            style={{
+              marginTop: verticleScale(20),
+              width: "90%",
+              height: scale(60),
+              borderColor: "#cccc",
+              borderWidth: 1,
+              borderRadius: 18,
+              alignItems: "center",
+              // justifyContent: "space-around",
+              flexDirection: "row",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: moderateScale(18),
+                alignSelf: "center",
+                paddingLeft: scale(16),
+              }}
+            >
+              Time :
             </Text>
             <Text
-              style={
-                getStatus(booking.status, booking.date) === "Unfinished"
-                  ? { fontSize: moderateScale(18), color: "#8fce00", fontWeight: "bold" }
-                  : getStatus(booking.status, booking.date) === "In the past"
-                  ? { fontSize: moderateScale(18), color: "#888", fontWeight: "bold" }
-                  : { fontSize: moderateScale(18), color: "red", fontWeight: "bold" }
-              }
+              style={{
+                fontSize: moderateScale(15),
+                color: "#333",
+                fontWeight: "bold",
+                paddingLeft: scale(16),
+              }}
             >
-              <AntDesign
-                name={
-                  getStatus(booking.status, booking.date) === "Unfinished"
-                    ? "questioncircle"
-                    : "closecircle"
-                }
-                size={18}
-                color={
-                  getStatus(booking.status, booking.date) === "Unfinished"
-                    ? "#8fce00"
-                    : getStatus(booking.status, booking.date) === "In the past"
-                    ? "#888"
-                    : "red"
-                }
-              />
-              {" " + getStatus(booking.status, booking.date)}
-            </Text>
-          </View>
-          <View>
-            <Text style={{ fontSize: moderateScale(18), alignSelf: "center", paddingBottom: 8 }}>
-              Date
-            </Text>
-            <Text style={{ fontSize: moderateScale(16), color: "#333", fontWeight: "bold" }}>
-              <AntDesign name="calendar" size={16} color="#333" /> {" " + booking.date}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.boxTime}>
-          {/* <View></View> */}
-          <View>
-            <Text style={{ fontSize: moderateScale(18), alignSelf: "center", paddingBottom: 8 }}>
-              Time
-            </Text>
-            <Text style={{ fontSize: 18, color: "#333", fontWeight: "bold" }}>
               <AntDesign name="clockcircleo" size={moderateScale(18)} color="#333" />
               {" " + getWorkShift(booking.workingTime)}
             </Text>
           </View>
+          <View style={styles.boxTime}>
+            <View>
+              <Text
+                style={{
+                  fontSize: moderateScale(16),
+                  alignSelf: "center",
+                  paddingBottom: scale(8),
+                }}
+              >
+                Status
+              </Text>
+              <Text
+                style={
+                  getStatus(booking.status, booking.date) === "Unfinished"
+                    ? { fontSize: moderateScale(18), color: "#8fce00", fontWeight: "bold" }
+                    : getStatus(booking.status, booking.date) === "In the past"
+                    ? { fontSize: moderateScale(18), color: "#888", fontWeight: "bold" }
+                    : { fontSize: moderateScale(18), color: "red", fontWeight: "bold" }
+                }
+              >
+                <AntDesign
+                  name={
+                    getStatus(booking.status, booking.date) === "Unfinished"
+                      ? "questioncircle"
+                      : "closecircle"
+                  }
+                  size={18}
+                  color={
+                    getStatus(booking.status, booking.date) === "Unfinished"
+                      ? "#8fce00"
+                      : getStatus(booking.status, booking.date) === "In the past"
+                      ? "#888"
+                      : "red"
+                  }
+                />
+                {" " + getStatus(booking.status, booking.date)}
+              </Text>
+            </View>
+            <View>
+              <Text style={{ fontSize: moderateScale(16), alignSelf: "center", paddingBottom: 8 }}>
+                Date
+              </Text>
+              <Text style={{ fontSize: moderateScale(16), color: "#333", fontWeight: "bold" }}>
+                <AntDesign name="calendar" size={16} color="#333" /> {" " + booking.date}
+              </Text>
+            </View>
+          </View>
+          <View style={{ width: "90%" }}>
+            <View style={styles.boxHealth}>
+              <View style={styles.blood}>
+                <Text style={styles.titleBlood}>Blood Pressure</Text>
+                <Text style={styles.textBlood}>{infoUser?.bloodPressure}</Text>
+              </View>
+              <View style={styles.heart}>
+                <Text style={styles.titleBlood}>Heart Beat</Text>
+                <View style={styles.rowHeartbeat}>
+                  <FontAwesome name="heartbeat" color={"white"} size={scale(20)}></FontAwesome>
+                  <Text style={styles.textBlood}>{infoUser?.heartbeat}</Text>
+                </View>
+                <Text style={{ color: "white", fontSize: moderateScale(12), marginTop: 10 }}>
+                  Normal Heart Rate
+                </Text>
+              </View>
+            </View>
+            <View style={styles.boxHealth}>
+              <View style={styles.blood}>
+                <Text style={styles.titleBlood}>Weight</Text>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.textBlood}>{infoUser?.weight}</Text>
+                  <Text style={styles.textType}>Kg</Text>
+                </View>
+                <Text style={{ color: "white", fontSize: moderateScale(12), marginTop: 10 }}>
+                  {infoUser?.weight > 40 ? "Weight Normal" : "Weight Too Low"}
+                </Text>
+              </View>
+              <View style={styles.heart}>
+                <Text style={styles.titleBlood}>Height</Text>
+                <View style={styles.rowHeartbeat}>
+                  <FontAwesome name="male" color={"white"} size={scale(20)}></FontAwesome>
+                  <Text style={styles.textBlood}>{infoUser?.height}</Text>
+                </View>
+                <Text style={{ color: "white", fontSize: moderateScale(12), marginTop: 10 }}>
+                  Normal Heart Rate
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View style={{ marginVertical: 8 }} />
         </View>
-        <View style={{ marginVertical: 8 }} />
-      </View>
+      </ScrollView>
     </View>
   )
 })
@@ -202,7 +234,7 @@ const styles = StyleSheet.create({
   },
   cardUser: {
     width: "95%",
-    justifyContent: "space-around",
+    // justifyContent: "space-around",
   },
   infoUser: {
     flexDirection: "row",
@@ -220,16 +252,16 @@ const styles = StyleSheet.create({
   imgUser: {
     width: scale(110),
     height: scale(110),
-    resizeMode: "contain",
-    borderWidth: 5,
+    resizeMode: "cover",
+    borderWidth: 2,
     borderColor: "#f9f9f9",
     borderRadius: 16,
   },
   textInfo: {
-    fontSize: 24,
+    fontSize: moderateScale(18),
     fontWeight: "bold",
     color: "#000",
-    paddingBottom: 4,
+    paddingBottom: 6,
   },
   textInfoSmall: {
     color: "#000",
@@ -237,7 +269,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   boxTime: {
-    marginTop: 20,
+    marginTop: verticleScale(20),
     width: "90%",
     height: scale(90),
     borderColor: "#cccc",
@@ -275,35 +307,36 @@ const styles = StyleSheet.create({
   },
   boxHealth: {
     flexDirection: "row",
-    height: 180,
-    width: windowWidth,
+    height: verticleScale(130),
+    width: "100%",
     alignItems: "center",
     justifyContent: "space-evenly",
+    backgroundColor: "#4ea9fd",
+    marginVertical: scale(16),
+    borderRadius: scale(24),
   },
   blood: {
     width: scale(130),
     height: scale(130),
-    backgroundColor: "#4ea9fd",
-    borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
   },
   heart: {
     width: scale(130),
     height: scale(130),
-    backgroundColor: "#4ea9fd",
+    // backgroundColor: "#4ea9fd",
     borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
   },
   titleBlood: {
-    fontSize: moderateScale(16),
+    fontSize: moderateScale(14),
     color: "#ffff",
     marginBottom: 10,
     fontWeight: "600",
   },
   textBlood: {
-    fontSize: moderateScale(20),
+    fontSize: moderateScale(18),
     color: "#ffff",
     fontWeight: "900",
     marginLeft: scale(5),
@@ -311,5 +344,11 @@ const styles = StyleSheet.create({
   rowHeartbeat: {
     flexDirection: "row",
     alignItems: "center",
+  },
+  textType: {
+    paddingTop: scale(10),
+    fontSize: moderateScale(10),
+    fontWeight: "700",
+    color: "#fff",
   },
 })

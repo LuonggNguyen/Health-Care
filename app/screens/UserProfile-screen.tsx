@@ -318,7 +318,14 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
                     style={{ justifyContent: "center", alignItems: "center", flexDirection: "row" }}
                   >
                     <FontAwesome name="times-circle" size={32} color={"red"} />
-                    <Text style={{ fontSize: 16, fontWeight: "bold", color: "red", margin: 8 }}>
+                    <Text
+                      style={{
+                        fontSize: moderateScale(16),
+                        fontWeight: "bold",
+                        color: "red",
+                        margin: 8,
+                      }}
+                    >
                       Cancel
                     </Text>
                   </TouchableOpacity>
@@ -327,7 +334,14 @@ export const UserProfileScreen: FC<StackScreenProps<NavigatorParamList, "userPro
                     style={{ justifyContent: "center", alignItems: "center", flexDirection: "row" }}
                   >
                     <FontAwesome name="check-circle" size={32} color={"green"} />
-                    <Text style={{ fontSize: 16, fontWeight: "bold", color: "green", margin: 8 }}>
+                    <Text
+                      style={{
+                        fontSize: moderateScale(16),
+                        fontWeight: "bold",
+                        color: "green",
+                        margin: 8,
+                      }}
+                    >
                       Save
                     </Text>
                   </TouchableOpacity>
@@ -349,7 +363,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   titleHeader: {
-    fontSize: moderateScale(24),
+    fontSize: moderateScale(20),
     fontWeight: "bold",
     color: color.colorTextHeader,
   },

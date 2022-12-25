@@ -5,7 +5,7 @@ import { NavigatorParamList } from "../navigators"
 import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { database } from "../../configs/firebase"
 import { MyHeader } from "../components/MyHeader"
-import { scale } from "../utils/Scale/Scaling"
+import { moderateScale, scale } from "../utils/Scale/Scaling"
 const Width = Dimensions.get("window").width
 const Height = Dimensions.get("window").height
 
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 32,
+    fontSize: moderateScale(20),
     color: "red",
     fontWeight: "bold",
   },
@@ -109,19 +109,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   name: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     color: "black",
     fontWeight: "bold",
     padding: 4,
   },
   info: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     color: "black",
     fontWeight: "bold",
     padding: 4,
   },
   info1: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     color: "black",
     padding: 4,
   },

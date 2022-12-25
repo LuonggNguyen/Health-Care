@@ -128,7 +128,7 @@ export const DoctorProfileScreen: FC<StackScreenProps<NavigatorParamList, "docto
           rightComponent={
             <MaterialIcons
               name="logout"
-              size={28}
+              size={scale(24)}
               color={color.colorTextHeader}
               onPress={() =>
                 auth()
@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   titleHeader: {
-    fontSize: 24,
+    fontSize: moderateScale(20),
     fontWeight: "bold",
     color: color.colorTextHeader,
   },

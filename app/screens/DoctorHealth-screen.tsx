@@ -20,9 +20,17 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
     const [showModal, setShowModal] = useState(false)
     const [cmt, setCmt] = useState<Comment[]>([])
     const [comment, setComment] = useState("")
+    const [idPost, setIdPost] = useState()
+
     const user = firebase.auth().currentUser
 
     useEffect(() => {
+      getData()
+      return () => {
+        setListPost(null)
+      }
+    }, [])
+    const getData = () => {
       database.ref("/posts").on("value", (response) => {
         try {
           const listkey = Object.keys(response.val())
@@ -39,11 +47,7 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
           console.log(error)
         }
       })
-
-      return () => {
-        setListPost(null)
-      }
-    }, [])
+    }
     return (
       <View style={styles.container}>
         <Header
@@ -51,7 +55,7 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
           centerComponent={
             <Text
               style={{
-                fontSize: 24,
+                fontSize: moderateScale(20),
                 fontWeight: "bold",
                 color: color.colorTextHeader,
               }}
@@ -62,7 +66,7 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
           rightComponent={
             <MaterialIcons
               name="add-circle-outline"
-              size={28}
+              size={scale(24)}
               color={color.colorTextHeader}
               onPress={() => navigation.navigate("postArticle", {})}
             />
@@ -78,6 +82,9 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                 return Date.parse(b.timePost) - Date.parse(a.timePost)
               })}
               renderItem={({ item }) => {
+                const checkLike = Object?.values(item?.like).find(
+                  (item: Like) => item.idUser === user?.uid,
+                ) as Like
                 return (
                   <View style={styles.boxItem}>
                     <TouchableOpacity
@@ -101,47 +108,89 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                       </View>
                     </TouchableOpacity>
                     <View style={styles.boxLike}>
-                      <View
-                        style={{
-                          marginLeft: scale(60),
-                          flexDirection: "row",
-                          alignItems: "center",
+                      <TouchableOpacity
+                        style={{ flex: 1, alignItems: "center" }}
+                        onPress={() => {
+                          checkLike?.status == true
+                            ? database
+                                .ref("/posts/" + item.idPost + "/like/" + user.uid)
+                                .update({ status: false, idUser: user.uid })
+                                .then(() => {})
+                            : database
+                                .ref("/posts/" + item.idPost + "/like/" + user.uid)
+                                .update({ status: true, idUser: user.uid })
+                                .then(() => {})
                         }}
                       >
-                        <AntDesign name="like2" size={scale(24)} color={"gray"} />
-
-                        <Text style={styles.count}>
-                          {Object?.values(item?.like).filter((item: Like) => item.status === true)
-                            .length + 50}
-                        </Text>
-                      </View>
-                      <View style={{ flex: 1 }} />
-                      <View
-                        style={{
-                          marginRight: scale(60),
-                          flexDirection: "row",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Fontisto
-                          name="comment"
-                          size={scale(22)}
-                          color="gray"
-                          onPress={() => {
-                            // navigation.navigate("detailsArticle", { post: item })
-
-                            setCmt(Object?.values(item?.comment))
-                            setShowModal(true)
+                        <View
+                          style={{
+                            // marginLeft: scale(60),
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "50%",
                           }}
-                        />
-                        <Text style={styles.count}>
-                          {!Object?.values(item?.comment)
-                            ? 0
-                            : Object?.values(item?.comment).filter(
-                                (item: Comment) => item.contentComment.length > 0,
-                              ).length}
-                        </Text>
-                      </View>
+                        >
+                          {checkLike?.status ? (
+                            <AntDesign
+                              name="like1"
+                              size={scale(24)}
+                              color={color.colorApp}
+                              onPress={() => {
+                                database
+                                  .ref("/posts/" + item.idPost + "/like/" + user.uid)
+                                  .update({ status: false, idUser: user.uid })
+                                  .then(() => {})
+                              }}
+                            />
+                          ) : (
+                            <AntDesign
+                              name="like2"
+                              size={scale(24)}
+                              color={"gray"}
+                              onPress={() => {
+                                database
+                                  .ref("/posts/" + item.idPost + "/like/" + user.uid)
+                                  .update({ status: true, idUser: user.uid })
+                                  .then(() => {})
+                              }}
+                            />
+                          )}
+
+                          <Text style={styles.count}>
+                            {Object?.values(item?.like).filter((item: Like) => item.status === true)
+                              .length + 50}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                      {/* <View style={{ flex: 1 }} /> */}
+                      <TouchableOpacity
+                        style={{ flex: 1, alignItems: "center" }}
+                        onPress={() => {
+                          // navigation.navigate("detailsArticle", { post: item })
+                          setCmt(Object?.values(item?.comment))
+                          setIdPost(item?.idPost)
+                          setShowModal(true)
+                        }}
+                      >
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            width: "50%",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Fontisto name="comment" size={scale(22)} color="gray" />
+                          <Text style={styles.count}>
+                            {!Object?.values(item?.comment)
+                              ? 0
+                              : Object?.values(item?.comment).filter(
+                                  (item: Comment) => item.contentComment.length > 0,
+                                ).length}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
                     </View>
                     <Modal
                       style={{
@@ -181,38 +230,41 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                             Comment
                           </Text>
                         </View>
-                        <FlatList
-                          nestedScrollEnabled={true}
-                          showsVerticalScrollIndicator={false}
-                          data={cmt
-                            .filter((item) => item.contentComment.length > 0)
-                            .sort((a, b) => {
-                              return Date.parse(b.timeComment) - Date.parse(a.timeComment)
-                            })}
-                          renderItem={({ item }) => {
-                            return (
-                              <View style={styles.listComment}>
-                                <Image
-                                  style={styles.avatarComment}
-                                  source={{ uri: item.img }}
-                                ></Image>
-                                <View>
-                                  <Text
-                                    style={{
-                                      fontSize: moderateScale(16),
-                                      fontWeight: "600",
-                                      paddingBottom: 8,
-                                    }}
-                                  >
-                                    {item.nameUser}
-                                  </Text>
+                        <View style={{ paddingBottom: verticleScale(110) }}>
+                          <FlatList
+                            nestedScrollEnabled={true}
+                            showsVerticalScrollIndicator={false}
+                            data={cmt
+                              .filter((item) => item.contentComment.length > 0)
+                              .sort((a, b) => {
+                                return Date.parse(b.timeComment) - Date.parse(a.timeComment)
+                              })}
+                            renderItem={({ item }) => {
+                              return (
+                                <View style={styles.listComment}>
+                                  <Image
+                                    style={styles.avatarComment}
+                                    source={{ uri: item.img }}
+                                  ></Image>
+                                  <View>
+                                    <Text
+                                      style={{
+                                        fontSize: moderateScale(16),
+                                        fontWeight: "600",
+                                        paddingBottom: 8,
+                                      }}
+                                    >
+                                      {item.nameUser}
+                                    </Text>
 
-                                  <Text>{item.contentComment}</Text>
+                                    <Text>{item.contentComment}</Text>
+                                  </View>
                                 </View>
-                              </View>
-                            )
-                          }}
-                        />
+                              )
+                            }}
+                          />
+                        </View>
+
                         <View style={styles.boxComment}>
                           <View style={{ width: "85%" }}>
                             <Input
@@ -227,21 +279,25 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                               name="send"
                               size={scale(22)}
                               onPress={() => {
+                                console.log("Idddd ", idPost)
+
                                 // if (comment) {
                                 //   database
-                                //     .ref("/posts/" + post.idPost + "/comment")
+                                //     .ref("/posts/" + item.idPost + "/comment")
                                 //     .push()
                                 //     .set({
                                 //       idUser: user.uid,
                                 //       contentComment: comment,
                                 //       nameUser:
-                                //         post.idDoctor == user.uid
+                                //         item.idDoctor == user.uid
                                 //           ? user.displayName + "  (author)"
                                 //           : user.displayName,
                                 //       img: imgUser || imgDoctor,
                                 //       timeComment: new Date().toString(),
                                 //     })
                                 //     .then(() => {
+                                //       getData()
+                                //       // setCmt(Object?.values(item?.comment))
                                 //       setComment("")
                                 //     })
                                 // } else {
@@ -313,8 +369,9 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   imagePost: {
-    width: "95%",
-    height: scale(200),
+    minWidth: "95%",
+    // height: scale(200),
+    minHeight: verticleScale(200),
     alignSelf: "center",
     marginBottom: scale(10),
     borderRadius: 8,

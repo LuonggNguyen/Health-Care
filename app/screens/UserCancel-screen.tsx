@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   titleHeader: {
-    fontSize: 24,
+    fontSize: moderateScale(20),
     fontWeight: "bold",
     color: "#000",
   },
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   time: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     color: "black",
     padding: 4,
     // fontWeight: "bold",

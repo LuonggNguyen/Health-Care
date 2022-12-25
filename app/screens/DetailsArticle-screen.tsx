@@ -72,14 +72,14 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
               <Iconicons
                 name="arrow-back"
                 color={color.colorTextHeader}
-                size={28}
+                size={scale(24)}
                 onPress={() => navigation.goBack()}
               />
             }
             centerComponent={
               <Text
                 style={{
-                  fontSize: 24,
+                  fontSize: moderateScale(20),
                   fontWeight: "bold",
                   color: color.colorTextHeader,
                 }}
@@ -102,14 +102,14 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
             <Iconicons
               name="arrow-back"
               color={color.colorTextHeader}
-              size={28}
+              size={scale(24)}
               onPress={() => navigation.goBack()}
             />
           }
           centerComponent={
             <Text
               style={{
-                fontSize: 24,
+                fontSize: moderateScale(20),
                 fontWeight: "bold",
                 color: color.colorTextHeader,
               }}
@@ -123,7 +123,12 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                 <Menu
                   visible={visible}
                   anchor={
-                    <MaterialIcons name="more-vert" size={28} color="#fff" onPress={showMenu} />
+                    <MaterialIcons
+                      name="more-vert"
+                      size={scale(24)}
+                      color="#fff"
+                      onPress={showMenu}
+                    />
                   }
                   onRequestClose={hideMenu}
                 >
@@ -161,17 +166,17 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
         <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled={true}>
           <View style={styles.boxItem}>
             <View style={styles.boxAvatar}>
-              <Image style={styles.avatar} source={{ uri: post.avtDoctor }}></Image>
-              <Text style={styles.name}>{post.nameDoctor}</Text>
+              <Image style={styles.avatar} source={{ uri: post?.avtDoctor }}></Image>
+              <Text style={styles.name}>{post?.nameDoctor}</Text>
             </View>
             <View style={styles.boxContent}>
-              <Text style={styles.title}>{post.title}</Text>
-              <Text style={styles.contentPost}>{post.content}</Text>
+              <Text style={styles.title}>{post?.title}</Text>
+              <Text style={styles.contentPost}>{post?.content}</Text>
 
               <Image
                 resizeMode="contain"
                 style={styles.imagePost}
-                source={{ uri: post.imagePost }}
+                source={{ uri: post?.imagePost }}
               ></Image>
             </View>
           </View>
@@ -199,7 +204,32 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                     Comment
                   </Text>
                 </View>
-                <FlatList
+                {cmt
+                  .filter((item) => item.contentComment.length > 0)
+                  .sort((a, b) => {
+                    return Date.parse(b.timeComment) - Date.parse(a.timeComment)
+                  })
+                  .map((a) => {
+                    return (
+                      <View style={styles.listComment}>
+                        <Image style={styles.avatarComment} source={{ uri: a?.img }}></Image>
+                        <View>
+                          <Text
+                            style={{
+                              fontSize: moderateScale(16),
+                              fontWeight: "600",
+                              paddingBottom: 8,
+                            }}
+                          >
+                            {a?.nameUser}
+                          </Text>
+
+                          <Text>{a?.contentComment}</Text>
+                        </View>
+                      </View>
+                    )
+                  })}
+                {/* <FlatList
                   nestedScrollEnabled={true}
                   showsVerticalScrollIndicator={false}
                   data={cmt
@@ -227,7 +257,7 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                       </View>
                     )
                   }}
-                />
+                /> */}
               </View>
             )}
           </View>
@@ -260,9 +290,8 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                       img: imgUser || imgDoctor,
                       timeComment: new Date().toString(),
                     })
-                    .then(() => {
-                      setComment("")
-                    })
+                    .then(() => {})
+                  setComment("")
                 } else {
                   console.log("no commet")
                 }

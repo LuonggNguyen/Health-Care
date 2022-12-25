@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite"
 import { Header } from "@rneui/themed"
 import { color } from "../theme"
 import Iconicons from "react-native-vector-icons/Ionicons"
+import { moderateScale, scale } from "../utils/Scale/Scaling"
 
 export interface MyHeaderProps {
   title?: string
@@ -23,7 +24,7 @@ export const MyHeader = React.memo(
           <Iconicons
             name="arrow-back"
             color={color.colorTextHeader}
-            size={28}
+            size={scale(24)}
             onPress={props.onPress}
           />
         }
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   titleHeader: {
-    fontSize: 24,
+    fontSize: moderateScale(20),
     fontWeight: "bold",
     color: color.colorTextHeader,
   },
