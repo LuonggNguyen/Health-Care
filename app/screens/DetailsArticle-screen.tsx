@@ -182,14 +182,20 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
           </View>
           <View style={styles.content}>
             {!cmt ? (
-              <Text>No comment</Text>
+              <Text
+                style={{
+                  alignSelf: "center",
+                  fontSize: moderateScale(16),
+                  paddingTop: verticleScale(12),
+                }}
+              >
+                No comment
+              </Text>
             ) : (
               <View
                 style={{
-                  height: verticleScale(450),
                   marginBottom: scale(50),
-                  // marginTop: verticleScale(8),
-                  paddingTop: verticleScale(20),
+                  paddingTop: verticleScale(12),
                   backgroundColor: "#ffff",
                 }}
               >
@@ -198,7 +204,6 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                     style={{
                       fontSize: moderateScale(18),
                       textAlign: "center",
-                      // fontFamily: "Roboto",
                     }}
                   >
                     Comment
@@ -223,41 +228,11 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                           >
                             {a?.nameUser}
                           </Text>
-
                           <Text>{a?.contentComment}</Text>
                         </View>
                       </View>
                     )
                   })}
-                {/* <FlatList
-                  nestedScrollEnabled={true}
-                  showsVerticalScrollIndicator={false}
-                  data={cmt
-                    .filter((item) => item.contentComment.length > 0)
-                    .sort((a, b) => {
-                      return Date.parse(b.timeComment) - Date.parse(a.timeComment)
-                    })}
-                  renderItem={({ item }) => {
-                    return (
-                      <View style={styles.listComment}>
-                        <Image style={styles.avatarComment} source={{ uri: item.img }}></Image>
-                        <View>
-                          <Text
-                            style={{
-                              fontSize: moderateScale(16),
-                              fontWeight: "600",
-                              paddingBottom: 8,
-                            }}
-                          >
-                            {item.nameUser}
-                          </Text>
-
-                          <Text>{item.contentComment}</Text>
-                        </View>
-                      </View>
-                    )
-                  }}
-                /> */}
               </View>
             )}
           </View>
@@ -339,11 +314,12 @@ const styles = StyleSheet.create({
     borderColor: "#cccc",
   },
   container: {
-    backgroundColor: "#dfdfdf",
+    backgroundColor: "#fff",
     flex: 1,
   },
   content: {
     flex: 1,
+    paddingBottom: verticleScale(40),
   },
   imagePost: {
     alignSelf: "center",
@@ -388,7 +364,7 @@ const styles = StyleSheet.create({
   },
   listComment: {
     padding: 18,
-    backgroundColor: "#ffff",
+    backgroundColor: "#fff",
     borderColor: "#ccc",
     borderWidth: 1,
     flexDirection: "row",
