@@ -53,7 +53,6 @@ export const AdminScreen: FC<StackScreenProps<NavigatorParamList, "admin">> = ob
           }
           backgroundColor={color.colorHeader}
         />
-        <SafeAreaView>
           <FlatList
             showsVerticalScrollIndicator={false}
             data={listDoctors}
@@ -83,7 +82,6 @@ export const AdminScreen: FC<StackScreenProps<NavigatorParamList, "admin">> = ob
             }}
             numColumns={1}
           />
-        </SafeAreaView>
         <FAB
           placement="right"
           size="large"
@@ -101,6 +99,7 @@ export const AdminScreen: FC<StackScreenProps<NavigatorParamList, "admin">> = ob
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:'#fff'
   },
   content: {
     marginTop: verticleScale(10),

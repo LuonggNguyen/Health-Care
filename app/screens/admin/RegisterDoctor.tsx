@@ -69,6 +69,10 @@ export const RegisterDoctor: FC<StackScreenProps<NavigatorParamList, "register">
                   uid: auth().currentUser.uid,
                   name: auth().currentUser.displayName,
                   email: auth().currentUser.email,
+                  birthDay: "11/10/1970",
+                  dayStartWork: "20/10/2005",
+                  department: "Internal medicine doctor",
+                  gender: true,
                   photoUrl:
                     "https://static.vecteezy.com/system/resources/previews/001/206/141/original/doctors-png.png",
                   phoneNumber: "0999999999",

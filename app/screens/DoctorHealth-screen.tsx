@@ -117,7 +117,6 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                     <View style={styles.boxLike}>
                       <View
                         style={{
-                          // marginLeft: scale(60),
                           width: "50%",
                           flexDirection: "row",
                           alignItems: "center",
@@ -130,7 +129,6 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                             size={scale(24)}
                             color={color.colorApp}
                             onPress={() => {
-                              console.log("true ", checkLike?.status)
                               database
                                 .ref("/posts/" + item.idPost + "/like/" + user.uid)
                                 .update({ status: false, idUser: user.uid })
@@ -143,7 +141,6 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                             size={scale(24)}
                             color={"gray"}
                             onPress={() => {
-                              console.log("false ", checkLike?.status)
                               database
                                 .ref("/posts/" + item.idPost + "/like/" + user.uid)
                                 .update({ status: true, idUser: user.uid })
@@ -156,11 +153,9 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                             .length + 50}
                         </Text>
                       </View>
-                      {/* <View style={{ flex: 1 }} /> */}
                       <TouchableOpacity
                         style={{ width: "50%", alignItems: "center" }}
                         onPress={() => {
-                          // navigation.navigate("detailsArticle", { post: item })
                           setCmt(Object?.values(item?.comment))
                           setIdPost(item?.idPost)
                           setShowModal(true)
@@ -193,7 +188,6 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
         </View>
         <Modal
           style={{
-            // backgroundColor: '#fff',
             padding: 0,
             margin: 0,
             justifyContent: "flex-end",
@@ -357,7 +351,6 @@ const styles = StyleSheet.create({
   },
   imagePost: {
     minWidth: "95%",
-    // height: scale(200),
     minHeight: verticleScale(200),
     alignSelf: "center",
     marginBottom: scale(10),
@@ -368,7 +361,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     height: verticleScale(50),
-    // backgroundColor: color.line,
     borderTopWidth: 1,
     borderColor: "gray",
   },

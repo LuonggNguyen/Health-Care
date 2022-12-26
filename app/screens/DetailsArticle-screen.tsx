@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { FlatList, Image, ScrollView, StyleSheet, Text, View } from "react-native"
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../navigators"
 import { Dialog, Input } from "@rneui/themed"
@@ -214,9 +214,9 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                   .sort((a, b) => {
                     return Date.parse(b.timeComment) - Date.parse(a.timeComment)
                   })
-                  .map((a) => {
+                  .map((a, i) => {
                     return (
-                      <View style={styles.listComment}>
+                      <View style={styles.listComment} key={i}>
                         <Image style={styles.avatarComment} source={{ uri: a?.img }}></Image>
                         <View>
                           <Text
@@ -303,13 +303,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffff",
     borderRadius: scale(6),
     paddingBottom: verticleScale(30),
-    // margin: scale(8),
   },
   boxLike: {
     alignItems: "center",
     flexDirection: "row",
     height: verticleScale(50),
-    // backgroundColor: color.line,
     borderTopWidth: 1,
     borderColor: "#cccc",
   },
@@ -331,7 +329,6 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: moderateScale(18),
-    // fontFamily: "Roboto",
     fontWeight: "600",
     color: "#000",
     marginLeft: 12,
@@ -360,7 +357,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     backgroundColor: "#ffff",
-    // marginHorizontal: 20,
   },
   listComment: {
     padding: 18,
