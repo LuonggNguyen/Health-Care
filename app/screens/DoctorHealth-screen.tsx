@@ -103,7 +103,9 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                       </View>
                       <View style={styles.boxContent}>
                         <Text style={styles.title}>{item.title}</Text>
-                        <Text style={styles.contentPost}>{item.content}</Text>
+                        <Text numberOfLines={2} style={styles.contentPost}>
+                          {item.content}
+                        </Text>
 
                         <Image
                           resizeMode="contain"
