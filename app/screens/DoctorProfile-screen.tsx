@@ -203,10 +203,6 @@ export const DoctorProfileScreen: FC<StackScreenProps<NavigatorParamList, "docto
               <Text style={styles.textInfor}>{"Phone Number: " + infoDoctor?.phoneNumber} </Text>
 
               <Text style={styles.textInfor}>{"Birt Day: " + infoDoctor?.birthDay} </Text>
-              <Text style={styles.textInfor}>
-                {"Gender: "}
-                {infoDoctor?.gender ? "Male" : "Female"}
-              </Text>
             </View>
             {/* <View
               style={{

@@ -74,7 +74,6 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                 const checkLike = Object?.values(item?.like).find(
                   (item: Like) => item.idUser === user?.uid,
                 ) as Like
-                console.log("checkLike ", checkLike)
 
                 return (
                   <View style={styles.boxItem}>
@@ -256,8 +255,6 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                   name="send"
                   size={scale(22)}
                   onPress={() => {
-                    console.log("Idddd ", idPost)
-
                     if (comment) {
                       database
                         .ref("/posts/" + idPost + "/comment")
@@ -294,7 +291,6 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingBottom: verticleScale(40),
   },
   avatar: {
     borderRadius: 70,

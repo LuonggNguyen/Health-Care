@@ -127,7 +127,6 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                             size={scale(24)}
                             color={color.colorApp}
                             onPress={() => {
-                              console.log("true ", checkLike?.status)
                               database
                                 .ref("/posts/" + item.idPost + "/like/" + user.uid)
                                 .update({ status: false, idUser: user.uid })
@@ -140,7 +139,6 @@ export const DoctorHealthScreen: FC<StackScreenProps<NavigatorParamList, "doctor
                             size={scale(24)}
                             color={"gray"}
                             onPress={() => {
-                              console.log("false ", checkLike?.status)
                               database
                                 .ref("/posts/" + item.idPost + "/like/" + user.uid)
                                 .update({ status: true, idUser: user.uid })
