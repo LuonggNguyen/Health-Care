@@ -228,7 +228,7 @@ export const DetailsArticleScreen: FC<StackScreenProps<NavigatorParamList, "deta
                           >
                             {a?.nameUser}
                           </Text>
-                          <Text>{a?.contentComment}</Text>
+                          <Text style={{ width: "80%" }}>{a?.contentComment}</Text>
                         </View>
                       </View>
                     )

@@ -262,7 +262,7 @@ export const UserHealthScreen: FC<StackScreenProps<NavigatorParamList, "userHeal
                         .set({
                           idUser: user.uid,
                           contentComment: comment,
-                          nameUser: user.displayName + "  (author)",
+                          nameUser: user.displayName,
                           img: imgUser,
                           timeComment: new Date().toString(),
                         })
@@ -334,8 +334,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     height: scale(200),
     marginBottom: scale(10),
-    resizeMode: "contain",
-    width: "95%",
+    resizeMode: "cover",
+    width: "90%",
   },
   name: {
     fontSize: moderateScale(18),
